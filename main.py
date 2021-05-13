@@ -23,6 +23,7 @@ async def on_ready():
 
 @bot.command(name="bonk")
 async def bonk(ctx):
+    print("Bonking in progress")
     if ctx.author == bot.user:
         return
     emoji = await get_emoji(ctx, EmojiEnum.BONK)
