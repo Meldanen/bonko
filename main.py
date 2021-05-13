@@ -6,6 +6,7 @@ import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import get
+from discord.abc import Messageable
 
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
@@ -18,12 +19,12 @@ bot = commands.Bot(command_prefix=';;')
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} is here to bonk Giannakides')
+    print(f'{bot.user.name} is here to bonk Giannakides!')
 
 
 @bot.command(name="bonk")
 async def bonk(ctx):
-    print("Bonking in progress by")
+    print("Bonking in progress")
     if ctx.author == bot.user:
         return
     emoji = await get_emoji(ctx, EmojiEnum.BONK)
@@ -33,6 +34,18 @@ async def bonk(ctx):
     await send_message_with_reaction(ctx, emoji, None)
     await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
     await send_message_with_reaction(ctx, emoji, None)
+
+
+@bot.command(name="badgiannakis")
+async def bonk(ctx):
+    if ctx.author.id == bot.user.id:
+        return
+    channel = ctx.channel
+    async for message in channel.history(limit=200):
+        if message.author.id == UserEnum.GIANNAKIS.value:
+            id = format_user_id_for_mention(str(UserEnum.MELDANEN.value))
+            if message.content == id:
+                await message.delete()
 
 
 async def send_message_with_reaction(ctx, emoji, emoji_suffix):
@@ -48,7 +61,7 @@ async def get_emoji(ctx, emojiEnum):
 
 
 def format_user_id_for_mention(userEnum):
-    return "<@" + userEnum + ">"
+    return "<@!" + userEnum + ">"
 
 
 bot.run(TOKEN)
