@@ -1,12 +1,10 @@
 # main.py
 import os
-import random
 
-import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import get
-from discord.abc import Messageable
+import re
 
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
@@ -44,7 +42,10 @@ async def bonk(ctx):
     async for message in channel.history(limit=200):
         if message.author.id == UserEnum.GIANNAKIS.value:
             id = format_user_id_for_mention(str(UserEnum.MELDANEN.value))
-            if message.content == id:
+            contentsNoSpaces = message.content.replace(" ", "")
+            contentsSplit = contentsNoSpaces.split(id)
+            contents = "".join(contentsSplit)
+            if not contents:
                 await message.delete()
 
 
