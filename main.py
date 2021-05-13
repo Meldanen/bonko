@@ -23,12 +23,12 @@ async def on_ready():
 
 @bot.command(name="bonk")
 async def bonk(ctx):
-    print("Bonking in progress")
+    print("Bonking in progress by: " + ctx.author)
     if ctx.author == bot.user:
         return
     emoji = await get_emoji(ctx, EmojiEnum.BONK)
     if ctx.author.id == UserEnum.GIANNAKIS.value:
-        await ctx.send("Bad Giannakis!")
+        await ctx.send("Bad Giannakis! No horny!")
         return
     await send_message_with_reaction(ctx, emoji, None)
     await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
@@ -37,7 +37,7 @@ async def bonk(ctx):
 
 async def send_message_with_reaction(ctx, emoji, emoji_suffix):
     if emoji_suffix:
-        message = await ctx.send(str(emoji) + " " + emoji_suffix)
+        message = await ctx.send(f"{str(emoji)} {emoji_suffix}")
     else:
         message = await ctx.send(emoji)
     await message.add_reaction(emoji)
