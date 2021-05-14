@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.utils import get
-import re
 
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
@@ -30,8 +29,19 @@ async def bonk(ctx):
         await ctx.send("Bad Giannakis! No horny!")
         return
     await send_message_with_reaction(ctx, emoji, None)
-    await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
+    # await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
+    await send_message_with_reaction(ctx, emoji, "Giannaki")
     await send_message_with_reaction(ctx, emoji, None)
+
+
+@bot.command(name="spamgiannakis")
+async def bonk(ctx, times):
+    if ctx.author.id == bot.user.id:
+        return
+    if ctx.author.id == UserEnum.MELDANEN.value:
+        emoji = await get_emoji(ctx, EmojiEnum.BONK)
+        for i in range(times):
+            await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
 
 
 @bot.command(name="badgiannakis")
