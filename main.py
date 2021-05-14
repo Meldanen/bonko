@@ -30,7 +30,7 @@ async def bonk(ctx):
         return
     await send_message_with_reaction(ctx, emoji, None)
     # await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
-    await send_message_with_reaction(ctx, emoji, "Giannaki")
+    await send_message_with_reaction(ctx, emoji, "giannakis")
     await send_message_with_reaction(ctx, emoji, None)
 
 
@@ -40,7 +40,7 @@ async def bonk(ctx, times):
         return
     if ctx.author.id == UserEnum.MELDANEN.value:
         emoji = await get_emoji(ctx, EmojiEnum.BONK)
-        for i in range(times):
+        for i in range(int(times)):
             await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
 
 
