@@ -35,11 +35,13 @@ async def bonk(ctx):
 
 
 @bot.command(name="spamgiannakis")
-async def bonk(ctx, times):
+async def bonk(ctx, emoji, times):
     if ctx.author.id == bot.user.id:
         return
     if ctx.author.id == UserEnum.MELDANEN.value:
-        emoji = await get_emoji(ctx, EmojiEnum.BONK)
+        emoji = await get_emoji(ctx, emoji)
+        if not emoji:
+            return
         for i in range(int(times)):
             await send_message_with_reaction(ctx, emoji, format_user_id_for_mention(str(UserEnum.GIANNAKIS.value)))
 
