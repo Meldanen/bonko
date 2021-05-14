@@ -69,8 +69,8 @@ async def send_message_with_reaction(ctx, emoji, emoji_suffix):
     await message.add_reaction(emoji)
 
 
-async def get_emoji(ctx, emojiEnum):
-    return get(ctx.guild.emojis, name=emojiEnum.value)
+async def get_emoji(ctx, emoji):
+    return get(ctx.guild.emojis, name=emoji)
 
 
 def format_user_id_for_mention(userEnum):
