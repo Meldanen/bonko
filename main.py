@@ -24,7 +24,7 @@ async def bonk(ctx):
     print("Bonking in progress")
     if ctx.author == bot.user:
         return
-    emoji = await get_emoji(ctx, EmojiEnum.BONK)
+    emoji = await get_emoji(ctx, EmojiEnum.BONK.value)
     if ctx.author.id == UserEnum.GIANNAKIS.value:
         await ctx.send("Bad Giannakis! No horny!")
         return
@@ -36,8 +36,6 @@ async def bonk(ctx):
 
 @bot.command(name="spamgiannakis")
 async def bonk(ctx, emoji, times):
-    print(emoji)
-    print(str(emoji))
     if ctx.author.id == bot.user.id:
         return
     if ctx.author.id == UserEnum.MELDANEN.value:
