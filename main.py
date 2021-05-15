@@ -36,6 +36,8 @@ async def bonk(ctx):
 
 @bot.command(name="spamgiannakis")
 async def bonk(ctx, emoji, times):
+    print(emoji)
+    print(str(emoji))
     if ctx.author.id == bot.user.id:
         return
     if ctx.author.id == UserEnum.MELDANEN.value:
