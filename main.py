@@ -13,8 +13,12 @@ from enums.UserEnum import UserEnum
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-
+#
 bot = commands.Bot(command_prefix=';;')
+
+
+# if __name__ == "__main__":
+#     bonko = Bonko()
 
 
 @bot.event
@@ -31,14 +35,21 @@ async def bonk(ctx):
         message = emojis.encode("No horny! :angry:")
         await send_message_with_reaction(ctx, message, emojis.db.get_emoji_by_alias(EmojiEnum.ANGRY.value))
         return
-    await bonk_giannakis(ctx, mention=False)
+
+    emoji = await get_custom_emoji(ctx, EmojiEnum.BONK.value)
+    giannakis = await get_giannakis(False)
+    message = f'{str(emoji)} {giannakis}'
+
+    await send_message_with_reaction(ctx, "Bonk Giannaki", emoji)
+    await send_message_with_reaction(ctx, message, emoji)
+    await send_message_with_reaction(ctx, emoji, emoji)
 
 
 @bot.command(name="spamgiannakis")
 async def spam_giannakis(ctx, emoji, times):
     if ctx.author.id == bot.user.id:
         return
-    if ctx.author.id == UserEnum.MELDANEN.value:
+    if is_good_person(ctx.author.id):
         emoji = await get_custom_emoji(ctx, emoji)
         if not emoji:
             return
@@ -67,7 +78,7 @@ async def bad_giannakis(ctx):
 async def word_of_the_day(ctx):
     if ctx.author.id == bot.user.id:
         return
-    if ctx.author.id == UserEnum.GIANNAKIS.value:
+    if isGiannakis(ctx.author.id):
         await send_message(ctx, "No horny!")
     else:
         await send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
@@ -88,16 +99,6 @@ async def send_message_with_reaction(ctx, message, emoji):
     await message.add_reaction(reaction)
 
 
-async def bonk_giannakis(ctx, mention=True):
-    emoji = await get_custom_emoji(ctx, EmojiEnum.BONK.value)
-    giannakis = await get_giannakis(mention)
-    message = f'{str(emoji)} {giannakis}'
-
-    await send_message_with_reaction(ctx, "Bonk Giannaki", emoji)
-    await send_message_with_reaction(ctx, message, emoji)
-    await send_message_with_reaction(ctx, emoji, emoji)
-
-
 async def get_giannakis(mention):
     if mention:
         return format_user_id_for_mention(str(UserEnum.GIANNAKIS.value))
@@ -111,6 +112,14 @@ async def get_custom_emoji(ctx, emoji):
 
 def format_user_id_for_mention(userEnum):
     return "<@!" + userEnum + ">"
+
+
+def is_giannakis(id):
+    return id == UserEnum.GIANNAKIS.value
+
+
+def is_good_person(id):
+    return id == UserEnum.MELDANEN.value or id == UserEnum.HELEN.value or id == UserEnum.JOSEPH.value
 
 
 bot.run(TOKEN)
