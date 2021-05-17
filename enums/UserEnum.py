@@ -13,7 +13,7 @@ class UserEnum(Enum):
 
     @staticmethod
     def is_good_person(id):
-        return id == UserEnum.MELDANEN.value or id == UserEnum.JOSEPH.value or id == UserEnum.HELEN.value
+        return id in [UserEnum.MELDANEN.value, UserEnum.JOSEPH.value, UserEnum.HELEN.value]
 
     @staticmethod
     def is_giannakis(id):
