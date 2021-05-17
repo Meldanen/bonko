@@ -60,6 +60,15 @@ async def bonk(ctx):
             if not contents:
                 await message.delete()
 
+@bot.command(name="wordoftheday")
+async def bonk(ctx):
+    if ctx.author.id == bot.user.id:
+        return
+    if ctx.author.id == UserEnum.GIANNAKIS.value:
+        await send_message_with_reaction(ctx, "No horny!")
+    else:
+        await send_message_with_reaction(ctx, EmojiEnum.BONK.value)
+
 
 async def send_message_with_reaction(ctx, emoji, emoji_suffix):
     if emoji_suffix:
