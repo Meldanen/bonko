@@ -31,7 +31,7 @@ async def bonk(ctx):
     print("Bonking in progress")
     if ctx.author.id == bot.user.id:
         return
-    if ctx.author.id == UserEnum.GIANNAKIS.value:
+    if is_giannakis(ctx.author.id):
         message = emojis.encode("No horny! :angry:")
         await send_message_with_reaction(ctx, message, emojis.db.get_emoji_by_alias(EmojiEnum.ANGRY.value))
         return
@@ -65,7 +65,7 @@ async def bad_giannakis(ctx):
         return
     channel = ctx.channel
     async for message in channel.history(limit=200):
-        if message.author.id == UserEnum.GIANNAKIS.value:
+        if is_giannakis(message.author.id):
             id = format_user_id_for_mention(str(UserEnum.MELDANEN.value))
             contentsNoSpaces = message.content.replace(" ", "")
             contentsSplit = contentsNoSpaces.split(id)
@@ -78,7 +78,7 @@ async def bad_giannakis(ctx):
 async def word_of_the_day(ctx):
     if ctx.author.id == bot.user.id:
         return
-    if isGiannakis(ctx.author.id):
+    if is_giannakis(ctx.author.id):
         await send_message(ctx, "No horny!")
     else:
         await send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
@@ -115,11 +115,11 @@ def format_user_id_for_mention(userEnum):
 
 
 def is_giannakis(id):
-    return id == UserEnum.GIANNAKIS.value
+    return UserEnum.is_giannakis(id)
 
 
 def is_good_person(id):
-    return id == UserEnum.MELDANEN.value or id == UserEnum.HELEN.value or id == UserEnum.JOSEPH.value
+    return UserEnum.is_good_person(id)
 
 
 bot.run(TOKEN)
