@@ -65,10 +65,17 @@ async def bonk(ctx):
     if ctx.author.id == bot.user.id:
         return
     if ctx.author.id == UserEnum.GIANNAKIS.value:
-        await send_message_with_reaction(ctx, "No horny!")
+        await send_message_with_reaction(ctx, "No horny!", None)
     else:
-        await send_message_with_reaction(ctx, EmojiEnum.BONK.value)
+        await send_message_with_reaction(ctx, EmojiEnum.BONK.value, None)
 
+
+# async def bonk_giannakis(ctx, emoji, emoji_suffix):
+#     if emoji_suffix:
+#         message = await ctx.send(f"{str(emoji)} {emoji_suffix}")
+#     else:
+#         message = await ctx.send(emoji)
+#     await message.add_reaction(emoji)
 
 async def send_message_with_reaction(ctx, emoji, emoji_suffix):
     if emoji_suffix:
