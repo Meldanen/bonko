@@ -1,8 +1,6 @@
 # main.py
-import os
-
 import emojis
-from discord import Emoji as CustomEmoji, Client
+from discord import Emoji as CustomEmoji
 from discord.ext import commands
 from discord.utils import get
 from emojis.db import Emoji as DefaultEmoji
@@ -24,9 +22,10 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx):
         print("Bonking in progress")
-        if ctx.author.id == self.bot.user.id:
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
             return
-        if self.is_giannakis(ctx.author.id):
+        if self.is_giannakis(author_id):
             message = emojis.encode("No horny! :angry:")
             await self.send_message_with_reaction(ctx, message, emojis.db.get_emoji_by_alias(EmojiEnum.ANGRY.value))
             return
@@ -49,7 +48,7 @@ class Bonko(commands.Cog):
             if not emoji:
                 return
             giannakis = await self.get_giannakis(self.is_megus(author_id) and fuck_off)
-            message = f'{emoji} {giannakis}'
+            message = f'{emoji} {giannakis} {emoji}'
             for i in range(int(times)):
                 await self.send_message_with_reaction(ctx, message, emoji)
 
@@ -69,9 +68,10 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value)
     async def word_of_the_day(self, ctx):
-        if ctx.author.id == self.bot.user.id:
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
             return
-        if self.is_giannakis(ctx.author.id):
+        if self.is_giannakis(author_id):
             await self.send_message(ctx, "No horny!")
         else:
             await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
