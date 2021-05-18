@@ -88,10 +88,8 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        print(self.emergency_bonkage)
         if self.is_good_person(author_id):
             await self.handle_bonkage(ctx, args, self.emergency_bonkage.remove)
-        print(self.emergency_bonkage)
 
     @staticmethod
     async def handle_bonkage(ctx, args, add_or_remove):
