@@ -40,14 +40,15 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
     @commands.command(name=CommandsEnum.SPAM_GIANNAKIS.value)
-    async def spam_giannakis(self, ctx, emoji, times):
-        if ctx.author.id == self.bot.user.id:
+    async def spam_giannakis(self, ctx, emoji, times, fuck_off=False):
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
             return
-        if self.is_allowed_to_spam(ctx.author.id):
+        if self.is_allowed_to_spam(author_id):
             emoji = await self.get_custom_emoji(ctx, emoji)
             if not emoji:
                 return
-            giannakis = await self.get_giannakis(True)
+            giannakis = await self.get_giannakis(self.is_megus(author_id) and fuck_off)
             message = f'{emoji} {giannakis}'
             for i in range(int(times)):
                 await self.send_message_with_reaction(ctx, message, emoji)
