@@ -82,6 +82,8 @@ class Bonko(commands.Cog):
             return
         if self.is_good_person(author_id):
             await self.handle_bonkage(ctx, args, self.emergency_bonkage.add)
+        print("Can spam:")
+        print(self.emergency_bonkage)
 
     @commands.command(name=CommandsEnum.DISALLOW_BONKAGE.value)
     async def disallow_bonkage(self, ctx, *args):
@@ -90,6 +92,8 @@ class Bonko(commands.Cog):
             return
         if self.is_good_person(author_id):
             await self.handle_bonkage(ctx, args, self.emergency_bonkage.remove)
+        print("Can spam:")
+        print(self.emergency_bonkage)
 
     @staticmethod
     async def handle_bonkage(ctx, args, add_or_remove):
