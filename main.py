@@ -1,14 +1,18 @@
 # main.py
 import os
 
+import discord
 from dotenv import load_dotenv
 from discord.ext import commands
 
 from bonko import Bonko
+from discord.ext import commands
+
 
 if __name__ == "__main__":
     load_dotenv()
     TOKEN = os.getenv('DISCORD_TOKEN')
-    bot = commands.Bot(command_prefix=';;')
+    intents = discord.Intents.all()
+    bot = commands.Bot(command_prefix=';;', intents=intents)
     bot.add_cog(Bonko(bot))
     bot.run(TOKEN)

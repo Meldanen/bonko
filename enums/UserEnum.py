@@ -18,3 +18,7 @@ class UserEnum(Enum):
     @staticmethod
     def is_giannakis(id):
         return id == UserEnum.GIANNAKIS.value
+
+    @staticmethod
+    def is_megus(id):
+        return id == UserEnum.MELDANEN.value
