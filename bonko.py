@@ -23,7 +23,7 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        if self.is_megus(author_id):
+        if self.is_giannakis(author_id):
             message = emojis.encode("No horny! :angry:")
             await self.send_message_with_reaction(ctx, message, emojis.db.get_emoji_by_alias(EmojiEnum.ANGRY.value))
             return
