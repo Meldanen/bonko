@@ -25,7 +25,7 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        if self.is_giannakis(author_id):
+        if self.is_megus(author_id):
             message = emojis.encode("No horny! :angry:")
             await self.send_message_with_reaction(ctx, message, emojis.db.get_emoji_by_alias(EmojiEnum.ANGRY.value))
             return
@@ -44,7 +44,7 @@ class Bonko(commands.Cog):
         if author_id == self.bot.user.id:
             return
         if self.is_allowed_to_spam(author_id):
-            emoji = await self.get_custom_emoji(ctx, emoji)
+            emoji = await self.get_emoji(ctx, emoji)
             if not emoji:
                 return
             giannakis = await self.get_giannakis(self.is_megus(author_id) and fuck_off)
@@ -74,7 +74,8 @@ class Bonko(commands.Cog):
         if self.is_giannakis(author_id):
             await self.send_message(ctx, "No horny!")
         else:
-            await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
+            emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BONK.value)
+            await self.send_message_with_reaction(ctx, emoji, emoji)
 
     @commands.command(name=CommandsEnum.ALLOW_BONKAGE.value)
     async def allow_bonkage(self, ctx, *args):
@@ -109,14 +110,8 @@ class Bonko(commands.Cog):
         await ctx.send(str(message))
 
     async def send_message_with_reaction(self, ctx, message, emoji):
-        if isinstance(emoji, CustomEmoji):
-            reaction = emoji
-        elif isinstance(emoji, DefaultEmoji):
-            reaction = emoji.emoji
-        else:
-            reaction = await self.get_custom_emoji(ctx, emoji)
         message = await ctx.send(message)
-        await message.add_reaction(reaction)
+        await message.add_reaction(emoji)
 
     async def get_giannakis(self, mention):
         if mention:
@@ -124,9 +119,12 @@ class Bonko(commands.Cog):
         else:
             return "giannaki"
 
+    async def get_emoji(self, ctx, emoji):
+        return await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
+
     @staticmethod
     async def get_custom_emoji(ctx, emoji):
-        return get(ctx.guild.emojis, name=emoji)
+        return await EmojiEnum.get_custom_emoji(ctx.guild.emojis, emoji)
 
     @staticmethod
     def format_user_id_for_mention(userEnum):
