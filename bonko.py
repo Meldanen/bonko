@@ -1,8 +1,6 @@
 # main.py
 import emojis
-from discord import Emoji as CustomEmoji
 from discord.ext import commands
-from discord.utils import get
 from emojis.db import Emoji as DefaultEmoji
 
 from enums.CommandsEnum import CommandsEnum
