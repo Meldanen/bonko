@@ -75,7 +75,7 @@ class Bonko(commands.Cog):
             await self.send_message(ctx, "No horny!")
         else:
             emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BONK.value)
-            await self.send_message_with_reaction(ctx, emoji, emoji)
+            await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, emoji)
 
     @commands.command(name=CommandsEnum.ALLOW_BONKAGE.value)
     async def allow_bonkage(self, ctx, *args):
