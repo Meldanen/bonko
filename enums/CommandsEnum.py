@@ -2,15 +2,28 @@ from enum import Enum
 
 
 class CommandsEnum(Enum):
-
     BONK = "bonk"
 
-    SPAM_GIANNAKIS = "spamgiannakis"
+    SPAM = "spam"
 
     BAD_GIANNAKIS = "badgiannakis"
 
     WORD_OF_THE_DAY = "wordoftheday"
 
-    ALLOW_BONKAGE = "allowbonkage"
+    PERMISSIONS = "permissions"
 
-    DISALLOW_BONKAGE = "disallowbonkage"
+    ALLOW_SPAM = "allowspam"
+
+    DISALLOW_SPAM = "disallowspam"
+
+    @staticmethod
+    def is_allow_spam(permission):
+        return permission == CommandsEnum.ALLOW_SPAM.value
+
+    @staticmethod
+    def is_disallow_spam(permission):
+        return permission == CommandsEnum.DISALLOW_SPAM.value
+
+    @staticmethod
+    def is_spam_related(permission):
+        return CommandsEnum.is_allow_spam(permission) or CommandsEnum.is_disallow_spam(permission)

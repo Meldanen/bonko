@@ -11,7 +11,7 @@ from enums.UserEnum import UserEnum
 class Bonko(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.emergency_bonkage = set()
+        self.allowed_to_spam = set()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -19,7 +19,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx):
-        print("Bonking in progress")
+        print(CommandsEnum.BONK.value + " in progress")
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -36,8 +36,9 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, message, emoji)
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
-    @commands.command(name=CommandsEnum.SPAM_GIANNAKIS.value)
-    async def spam_giannakis(self, ctx, emoji, times, fuck_off=False):
+    @commands.command(name=CommandsEnum.SPAM.value)
+    async def spam(self, ctx, username, emoji, times, fuck_off=False):
+        print(CommandsEnum.SPAM.value + " in progress")
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -45,13 +46,15 @@ class Bonko(commands.Cog):
             emoji = await self.get_emoji(ctx, emoji)
             if not emoji:
                 return
-            giannakis = await self.get_giannakis(self.is_megus(author_id) and fuck_off)
-            message = f'{emoji} {giannakis} {emoji}'
+            can_mention = self.is_megus(author_id) and fuck_off
+            user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
+            message = f'{emoji} {user_to_spam} {emoji}'
             for i in range(int(times)):
                 await self.send_message_with_reaction(ctx, message, emoji)
 
     @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value)
     async def bad_giannakis(self, ctx):
+        print(CommandsEnum.BAD_GIANNAKIS.value + " in progress")
         if ctx.author.id == self.bot.user.id:
             return
         channel = ctx.channel
@@ -66,6 +69,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value)
     async def word_of_the_day(self, ctx):
+        print(CommandsEnum.WORD_OF_THE_DAY.value + " in progress")
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -75,41 +79,51 @@ class Bonko(commands.Cog):
             emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BONK.value)
             await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, emoji)
 
-    @commands.command(name=CommandsEnum.ALLOW_BONKAGE.value)
-    async def allow_bonkage(self, ctx, *args):
+    @commands.command(name=CommandsEnum.PERMISSIONS.value)
+    async def permissions(self, ctx, permission, *usernames):
+        print(f'{CommandsEnum.PERMISSIONS.value}:{permission} in progress')
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        if self.is_good_person(author_id):
-            await self.handle_bonkage(ctx, args, self.emergency_bonkage.add)
-        print("Can spam:")
-        print(self.emergency_bonkage)
+        if CommandsEnum.is_spam_related(permission):
+            if self.is_good_person(author_id):
+                if CommandsEnum.is_allow_spam(permission):
+                    await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.add)
+                elif CommandsEnum.is_disallow_spam(permission):
+                    await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.remove)
+                print("Can spam:")
+                print(self.allowed_to_spam)
 
-    @commands.command(name=CommandsEnum.DISALLOW_BONKAGE.value)
-    async def disallow_bonkage(self, ctx, *args):
-        author_id = ctx.author.id
-        if author_id == self.bot.user.id:
-            return
-        if self.is_good_person(author_id):
-            await self.handle_bonkage(ctx, args, self.emergency_bonkage.remove)
-        print("Can spam:")
-        print(self.emergency_bonkage)
+    async def handle_spam_allowance(self, ctx, usernames, add_or_remove):
+        try:
+            for username in usernames:
+                user_id = await self.get_user_id(ctx.guild.members, username)
+                add_or_remove(user_id)
+        except KeyError:
+            print(f'{username}:{user_id} not found')
 
-    @staticmethod
-    async def handle_bonkage(ctx, args, add_or_remove):
-        members = ctx.guild.members
-        for member in members:
-            for username in args:
-                if username.lower() in member.name.lower():
-                    add_or_remove(member.id)
 
     @staticmethod
     async def send_message(ctx, message):
         await ctx.send(str(message))
 
-    async def send_message_with_reaction(self, ctx, message, emoji):
+    @staticmethod
+    async def send_message_with_reaction(ctx, message, emoji):
         message = await ctx.send(message)
         await message.add_reaction(emoji)
+
+    @staticmethod
+    async def get_user_id(members, username):
+        for member in members:
+            if username.lower() in member.name.lower():
+                return member.id
+
+    async def get_user(self, members, username, mention):
+        if mention:
+            user_id = await self.get_user_id(members, username)
+            return self.format_user_id_for_mention(str(user_id))
+        else:
+            return username
 
     async def get_giannakis(self, mention):
         if mention:
@@ -144,4 +158,4 @@ class Bonko(commands.Cog):
         return self.is_good_person(id) or self.is_emergency_permission(id)
 
     def is_emergency_permission(self, id):
-        return id in self.emergency_bonkage
+        return id in self.allowed_to_spam
