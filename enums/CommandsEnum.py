@@ -19,13 +19,13 @@ class CommandsEnum(Enum):
     DISALLOW_SPAM = "disallowspam"
 
     @staticmethod
-    def is_allow_spam(permission):
+    def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value
 
     @staticmethod
-    def is_disallow_spam(permission):
+    def is_disallow_spam(permission: str) -> bool:
         return permission == CommandsEnum.DISALLOW_SPAM.value
 
     @staticmethod
-    def is_spam_related(permission):
+    def is_spam_related(permission: str) -> bool:
         return CommandsEnum.is_allow_spam(permission) or CommandsEnum.is_disallow_spam(permission)

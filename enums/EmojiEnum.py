@@ -11,7 +11,7 @@ class EmojiEnum(Enum):
     ANGRY = "angry"
 
     @staticmethod
-    async def get_emoji(guild_emojis, emoji):
+    async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):
             return emoji
         elif isinstance(emoji, DefaultEmoji):
@@ -23,5 +23,5 @@ class EmojiEnum(Enum):
         return emojis.encode(f':{emoji}:')
 
     @staticmethod
-    async def get_custom_emoji(guild_emojis, emoji):
+    async def get_custom_emoji(guild_emojis: list(), emoji):
         return get(guild_emojis, name=emoji)

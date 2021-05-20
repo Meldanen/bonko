@@ -12,13 +12,13 @@ class UserEnum(Enum):
     JOSEPH = 173766017258881024
 
     @staticmethod
-    def is_good_person(id):
+    def is_good_person(id: int) -> bool:
         return id in [UserEnum.MELDANEN.value, UserEnum.JOSEPH.value, UserEnum.HELEN.value]
 
     @staticmethod
-    def is_giannakis(id):
+    def is_giannakis(id: int) -> bool:
         return id == UserEnum.GIANNAKIS.value
 
     @staticmethod
-    def is_megus(id):
+    def is_megus(id: int) -> bool:
         return id == UserEnum.MELDANEN.value
