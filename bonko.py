@@ -36,9 +36,17 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, message, emoji)
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
-    @commands.command(name=CommandsEnum.SPAM.value)
-    async def spam(self, ctx, username, emoji, times, fuck_off=False):
-        print(CommandsEnum.SPAM.value + " in progress")
+    @commands.command(name=CommandsEnum.SPAM_SOFT.value)
+    async def spam_gentle(self, ctx, emoji, times, *usernames):
+        print(CommandsEnum.SPAM_SOFT.value + " in progress")
+        await self.handle_spam(ctx, emoji, times, usernames, False)
+
+    @commands.command(name=CommandsEnum.SPAM_HARD.value)
+    async def spam_hard(self, ctx, emoji, times, *usernames):
+        print(CommandsEnum.SPAM_HARD.value + " in progress")
+        await self.handle_spam(ctx, emoji, times, usernames, True)
+
+    async def handle_spam(self, ctx, emoji, times, usernames, fuck_off):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -47,8 +55,11 @@ class Bonko(commands.Cog):
             if not emoji:
                 return
             can_mention = self.is_megus(author_id) and fuck_off
-            user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
-            message = f'{emoji} {user_to_spam} {emoji}'
+            spam_string = ""
+            for username in usernames:
+                user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
+                spam_string = spam_string + " " + user_to_spam
+            message = f'{emoji} {spam_string} {emoji}'
             for i in range(int(times)):
                 await self.send_message_with_reaction(ctx, message, emoji)
 

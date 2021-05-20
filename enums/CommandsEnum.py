@@ -4,7 +4,9 @@ from enum import Enum
 class CommandsEnum(Enum):
     BONK = "bonk"
 
-    SPAM = "spam"
+    SPAM_SOFT = "spam"
+
+    SPAM_HARD = "spamhard"
 
     BAD_GIANNAKIS = "badgiannakis"
 
