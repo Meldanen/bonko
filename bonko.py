@@ -38,7 +38,7 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
     @commands.command(name=CommandsEnum.SPAM_SOFT.value)
-    async def spam_gentle(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
+    async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
         print(CommandsEnum.SPAM_SOFT.value + " in progress")
         await self.handle_spam(ctx, emoji, times, usernames, False)
 
