@@ -1,10 +1,8 @@
-
-
 class LoggingService:
 
-
     def log_starting_progress(self, command):
-        self.log(f'{command} in progress')
+        message = f'{command} in progress'
+        self.log(message.capitalize())
 
     @staticmethod
     def log(message):

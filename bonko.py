@@ -122,7 +122,7 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        emoji = await self.get_emoji(ctx, "open_mouth")
+        emoji = await self.get_emoji(ctx, EmojiEnum.OPEN_MOUTH.value)
         message = ""
         if naked:
             message += "u r naked on your cauch, having sex with your boyfriend. i came by knocked your door not very loud. u didnt hear it, and i open oyur door and find u naked on the couch with a dick inside u. i am very sure u would be  very okish with that. u wouldnt throw the couch on my head but anw. i personally dont like this at all \n"

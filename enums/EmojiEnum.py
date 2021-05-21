@@ -10,6 +10,8 @@ class EmojiEnum(Enum):
 
     ANGRY = "angry"
 
+    OPEN_MOUTH = "open_mouth"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):
