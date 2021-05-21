@@ -47,7 +47,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.SPAM_HARD.value)
     async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
-        await self.handle_spam(ctx, emoji, times, usernames, True)
+        await self.handle_spam(ctx, emoji, times, list(usernames), True)
 
     async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames: List[str], fuck_off: bool):
         author_id = ctx.author.id
