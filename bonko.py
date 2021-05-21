@@ -7,12 +7,14 @@ from discord.ext import commands
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
+from services.LoggingService import LoggingService
 
 
 class Bonko(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.allowed_to_spam = set()
+        self.logging_service = LoggingService()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -20,7 +22,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
-        print(CommandsEnum.BONK.value + " in progress")
+        self.logging_service.log_starting_progress(CommandsEnum.BONK.value)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -39,12 +41,12 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.SPAM_SOFT.value)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
-        print(CommandsEnum.SPAM_SOFT.value + " in progress")
+        self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
         await self.handle_spam(ctx, emoji, times, usernames, False)
 
     @commands.command(name=CommandsEnum.SPAM_HARD.value)
     async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
-        print(CommandsEnum.SPAM_HARD.value + " in progress")
+        self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
         await self.handle_spam(ctx, emoji, times, usernames, True)
 
     async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames: List[str], fuck_off: bool):
@@ -66,7 +68,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value)
     async def bad_giannakis(self, ctx: commands.context):
-        print(CommandsEnum.BAD_GIANNAKIS.value + " in progress")
+        self.logging_service.log_starting_progress(CommandsEnum.BAD_GIANNAKIS.value)
         if ctx.author.id == self.bot.user.id:
             return
         channel = ctx.channel
@@ -81,7 +83,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value)
     async def word_of_the_day(self, ctx: commands.context):
-        print(CommandsEnum.WORD_OF_THE_DAY.value + " in progress")
+        self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -93,7 +95,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value)
     async def permissions(self, ctx: commands.context, permission: CommandsEnum, *usernames: List[str]):
-        print(f'{CommandsEnum.PERMISSIONS.value}:{permission} in progress')
+        self.logging_service.log_starting_progress(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
@@ -113,6 +115,22 @@ class Bonko(commands.Cog):
                 add_or_remove(user_id)
         except KeyError:
             print(f'{username}:{user_id} not found')
+
+    @commands.command(name=CommandsEnum.ASTONISHED.value)
+    async def astonished(self, ctx: commands.context, naked=False):
+        self.logging_service.log_starting_progress(CommandsEnum.ASTONISHED.value)
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
+            return
+        emoji = await self.get_emoji(ctx, "open_mouth")
+        message = ""
+        if naked:
+            message += "u r naked on your cauch, having sex with your boyfriend. i came by knocked your door not very loud. u didnt hear it, and i open oyur door and find u naked on the couch with a dick inside u. i am very sure u would be  very okish with that. u wouldnt throw the couch on my head but anw. i personally dont like this at all \n"
+            message += "the point is: lets say i am gay. but id idnt want to share this with my family ok? and now that i am leaving alone, i invited my bf at my place, and we decided to fuck the shit out of each other on the couch and the door suddently opens \n"
+        message += "i am just astonished, how i was SO clear that i am leaving the house cause i cant have my privacy there.\n"
+        message += " and they came in just like that at the new place. \n"
+        message += "i am just astonished on how they cant comprihent that simple thing"
+        await self.send_message_with_reaction(ctx, message, emoji)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):

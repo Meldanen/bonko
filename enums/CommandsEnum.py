@@ -18,6 +18,8 @@ class CommandsEnum(Enum):
 
     DISALLOW_SPAM = "disallowspam"
 
+    ASTONISHED = "astonished"
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value
