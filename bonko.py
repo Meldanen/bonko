@@ -40,16 +40,16 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
     @commands.command(name=CommandsEnum.SPAM_SOFT.value)
-    async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
+    async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
-        await self.handle_spam(ctx, emoji, times, usernames, False)
+        await self.handle_spam(ctx, emoji, times, list(usernames), False)
 
     @commands.command(name=CommandsEnum.SPAM_HARD.value)
-    async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames: List[str]):
+    async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
         await self.handle_spam(ctx, emoji, times, list(usernames), True)
 
-    async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames: List[str], fuck_off: bool):
+    async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames, fuck_off: bool):
         print(usernames)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
