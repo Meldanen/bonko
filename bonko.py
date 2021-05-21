@@ -50,6 +50,7 @@ class Bonko(commands.Cog):
         await self.handle_spam(ctx, emoji, times, list(usernames), True)
 
     async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames: List[str], fuck_off: bool):
+        print(usernames)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
