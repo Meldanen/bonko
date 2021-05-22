@@ -95,7 +95,7 @@ class Bonko(commands.Cog):
             await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, emoji)
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value)
-    async def permissions(self, ctx: commands.context, permission: CommandsEnum, *usernames):
+    async def permissions(self, ctx: commands.context, permission, *usernames):
         self.logging_service.log_starting_progress(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
@@ -109,9 +109,9 @@ class Bonko(commands.Cog):
                 print("Can spam:")
                 print(self.allowed_to_spam)
 
-    async def handle_spam_allowance(self, ctx: commands.context, usernames, add_or_remove: Callable):
+    async def handle_spam_allowance(self, ctx: commands.context, usernames, add_or_remove):
         try:
-            for username in usernames:
+            for username in list(usernames):
                 user_id = await self.get_user_id(ctx.guild.members, username)
                 add_or_remove(user_id)
         except KeyError:
