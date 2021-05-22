@@ -117,14 +117,14 @@ class Bonko(commands.Cog):
             print(f'{username}:{user_id} not found')
 
     @commands.command(name=CommandsEnum.ASTONISHED.value)
-    async def astonished(self, ctx: commands.context, naked=False):
+    async def astonished(self, ctx: commands.context, naked=""):
         self.logging_service.log_starting_progress(CommandsEnum.ASTONISHED.value)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
         emoji = await self.get_emoji(ctx, EmojiEnum.OPEN_MOUTH.value)
         message = ""
-        if naked:
+        if naked.lower() == "naked":
             message += "u r naked on your cauch, having sex with your boyfriend. i came by knocked your door not very loud. u didnt hear it, and i open oyur door and find u naked on the couch with a dick inside u. i am very sure u would be  very okish with that. u wouldnt throw the couch on my head but anw. i personally dont like this at all \n"
             message += "the point is: lets say i am gay. but id idnt want to share this with my family ok? and now that i am leaving alone, i invited my bf at my place, and we decided to fuck the shit out of each other on the couch and the door suddently opens \n"
         message += "i am just astonished, how i was SO clear that i am leaving the house cause i cant have my privacy there.\n"

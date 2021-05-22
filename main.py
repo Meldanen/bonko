@@ -4,7 +4,7 @@ import os
 import discord
 from dotenv import load_dotenv
 
-from bonko import Bonko
+from Bonko import Bonko
 from discord.ext import commands
 
 
