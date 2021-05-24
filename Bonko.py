@@ -31,16 +31,16 @@ class Bonko(commands.Cog):
         await self.bot.wait_until_ready()
 
         while not self.bot.is_closed():
-            LoggingService.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
+            self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
             now = datetime.now().utcnow()
             if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
                 self.word_of_the_day_occurred = False
             if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
-                LoggingService.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
                 guilds = self.bot.guilds
                 for guild in guilds:
                     for channel in guild.text_channels:
                         if channel.name == "general":
+                            self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
                             message = await channel.send("Word of the day: bonk")
                             emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
                             await message.add_reaction(emoji)
