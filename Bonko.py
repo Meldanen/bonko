@@ -38,15 +38,15 @@ class Bonko(commands.Cog):
             if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
                 LoggingService.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
                 guilds = self.bot.guilds
-                # for guild in guilds:
-                for channel in guilds[1].text_channels:
-                    if channel.name == "general":
-                        message = await channel.send("Word of the day: bonk")
-                        emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
-                        await message.add_reaction(emoji)
-                        self.word_of_the_day_occurred = True
+                for guild in guilds:
+                    for channel in guild.text_channels:
+                        if channel.name == "general":
+                            message = await channel.send("Word of the day: bonk")
+                            emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
+                            await message.add_reaction(emoji)
+                            self.word_of_the_day_occurred = True
 
-            await asyncio.sleep(60 * 55) # wait 55 minutes
+            await asyncio.sleep(60 * 55)  # wait 55 minutes
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
