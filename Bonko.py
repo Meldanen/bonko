@@ -31,6 +31,7 @@ class Bonko(commands.Cog):
         await self.bot.wait_until_ready()
 
         while not self.bot.is_closed():
+            LoggingService.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
             now = datetime.now().utcnow()
             if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
                 self.word_of_the_day_occurred = False
