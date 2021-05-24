@@ -1,9 +1,12 @@
 # main.py
+import asyncio
 from typing import Callable, List
 
 import emojis
-from discord.ext import commands
+from datetime import datetime
 
+from discord import TextChannel
+from discord.ext import commands
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
@@ -15,10 +18,34 @@ class Bonko(commands.Cog):
         self.bot = bot
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
+        self.bot.loop.create_task(self.kakka())
+        self.word_of_the_day_occurred = False
+        self.WORD_OF_THE_DAY_TIME = 9
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
+
+    async def kakka(self):
+
+        await self.bot.wait_until_ready()
+
+        while not self.bot.is_closed():
+            now = datetime.now().utcnow()
+            if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
+                self.word_of_the_day_occurred = False
+            if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
+                LoggingService.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
+                guilds = self.bot.guilds
+                # for guild in guilds:
+                for channel in guilds[1].text_channels:
+                    if channel.name == "general":
+                        message = await channel.send("Word of the day: bonk")
+                        emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
+                        await message.add_reaction(emoji)
+                        self.word_of_the_day_occurred = True
+
+            await asyncio.sleep(60 * 55) # wait 55 minutes
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
