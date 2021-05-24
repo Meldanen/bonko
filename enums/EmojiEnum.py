@@ -12,6 +12,8 @@ class EmojiEnum(Enum):
 
     OPEN_MOUTH = "open_mouth"
 
+    SNACCS = "snaccs"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):

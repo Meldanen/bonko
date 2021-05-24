@@ -20,6 +20,10 @@ class CommandsEnum(Enum):
 
     ASTONISHED = "astonished"
 
+    SHRUG = "shrug"
+
+    YE = "ye"
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value

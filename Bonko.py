@@ -20,6 +20,15 @@ class Bonko(commands.Cog):
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
+    @commands.Cog.listener()
+    async def on_message(self, ctx):
+        if ctx.author.id == self.bot.user.id:
+            return
+        if ctx.content == CommandsEnum.YE.value:
+            message = await ctx.channel.send("tuc crackers + cottage cheese")
+            emoji = await self.get_custom_emoji(ctx, EmojiEnum.SNACCS.value)
+            await message.add_reaction(emoji)
+
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BONK.value)
@@ -132,6 +141,16 @@ class Bonko(commands.Cog):
         message += " and they came in just like that at the new place. \n"
         message += "i am just astonished on how they cant comprihent that simple thing"
         await self.send_message_with_reaction(ctx, message, emoji)
+
+    @commands.command(name=CommandsEnum.SHRUG.value)
+    async def shrug(self, ctx: commands.context):
+        self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
+            return
+        await ctx.message.delete()
+        message = "¯\_(ツ)_/¯"
+        await self.send_message(ctx, message)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
