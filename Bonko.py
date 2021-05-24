@@ -18,7 +18,7 @@ class Bonko(commands.Cog):
         self.bot = bot
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
-        self.bot.loop.create_task(self.kakka())
+        self.bot.loop.create_task(self.daily_word_of_the_day())
         self.word_of_the_day_occurred = False
         self.WORD_OF_THE_DAY_TIME = 9
 
@@ -26,7 +26,7 @@ class Bonko(commands.Cog):
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
-    async def kakka(self):
+    async def daily_word_of_the_day(self):
 
         await self.bot.wait_until_ready()
 
@@ -179,6 +179,23 @@ class Bonko(commands.Cog):
         await ctx.message.delete()
         message = "¯\_(ツ)_/¯"
         await self.send_message(ctx, message)
+
+    @commands.command(name=CommandsEnum.ART.value)
+    async def sibling(self, ctx: commands.context):
+        self.logging_service.log_starting_progress(CommandsEnum.ART.value)
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
+            return
+        head = await self.get_emoji(ctx, "sibling")
+        neck = await self.get_emoji(ctx, "giraffe")
+        ass = await self.get_emoji(ctx, "peach")
+        ass += await self.get_emoji(ctx, "dash")
+        ass += await self.get_emoji(ctx, "airplane")
+        leg = await self.get_emoji(ctx, "leg_tone3")
+        await self.send_message(ctx, head)
+        await self.send_message(ctx, neck)
+        await self.send_message(ctx, ass)
+        await self.send_message(ctx, leg)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
