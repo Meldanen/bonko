@@ -2,18 +2,21 @@
 import asyncio
 from typing import Callable, List
 
+import discord
 import emojis
 from datetime import datetime
 
-from discord import TextChannel
+from discord import TextChannel, File
 from discord.ext import commands
 
 from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
+from enums.GoodBonkoResponseEnum import GoodBonkoResponseEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
+from random import randrange
 
 
 class Bonko(commands.Cog):
@@ -68,7 +71,11 @@ class Bonko(commands.Cog):
             emoji = await self.get_custom_emoji(ctx, EmojiEnum.SNACCS.value)
             await message.add_reaction(emoji)
         if ctx.content == "good bonko":
-            await ctx.channel.send("(✿◠‿◠)")
+            response = GoodBonkoResponseEnum.get_random_response()
+            if isinstance(response, File):
+                await ctx.channel.send(file=response)
+            else:
+                await ctx.channel.send(response)
 
 
 
