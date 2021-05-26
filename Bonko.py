@@ -12,6 +12,7 @@ from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
+from services.ArtService import ArtService
 from services.LoggingService import LoggingService
 
 
@@ -20,6 +21,7 @@ class Bonko(commands.Cog):
         self.bot = bot
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
+        self.art_service = ArtService()
         self.bot.loop.create_task(self.daily_word_of_the_day())
         self.word_of_the_day_occurred = False
         self.WORD_OF_THE_DAY_TIME = 9
@@ -92,7 +94,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.OMEGA_BONK.value)
     async def omega_bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
-        message = AsciiArtEnum.OMEGA_BONK.value
+        message = self.art_service.get_omega_bonk()
         emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
         await self.send_message_with_reaction(ctx, message, emoji)
 
@@ -214,42 +216,20 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        head = await self.get_emoji(ctx, "sibling")
-        neck = await self.get_emoji(ctx, "giraffe")
-        ass = await self.get_emoji(ctx, "peach")
-        ass += await self.get_emoji(ctx, "dash")
-        if fart_on_emoji:
-            emoji = await self.get_emoji(ctx, fart_on_emoji)
-            if emoji:
-                ass += str(emoji)
-        leg = await self.get_emoji(ctx, "leg_tone3")
+        head, neck, ass, leg = await self.art_service.get_sibling_art(ctx, fart_on_emoji)
         await self.send_message(ctx, head)
         await self.send_message(ctx, neck)
         await self.send_message(ctx, ass)
         await self.send_message(ctx, leg)
 
-    # @commands.command(name=CommandsEnum.ART_2.value)
-    # async def art2(self, ctx: commands.context, fart_on_emoji):
-    #     self.logging_service.log_starting_progress(CommandsEnum.ART_2.value)
-    #     author_id = ctx.author.id
-    #     if author_id == self.bot.user.id:
-    #         return
-    #     head = await self.get_emoji(ctx, "sibling")
-    #     torso = await self.get_emoji(ctx, "muscle_tone1")
-    #     torso += await self.get_emoji(ctx, "lemon")
-    #     torso += await self.get_emoji(ctx, "muscle_tone1")
-    #     ass = await self.get_emoji(ctx, "peach")
-    #     ass += await self.get_emoji(ctx, "dash")
-    #     if fart_on_emoji:
-    #         emoji = await self.get_emoji(ctx, fart_on_emoji)
-    #         if emoji:
-    #             ass += str(emoji)
-    #     leg = await self.get_emoji(ctx, "leg_tone3")
-    #     leg += await self.get_emoji(ctx, "leg_tone3")
-    #     await self.send_message(ctx, head)
-    #     await self.send_message(ctx, torso)
-    #     await self.send_message(ctx, ass)
-    #     await self.send_message(ctx, leg)
+    @commands.command(name=CommandsEnum.LEMONARIS.value)
+    async def lemonaris(self, ctx: commands.context, fart_on_emoji=None):
+        self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
+        author_id = ctx.author.id
+        if author_id == self.bot.user.id:
+            return
+        message = await self.art_service.get_lemonaris_art(ctx, fart_on_emoji)
+        await self.send_message(ctx, message)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):

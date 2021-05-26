@@ -28,7 +28,7 @@ class CommandsEnum(Enum):
 
     ART = "art"
 
-    ART_2 = "art2"
+    LEMONARIS = "lemonaris"
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
