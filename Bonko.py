@@ -68,7 +68,7 @@ class Bonko(commands.Cog):
     async def on_message(self, ctx):
         if ctx.author.id == self.bot.user.id:
             return
-        response_enum = ResponseTypeEnum.get_from_message(ctx.content)
+        response_enum = ResponseTypeEnum.get_from_message(ctx.content.lower())
         if response_enum:
             await self.random_response_service.send_response(ctx, response_enum)
 
