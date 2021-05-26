@@ -7,6 +7,8 @@ from datetime import datetime
 
 from discord import TextChannel
 from discord.ext import commands
+
+from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.UserEnum import UserEnum
@@ -26,6 +28,12 @@ class Bonko(commands.Cog):
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
+        # "Did you find it?"
+        # "I'm not sure"
+        # "How does that make you feel?"
+        # "Bonk Giannaki"
+        # "No"
+
     async def daily_word_of_the_day(self):
 
         await self.bot.wait_until_ready()
@@ -35,6 +43,7 @@ class Bonko(commands.Cog):
             now = datetime.now().utcnow()
             if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
                 self.word_of_the_day_occurred = False
+                self.logging_service.log("Setting word_of_the_day_occurred to false")
             if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
                 guilds = self.bot.guilds
                 for guild in guilds:
@@ -56,6 +65,10 @@ class Bonko(commands.Cog):
             message = await ctx.channel.send("tuc crackers + cottage cheese")
             emoji = await self.get_custom_emoji(ctx, EmojiEnum.SNACCS.value)
             await message.add_reaction(emoji)
+        if ctx.content == "good bonko":
+            await ctx.channel.send("(✿◠‿◠)")
+
+
 
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
@@ -76,6 +89,13 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, message, emoji)
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
+    @commands.command(name=CommandsEnum.OMEGA_BONK.value)
+    async def omega_bonk(self, ctx: commands.context):
+        self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
+        message = AsciiArtEnum.OMEGA_BONK.value
+        emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
+        await self.send_message_with_reaction(ctx, message, emoji)
+
     @commands.command(name=CommandsEnum.SPAM_SOFT.value)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
@@ -95,7 +115,7 @@ class Bonko(commands.Cog):
             emoji = await self.get_emoji(ctx, emoji)
             if not emoji:
                 return
-            can_mention = self.is_megus(author_id) and fuck_off
+            can_mention = await self.is_allowed_to_mention(author_id, fuck_off)
             spam_string = ""
             for username in usernames:
                 user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
@@ -225,6 +245,9 @@ class Bonko(commands.Cog):
         else:
             return "giannaki"
 
+    async def is_allowed_to_mention(self, author_id, fuck_off):
+        return (self.is_megus(author_id) or self.is_melon(author_id)) and fuck_off
+
     @staticmethod
     async def get_emoji(ctx: commands.context, emoji: str):
         return await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
@@ -244,6 +267,10 @@ class Bonko(commands.Cog):
     @staticmethod
     def is_megus(id: int) -> bool:
         return UserEnum.is_megus(id)
+
+    @staticmethod
+    def is_melon(id: int) -> bool:
+        return UserEnum.is_melon(id)
 
     @staticmethod
     def is_good_person(id: int) -> bool:
