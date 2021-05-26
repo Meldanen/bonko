@@ -13,10 +13,11 @@ from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.GoodBonkoResponseEnum import GoodBonkoResponseEnum
+from enums.ResponseTypeEnum import ResponseTypeEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
-from random import randrange
+from services.RandomResponseService import RandomResponseService
 
 
 class Bonko(commands.Cog):
@@ -25,6 +26,7 @@ class Bonko(commands.Cog):
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
         self.art_service = ArtService()
+        self.random_response_service = RandomResponseService()
         self.bot.loop.create_task(self.daily_word_of_the_day())
         self.word_of_the_day_occurred = False
         self.WORD_OF_THE_DAY_TIME = 9
@@ -66,18 +68,9 @@ class Bonko(commands.Cog):
     async def on_message(self, ctx):
         if ctx.author.id == self.bot.user.id:
             return
-        if ctx.content == CommandsEnum.YE.value:
-            message = await ctx.channel.send("tuc crackers + cottage cheese")
-            emoji = await self.get_custom_emoji(ctx, EmojiEnum.SNACCS.value)
-            await message.add_reaction(emoji)
-        if ctx.content == "good bonko":
-            response = GoodBonkoResponseEnum.get_random_response()
-            if isinstance(response, File):
-                await ctx.channel.send(file=response)
-            else:
-                await ctx.channel.send(response)
-
-
+        response_enum = ResponseTypeEnum.get_from_message(ctx.content)
+        if response_enum:
+            await self.random_response_service.send_response(ctx, response_enum)
 
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
