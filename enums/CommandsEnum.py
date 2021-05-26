@@ -28,6 +28,8 @@ class CommandsEnum(Enum):
 
     ART = "art"
 
+    ART_2 = "art2"
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value

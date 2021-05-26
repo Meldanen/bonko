@@ -209,7 +209,7 @@ class Bonko(commands.Cog):
         await self.send_message(ctx, message)
 
     @commands.command(name=CommandsEnum.ART.value)
-    async def sibling(self, ctx: commands.context, fart_on_emoji):
+    async def art(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.ART.value)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
@@ -227,6 +227,29 @@ class Bonko(commands.Cog):
         await self.send_message(ctx, neck)
         await self.send_message(ctx, ass)
         await self.send_message(ctx, leg)
+
+    # @commands.command(name=CommandsEnum.ART_2.value)
+    # async def art2(self, ctx: commands.context, fart_on_emoji):
+    #     self.logging_service.log_starting_progress(CommandsEnum.ART_2.value)
+    #     author_id = ctx.author.id
+    #     if author_id == self.bot.user.id:
+    #         return
+    #     head = await self.get_emoji(ctx, "sibling")
+    #     torso = await self.get_emoji(ctx, "muscle_tone1")
+    #     torso += await self.get_emoji(ctx, "lemon")
+    #     torso += await self.get_emoji(ctx, "muscle_tone1")
+    #     ass = await self.get_emoji(ctx, "peach")
+    #     ass += await self.get_emoji(ctx, "dash")
+    #     if fart_on_emoji:
+    #         emoji = await self.get_emoji(ctx, fart_on_emoji)
+    #         if emoji:
+    #             ass += str(emoji)
+    #     leg = await self.get_emoji(ctx, "leg_tone3")
+    #     leg += await self.get_emoji(ctx, "leg_tone3")
+    #     await self.send_message(ctx, head)
+    #     await self.send_message(ctx, torso)
+    #     await self.send_message(ctx, ass)
+    #     await self.send_message(ctx, leg)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
