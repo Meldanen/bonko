@@ -24,14 +24,17 @@ class LoopService:
     async def random_messages(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
+            now = datetime.now().utcnow()
+            if self.time_in_range(23, 1, now):
+                self.times_randomly_messaged = 0
             time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS) + self.times_randomly_messaged * 100
             self.logging_service.log(f'Time until next: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
-            self.times_randomly_messaged += 1
             await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
                 self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
                     await self.send_random_message_to_server(guild)
+                    self.times_randomly_messaged += 1
 
     async def send_random_message_to_server(self, guild):
         messages = await self.get_possible_messages(guild)
@@ -40,8 +43,15 @@ class LoopService:
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]
         self.logging_service.log(f'Sending: {random_message} to: {guild.name}:{random_channel}')
-        # print(random_message)
-        await random_channel.send(random_message)
+        print(random_message)
+        # await random_channel.send(random_message)
+
+    def time_in_range(self, start, end, x):
+        """Return true if x is in the range [start, end]"""
+        if start <= end:
+            return start <= x.hour <= end
+        else:
+            return start <= x.hour or x.hour <= end
 
     def is_too_many_messages(self):
         return self.times_randomly_messaged > self.MAX_TIMES_TO_RANDOMLY_MESSAGE
