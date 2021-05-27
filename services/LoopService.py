@@ -43,8 +43,8 @@ class LoopService:
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]
         self.logging_service.log(f'Sending: {random_message} to: {guild.name}:{random_channel}')
-        print(random_message)
-        # await random_channel.send(random_message)
+        # print(random_message)
+        await random_channel.send(random_message)
 
     def time_in_range(self, start, end, x):
         """Return true if x is in the range [start, end]"""
