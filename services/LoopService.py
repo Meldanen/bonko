@@ -16,6 +16,7 @@ class LoopService:
         self.times_randomly_messaged = 0
         self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 24
         self.ONE_HOUR_IN_SECONDS = 3600
+        self.HELEN_MODIFIER = 8
 
     def init_loops(self):
         self.bot.loop.create_task(self.daily_word_of_the_day())
@@ -27,14 +28,15 @@ class LoopService:
             now = datetime.now().utcnow()
             if self.time_in_range(23, 1, now):
                 self.times_randomly_messaged = 0
-            time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS) + self.times_randomly_messaged * 100
-            self.logging_service.log(f'Time until next: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
+            time_to_wait = self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER
+            # time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER) + self.times_randomly_messaged * 100
+            self.logging_service.log(f'Time until next random message: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
             await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
                 self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
                     await self.send_random_message_to_server(guild)
-                    self.times_randomly_messaged += 1
+                self.times_randomly_messaged += 1
 
     async def send_random_message_to_server(self, guild):
         messages = await self.get_possible_messages(guild)
@@ -46,7 +48,8 @@ class LoopService:
         # print(random_message)
         await random_channel.send(random_message)
 
-    def time_in_range(self, start, end, x):
+    @staticmethod
+    def time_in_range(start, end, x):
         """Return true if x is in the range [start, end]"""
         if start <= end:
             return start <= x.hour <= end
@@ -56,7 +59,8 @@ class LoopService:
     def is_too_many_messages(self):
         return self.times_randomly_messaged > self.MAX_TIMES_TO_RANDOMLY_MESSAGE
 
-    async def get_possible_messages(self, guild):
+    @staticmethod
+    async def get_possible_messages(guild):
         messages = list()
         messages.append("Did you find it?")
         messages.append("I'm not sure")
@@ -66,7 +70,7 @@ class LoopService:
         messages.append("ye")
         bonk = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
         messages.append(bonk)
-        total_random_emojis = int(len(messages) / 2)
+        total_random_emojis = int(len(messages) / 3)
         for i in range(total_random_emojis):
             random_emoji_index = randrange(len(guild.emojis))
             random_emoji = guild.emojis[random_emoji_index]
