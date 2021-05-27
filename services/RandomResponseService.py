@@ -26,3 +26,10 @@ class RandomResponseService:
         message = await ctx.channel.send("tuc crackers + cottage cheese")
         emoji = await EmojiEnum.get_custom_emoji(ctx.guild.emojis, EmojiEnum.SNACCS.value)
         await message.add_reaction(emoji)
+
+
+        # "Did you find it?"
+        # "I'm not sure"
+        # "How does that make you feel?"
+        # "Bonk Giannaki"
+        # "No"

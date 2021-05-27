@@ -1,18 +1,15 @@
 # main.py
 import asyncio
-from typing import Callable, List
+from typing import List
 
-import discord
 import emojis
 from datetime import datetime
 
-from discord import TextChannel, File
 from discord.ext import commands
 
 from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
-from enums.GoodBonkoResponseEnum import GoodBonkoResponseEnum
 from enums.ResponseTypeEnum import ResponseTypeEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
@@ -34,12 +31,6 @@ class Bonko(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
-
-        # "Did you find it?"
-        # "I'm not sure"
-        # "How does that make you feel?"
-        # "Bonk Giannaki"
-        # "No"
 
     async def daily_word_of_the_day(self):
 
