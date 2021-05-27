@@ -1,20 +1,19 @@
 # main.py
-import asyncio
 from typing import List
 
 import emojis
-from datetime import datetime
 
 from discord.ext import commands
 
 from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
-from enums.ResponseTypeEnum import ResponseTypeEnum
+from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
-from services.RandomResponseService import RandomResponseService
+from services.LoopService import LoopService
+from services.ResponseService import ResponseService
 
 
 class Bonko(commands.Cog):
@@ -23,45 +22,21 @@ class Bonko(commands.Cog):
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
         self.art_service = ArtService()
-        self.random_response_service = RandomResponseService()
-        self.bot.loop.create_task(self.daily_word_of_the_day())
-        self.word_of_the_day_occurred = False
-        self.WORD_OF_THE_DAY_TIME = 9
+        self.response_service = ResponseService()
+        self.loop_service = LoopService(self.bot, self.logging_service)
+        self.loop_service.init_loops()
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
-    async def daily_word_of_the_day(self):
-
-        await self.bot.wait_until_ready()
-
-        while not self.bot.is_closed():
-            self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
-            now = datetime.now().utcnow()
-            if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
-                self.word_of_the_day_occurred = False
-                self.logging_service.log("Setting word_of_the_day_occurred to false")
-            if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
-                guilds = self.bot.guilds
-                for guild in guilds:
-                    for channel in guild.text_channels:
-                        if channel.name == "general":
-                            self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
-                            message = await channel.send("Word of the day: bonk")
-                            emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
-                            await message.add_reaction(emoji)
-                            self.word_of_the_day_occurred = True
-
-            await asyncio.sleep(60 * 55)  # wait 55 minutes
-
     @commands.Cog.listener()
     async def on_message(self, ctx):
         if ctx.author.id == self.bot.user.id:
             return
-        response_enum = ResponseTypeEnum.get_from_message(ctx.content.lower())
+        response_enum = OnMessageResponseTypeEnum.get_from_message(ctx.content.lower())
         if response_enum:
-            await self.random_response_service.send_response(ctx, response_enum)
+            await self.response_service.send_response(ctx, response_enum)
 
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
