@@ -38,6 +38,24 @@ class Bonko(commands.Cog):
         if response_enum:
             await self.response_service.send_response(ctx, response_enum)
 
+    @commands.command(name=CommandsEnum.HAXOR.value)
+    async def haxor(self, ctx: commands.context, code, send_message=False):
+        self.logging_service.log_starting_progress(CommandsEnum.HAXOR.value)
+        if ctx.author.id == self.bot.user.id:
+            return
+        if not self.is_megus(ctx.author.id):
+            return
+        execution_result = {}
+        try:
+            exec(code, globals(), execution_result)
+            if execution_result:
+                message = execution_result['results']()
+                if send_message:
+                    await self.send_message(ctx, message)
+        except Exception as e:
+            await self.send_message(ctx, e)
+
+
     @commands.command(name=CommandsEnum.BONK.value)
     async def bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BONK.value)

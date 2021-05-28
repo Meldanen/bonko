@@ -68,9 +68,12 @@ class LoopService:
         messages.append("Bonk Giannaki")
         messages.append("No")
         messages.append("ye")
+        messages.append("I am the Alpha and the Omega, the First and the Last, the Beginning and the End.")
+        messages.append("I don't think that's how it works")
+        messages.append("I eleni mirizi kakka luel")
         bonk = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
         messages.append(bonk)
-        total_random_emojis = int(len(messages) / 3)
+        total_random_emojis = int(len(messages) / 4)
         for i in range(total_random_emojis):
             random_emoji_index = randrange(len(guild.emojis))
             random_emoji = guild.emojis[random_emoji_index]

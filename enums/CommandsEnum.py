@@ -32,6 +32,8 @@ class CommandsEnum(Enum):
 
     RANDOM_MESSAGE = "randommessage"
 
+    HAXOR = "haxor"
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value
