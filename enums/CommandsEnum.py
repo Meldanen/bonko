@@ -1,51 +1,51 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from enums.PermissionsEnum import PermissionsEnum
+from enums.RoleEnum import RoleEnum
 
 
 @dataclass
 class Command:
     id: int
     command: str
-    permission: PermissionsEnum
+    permission: RoleEnum
     example: str
 
 
 class CommandsEnum(Enum):
-    BONK = Command(0, "bonk", PermissionsEnum.PUBLIC, ";;bonk")
+    BONK = Command(0, "bonk", RoleEnum.PUBLIC, ";;bonk")
 
-    OMEGA_BONK = Command(1, "omegabonk", PermissionsEnum.PUBLIC, ";;omegabonk")
+    OMEGA_BONK = Command(1, "omegabonk", RoleEnum.PUBLIC, ";;omegabonk")
 
-    SPAM_SOFT = Command(2, "spam", PermissionsEnum.RESTRICTED, ";;spam <emoji> <times_to_spam> <user>")
+    SPAM_SOFT = Command(2, "spam", RoleEnum.RESTRICTED, ";;spam <emoji> <times_to_spam> <user>")
 
-    SPAM_HARD = Command(3, "spamhard", PermissionsEnum.DEVELOPER, ";;spamhard <emoji> <times_to_spam> <user>")
+    SPAM_HARD = Command(3, "spamhard", RoleEnum.DEVELOPER, ";;spamhard <emoji> <times_to_spam> <user>")
 
-    BAD_GIANNAKIS = Command(4, "badgiannakis", PermissionsEnum.DEVELOPER, ";;badgiannakis")
+    BAD_GIANNAKIS = Command(4, "badgiannakis", RoleEnum.DEVELOPER, ";;badgiannakis")
 
-    WORD_OF_THE_DAY = Command(5, "wordoftheday", PermissionsEnum.PUBLIC, ";;wordoftheday")
+    WORD_OF_THE_DAY = Command(5, "wordoftheday", RoleEnum.PUBLIC, ";;wordoftheday")
 
-    PERMISSIONS = Command(6, "permissions", PermissionsEnum.DEVELOPER, ";;permissions <permission_type> <user>")
+    PERMISSIONS = Command(6, "permissions", RoleEnum.DEVELOPER, ";;permissions <permission_type> <user>")
 
-    ALLOW_SPAM = Command(7, "allowspam", PermissionsEnum.DEVELOPER, ";;permissions allowspam <user>")
+    ALLOW_SPAM = Command(7, "allowspam", RoleEnum.DEVELOPER, ";;permissions allowspam <user>")
 
-    DISALLOW_SPAM = Command(8, "disallowspam", PermissionsEnum.DEVELOPER, ";;permissions disallowspam <user>")
+    DISALLOW_SPAM = Command(8, "disallowspam", RoleEnum.DEVELOPER, ";;permissions disallowspam <user>")
 
-    ASTONISHED = Command(9, "astonished", PermissionsEnum.PUBLIC, ";;astonished <optional:naked")
+    ASTONISHED = Command(9, "astonished", RoleEnum.PUBLIC, ";;astonished <optional:naked")
 
-    SHRUG = Command(10, "shrug", PermissionsEnum.PUBLIC, ";;shrug")
+    SHRUG = Command(10, "shrug", RoleEnum.PUBLIC, ";;shrug")
 
-    YE = Command(11, "ye", PermissionsEnum.PUBLIC, ";;ye")
+    YE = Command(11, "ye", RoleEnum.PUBLIC, ";;ye")
 
-    ART = Command(12, "art", PermissionsEnum.PUBLIC, ";;art <optional:emoji>")
+    ART = Command(12, "art", RoleEnum.PUBLIC, ";;art <optional:emoji>")
 
-    LEMONARIS = Command(13, "lemonaris", PermissionsEnum.PUBLIC, ";;lemonaris <optional:emoji>")
+    LEMONARIS = Command(13, "lemonaris", RoleEnum.PUBLIC, ";;lemonaris <optional:emoji>")
 
-    RANDOM_MESSAGE = Command(14, "randommessage", PermissionsEnum.PUBLIC, "N/A")
+    RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.PUBLIC, "N/A")
 
-    HAXOR = Command(15, "haxor", PermissionsEnum.DEVELOPER, ";;haxor <code> <optional:post_to_server>")
+    HAXOR = Command(15, "haxor", RoleEnum.MEGUS, ";;haxor <code> <optional:post_to_server>")
 
-    HELP = Command(16, "help", PermissionsEnum.PUBLIC, ";;help")
+    HELP = Command(16, "help", RoleEnum.PUBLIC, ";;help")
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
@@ -68,15 +68,15 @@ class CommandsEnum(Enum):
         return message
 
     @staticmethod
-    def get_all_display_for_help_command(permission_level):
+    def get_all_display_for_help_command(role):
         help_message = list()
-        for enum in CommandsEnum.get_all_of_specific_permission_level(permission_level):
+        for enum in CommandsEnum.get_commands_of_specific_role(role):
             help_message.append(CommandsEnum.get_display_for_help_command(enum))
         return help_message
 
     @staticmethod
-    def get_all_of_specific_permission_level(permission_level):
-        available_levels = PermissionsEnum.get_available_levels(permission_level)
+    def get_commands_of_specific_role(role):
+        available_levels = RoleEnum.get_available_levels(role)
         available_commands = list()
         for enum in CommandsEnum:
             if enum.value.permission in available_levels:
@@ -88,7 +88,3 @@ class CommandsEnum(Enum):
     def get_display_for_help_command(commands_enum):
         command = commands_enum.value
         return f'Command: {command.command.capitalize()}, Permission: {command.permission.value.capitalize()}, Example: {command.example}'
-
-
-if __name__ == '__main__':
-    print(CommandsEnum.get_all_display_for_help_command(PermissionsEnum.DEVELOPER))

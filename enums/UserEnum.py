@@ -1,23 +1,23 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from enums.PermissionsEnum import PermissionsEnum
+from enums.RoleEnum import RoleEnum
 
 
 @dataclass
 class User:
     id: int
-    permission_level: PermissionsEnum
+    permission_level: RoleEnum
 
 
 class UserEnum(Enum):
-    GIANNAKIS = User(294577564603645952, PermissionsEnum.PUBLIC)
+    GIANNAKIS = User(294577564603645952, RoleEnum.PUBLIC)
 
-    MELDANEN = User(164447968332611584, PermissionsEnum.DEVELOPER)
+    MELDANEN = User(164447968332611584, RoleEnum.MEGUS)
 
-    MELON = User(186521813285601280, PermissionsEnum.ADMIN)
+    MELON = User(186521813285601280, RoleEnum.ADMIN)
 
-    JOSEPH = User(173766017258881024, PermissionsEnum.ADMIN)
+    JOSEPH = User(173766017258881024, RoleEnum.ADMIN)
 
     @staticmethod
     def is_good_person(id: int) -> bool:
@@ -34,3 +34,10 @@ class UserEnum(Enum):
     @staticmethod
     def is_melon(id: int) -> bool:
         return id == UserEnum.MELON.value.id
+
+    @staticmethod
+    def get_from_id(id):
+        for user in UserEnum:
+            if user.value.id == id:
+                return user.value
+        return None

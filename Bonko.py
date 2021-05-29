@@ -9,7 +9,7 @@ from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
-from enums.PermissionsEnum import PermissionsEnum
+from enums.RoleEnum import RoleEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
@@ -40,22 +40,20 @@ class Bonko(commands.Cog):
             await self.response_service.send_response(ctx, response_enum)
 
     @commands.command(name=CommandsEnum.HELP.value.command)
-    async def help(self, ctx: commands.context, permission_level=None):
+    async def help(self, ctx: commands.context, role=None):
         self.logging_service.log_starting_progress(CommandsEnum.HELP.value)
-        if ctx.author.id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.HELP):
             return
-        if permission_level is None or permission_level.lower() == 'all':
-            permission_level = PermissionsEnum.DEVELOPER.value
-        permission_level_enum = PermissionsEnum.get_from_string(permission_level)
-        message = CommandsEnum.format_displays_for_help_command(permission_level_enum)
+        if role is None or role.lower() == 'all':
+            role = RoleEnum.DEVELOPER.value
+        role = RoleEnum.get_from_string(role)
+        message = CommandsEnum.format_displays_for_help_command(role)
         await self.send_message(ctx, message)
 
     @commands.command(name=CommandsEnum.HAXOR.value.command)
     async def haxor(self, ctx: commands.context, code, send_message=False):
         self.logging_service.log_starting_progress(CommandsEnum.HAXOR.value)
-        if ctx.author.id == self.bot.user.id:
-            return
-        if not self.is_megus(ctx.author.id):
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.HAXOR):
             return
         execution_result = {}
         try:
@@ -71,7 +69,7 @@ class Bonko(commands.Cog):
     async def bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BONK.value)
         author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(author_id, CommandsEnum.BONK):
             return
         if self.is_giannakis(author_id):
             message = emojis.encode("No horny! :angry:")
@@ -89,6 +87,8 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.OMEGA_BONK.value.command)
     async def omega_bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OMEGA_BONK):
+            return
         message = self.art_service.get_omega_bonk()
         emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
         await self.send_message_with_reaction(ctx, message, emoji)
@@ -104,18 +104,20 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.SPAM_SOFT.value.command)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SPAM_SOFT):
+            return
         await self.handle_spam(ctx, emoji, times, list(usernames), False)
 
     @commands.command(name=CommandsEnum.SPAM_HARD.value.command)
     async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SPAM_HARD):
+            return
         await self.handle_spam(ctx, emoji, times, list(usernames), True)
 
     async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames, fuck_off: bool):
         print(usernames)
         author_id = ctx.author.id
-        if author_id == self.bot.user.id:
-            return
         if self.is_allowed_to_spam(author_id):
             emoji = await self.get_emoji(ctx, emoji)
             if not emoji:
@@ -132,7 +134,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value.command)
     async def bad_giannakis(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BAD_GIANNAKIS.value)
-        if ctx.author.id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BAD_GIANNAKIS):
             return
         channel = ctx.channel
         async for message in channel.history(limit=200):
@@ -148,7 +150,7 @@ class Bonko(commands.Cog):
     async def word_of_the_day(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
         author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(author_id, CommandsEnum.WORD_OF_THE_DAY):
             return
         if self.is_giannakis(author_id):
             await self.send_message(ctx, "No horny!")
@@ -160,13 +162,13 @@ class Bonko(commands.Cog):
     async def permissions(self, ctx: commands.context, permission, *usernames):
         self.logging_service.log_starting_progress(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
         author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(author_id, CommandsEnum.PERMISSIONS):
             return
         if CommandsEnum.is_spam_related(permission):
             if self.is_good_person(author_id):
-                if CommandsEnum.is_allow_spam(permission):
+                if CommandsEnum.is_allow_spam(permission) and self.is_allowed_to_use_command(author_id, CommandsEnum.ALLOW_SPAM):
                     await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.add)
-                elif CommandsEnum.is_disallow_spam(permission):
+                elif CommandsEnum.is_disallow_spam(permission) and self.is_allowed_to_use_command(author_id, CommandsEnum.DISALLOW_SPAM):
                     await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.remove)
                 print("Can spam:")
                 print(self.allowed_to_spam)
@@ -182,8 +184,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.ASTONISHED.value.command)
     async def astonished(self, ctx: commands.context, naked=""):
         self.logging_service.log_starting_progress(CommandsEnum.ASTONISHED.value)
-        author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ASTONISHED):
             return
         emoji = await self.get_emoji(ctx, EmojiEnum.ASTONISHED.value)
         message = ""
@@ -198,8 +199,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.SHRUG.value.command)
     async def shrug(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
-        author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
             return
         await ctx.message.delete()
         message = "¯\_(ツ)_/¯"
@@ -208,8 +208,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.ART.value.command)
     async def art(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.ART.value)
-        author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
             return
         head, neck, ass, leg = await self.art_service.get_sibling_art(ctx, fart_on_emoji)
         await self.send_message(ctx, head)
@@ -220,8 +219,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.LEMONARIS.value.command)
     async def lemonaris(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
-        author_id = ctx.author.id
-        if author_id == self.bot.user.id:
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
             return
         message = await self.art_service.get_lemonaris_art(ctx, fart_on_emoji)
         await self.send_message(ctx, message)
@@ -268,6 +266,20 @@ class Bonko(commands.Cog):
     @staticmethod
     def format_user_id_for_mention(user_id: str) -> str:
         return "<@!" + user_id + ">"
+
+    def is_allowed_to_use_command(self, user_id, command):
+        if user_id == self.bot.user.id:
+            return
+        user = UserEnum.get_from_id(user_id)
+        if user is None:
+            user_permission = RoleEnum.PUBLIC
+        if user_id in self.allowed_to_spam:
+            user_permission = RoleEnum.RESTRICTED
+        role_access = RoleEnum.get_available_levels(user.permission_level)
+        if RoleEnum.ADMIN in role_access or RoleEnum.DEVELOPER in role_access or RoleEnum.MEGUS in role_access:
+            user_permission = user.permission_level
+        available_commands_for_role = CommandsEnum.get_commands_of_specific_role(user_permission)
+        return command in available_commands_for_role
 
     @staticmethod
     def is_giannakis(id: int) -> bool:
