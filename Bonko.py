@@ -14,6 +14,7 @@ from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
 from services.LoopService import LoopService
+from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
 
 
@@ -29,6 +30,7 @@ class Bonko(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        self.permission_service = PermissionService(self.bot.user.id, self.logging_service)
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
     @commands.Cog.listener()
@@ -118,18 +120,17 @@ class Bonko(commands.Cog):
     async def handle_spam(self, ctx: commands.context, emoji: str, times: int, usernames, fuck_off: bool):
         print(usernames)
         author_id = ctx.author.id
-        if self.is_allowed_to_spam(author_id):
-            emoji = await self.get_emoji(ctx, emoji)
-            if not emoji:
-                return
-            can_mention = await self.is_allowed_to_mention(author_id, fuck_off)
-            spam_string = ""
-            for username in usernames:
-                user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
-                spam_string = spam_string + " " + user_to_spam
-            message = f'{emoji} {spam_string} {emoji}'
-            for i in range(int(times)):
-                await self.send_message_with_reaction(ctx, message, emoji)
+        emoji = await self.get_emoji(ctx, emoji)
+        if not emoji:
+            return
+        can_mention = await self.is_allowed_to_mention(author_id, fuck_off)
+        spam_string = ""
+        for username in usernames:
+            user_to_spam = await self.get_user(ctx.guild.members, username, can_mention)
+            spam_string = spam_string + " " + user_to_spam
+        message = f'{emoji} {spam_string} {emoji}'
+        for i in range(int(times)):
+            await self.send_message_with_reaction(ctx, message, emoji)
 
     @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value.command)
     async def bad_giannakis(self, ctx: commands.context):
@@ -253,7 +254,7 @@ class Bonko(commands.Cog):
             return "giannaki"
 
     async def is_allowed_to_mention(self, author_id, fuck_off):
-        return (self.is_megus(author_id) or self.is_melon(author_id)) and fuck_off
+        return self.permission_service.is_allowed_to_mention(author_id, fuck_off)
 
     @staticmethod
     async def get_emoji(ctx: commands.context, emoji: str):
@@ -268,37 +269,16 @@ class Bonko(commands.Cog):
         return "<@!" + user_id + ">"
 
     def is_allowed_to_use_command(self, user_id, command):
-        if user_id == self.bot.user.id:
-            return
-        user = UserEnum.get_from_id(user_id)
-        if user is None:
-            user_permission = RoleEnum.PUBLIC
-        if user_id in self.allowed_to_spam:
-            user_permission = RoleEnum.RESTRICTED
-        role_access = RoleEnum.get_available_levels(user.permission_level)
-        if RoleEnum.ADMIN in role_access or RoleEnum.DEVELOPER in role_access or RoleEnum.MEGUS in role_access:
-            user_permission = user.permission_level
-        available_commands_for_role = CommandsEnum.get_commands_of_specific_role(user_permission)
-        return command in available_commands_for_role
+        return self.permission_service.is_allowed_to_use_command(user_id, command, self.allowed_to_spam)
 
-    @staticmethod
-    def is_giannakis(id: int) -> bool:
-        return UserEnum.is_giannakis(id)
+    def is_giannakis(self, id: int) -> bool:
+        return self.permission_service.is_giannakis(id)
 
-    @staticmethod
-    def is_megus(id: int) -> bool:
-        return UserEnum.is_megus(id)
+    def is_megus(self, id: int) -> bool:
+        return self.permission_service.is_megus(id)
 
-    @staticmethod
-    def is_melon(id: int) -> bool:
-        return UserEnum.is_melon(id)
+    def is_melon(self, id: int) -> bool:
+        return self.permission_service.is_melon(id)
 
-    @staticmethod
-    def is_good_person(id: int) -> bool:
-        return UserEnum.is_good_person(id)
-
-    def is_allowed_to_spam(self, id: int) -> bool:
-        return self.is_good_person(id) or self.is_emergency_permission(id)
-
-    def is_emergency_permission(self, id: int) -> bool:
-        return id in self.allowed_to_spam
+    def is_good_person(self, id: int) -> bool:
+        return self.permission_service.is_good_person(id)

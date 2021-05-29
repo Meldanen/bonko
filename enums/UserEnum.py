@@ -19,6 +19,10 @@ class UserEnum(Enum):
 
     JOSEPH = User(173766017258881024, RoleEnum.ADMIN)
 
+    SIBLING = User(319171521354530818, RoleEnum.RESTRICTED)
+
+    CON = User(318437163169611776, RoleEnum.RESTRICTED)
+
     @staticmethod
     def is_good_person(id: int) -> bool:
         return id in [UserEnum.MELDANEN.value.id, UserEnum.JOSEPH.value.id, UserEnum.MELON.value.id]
