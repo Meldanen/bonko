@@ -9,6 +9,7 @@ from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
+from enums.PermissionsEnum import PermissionsEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
@@ -38,7 +39,18 @@ class Bonko(commands.Cog):
         if response_enum:
             await self.response_service.send_response(ctx, response_enum)
 
-    @commands.command(name=CommandsEnum.HAXOR.value)
+    @commands.command(name=CommandsEnum.HELP.value.command)
+    async def help(self, ctx: commands.context, permission_level=None):
+        self.logging_service.log_starting_progress(CommandsEnum.HELP.value)
+        if ctx.author.id == self.bot.user.id:
+            return
+        if permission_level is None or permission_level.lower() == 'all':
+            permission_level = PermissionsEnum.DEVELOPER.value
+        permission_level_enum = PermissionsEnum.get_from_string(permission_level)
+        message = CommandsEnum.format_displays_for_help_command(permission_level_enum)
+        await self.send_message(ctx, message)
+
+    @commands.command(name=CommandsEnum.HAXOR.value.command)
     async def haxor(self, ctx: commands.context, code, send_message=False):
         self.logging_service.log_starting_progress(CommandsEnum.HAXOR.value)
         if ctx.author.id == self.bot.user.id:
@@ -55,8 +67,7 @@ class Bonko(commands.Cog):
         except Exception as e:
             await self.send_message(ctx, e)
 
-
-    @commands.command(name=CommandsEnum.BONK.value)
+    @commands.command(name=CommandsEnum.BONK.value.command)
     async def bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BONK.value)
         author_id = ctx.author.id
@@ -75,7 +86,7 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, message, emoji)
         await self.send_message_with_reaction(ctx, emoji, emoji)
 
-    @commands.command(name=CommandsEnum.OMEGA_BONK.value)
+    @commands.command(name=CommandsEnum.OMEGA_BONK.value.command)
     async def omega_bonk(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
         message = self.art_service.get_omega_bonk()
@@ -90,12 +101,12 @@ class Bonko(commands.Cog):
         emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
         await self.send_message_with_reaction(ctx, message, emoji)
 
-    @commands.command(name=CommandsEnum.SPAM_SOFT.value)
+    @commands.command(name=CommandsEnum.SPAM_SOFT.value.command)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
         await self.handle_spam(ctx, emoji, times, list(usernames), False)
 
-    @commands.command(name=CommandsEnum.SPAM_HARD.value)
+    @commands.command(name=CommandsEnum.SPAM_HARD.value.command)
     async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames):
         self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
         await self.handle_spam(ctx, emoji, times, list(usernames), True)
@@ -118,14 +129,14 @@ class Bonko(commands.Cog):
             for i in range(int(times)):
                 await self.send_message_with_reaction(ctx, message, emoji)
 
-    @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value)
+    @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value.command)
     async def bad_giannakis(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.BAD_GIANNAKIS.value)
         if ctx.author.id == self.bot.user.id:
             return
         channel = ctx.channel
         async for message in channel.history(limit=200):
-            if self.is_giannakis(message.author.id):
+            if self.is_megus(message.author.id):
                 id = self.format_user_id_for_mention(str(UserEnum.MELDANEN.value))
                 contentsNoSpaces = message.content.replace(" ", "")
                 contentsSplit = contentsNoSpaces.split(id)
@@ -133,7 +144,7 @@ class Bonko(commands.Cog):
                 if not contents:
                     await message.delete()
 
-    @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value)
+    @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value.command)
     async def word_of_the_day(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
         author_id = ctx.author.id
@@ -145,7 +156,7 @@ class Bonko(commands.Cog):
             emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BONK.value)
             await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, emoji)
 
-    @commands.command(name=CommandsEnum.PERMISSIONS.value)
+    @commands.command(name=CommandsEnum.PERMISSIONS.value.command)
     async def permissions(self, ctx: commands.context, permission, *usernames):
         self.logging_service.log_starting_progress(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
         author_id = ctx.author.id
@@ -168,13 +179,13 @@ class Bonko(commands.Cog):
         except KeyError:
             print(f'{username}:{user_id} not found')
 
-    @commands.command(name=CommandsEnum.ASTONISHED.value)
+    @commands.command(name=CommandsEnum.ASTONISHED.value.command)
     async def astonished(self, ctx: commands.context, naked=""):
         self.logging_service.log_starting_progress(CommandsEnum.ASTONISHED.value)
         author_id = ctx.author.id
         if author_id == self.bot.user.id:
             return
-        emoji = await self.get_emoji(ctx, EmojiEnum.OPEN_MOUTH.value)
+        emoji = await self.get_emoji(ctx, EmojiEnum.ASTONISHED.value)
         message = ""
         if naked.lower() == "naked":
             message += "u r naked on your cauch, having sex with your boyfriend. i came by knocked your door not very loud. u didnt hear it, and i open oyur door and find u naked on the couch with a dick inside u. i am very sure u would be  very okish with that. u wouldnt throw the couch on my head but anw. i personally dont like this at all \n"
@@ -184,7 +195,7 @@ class Bonko(commands.Cog):
         message += "i am just astonished on how they cant comprihent that simple thing"
         await self.send_message_with_reaction(ctx, message, emoji)
 
-    @commands.command(name=CommandsEnum.SHRUG.value)
+    @commands.command(name=CommandsEnum.SHRUG.value.command)
     async def shrug(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
         author_id = ctx.author.id
@@ -194,7 +205,7 @@ class Bonko(commands.Cog):
         message = "¯\_(ツ)_/¯"
         await self.send_message(ctx, message)
 
-    @commands.command(name=CommandsEnum.ART.value)
+    @commands.command(name=CommandsEnum.ART.value.command)
     async def art(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.ART.value)
         author_id = ctx.author.id
@@ -206,7 +217,7 @@ class Bonko(commands.Cog):
         await self.send_message(ctx, ass)
         await self.send_message(ctx, leg)
 
-    @commands.command(name=CommandsEnum.LEMONARIS.value)
+    @commands.command(name=CommandsEnum.LEMONARIS.value.command)
     async def lemonaris(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
         author_id = ctx.author.id

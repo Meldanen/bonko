@@ -12,6 +12,8 @@ class EmojiEnum(Enum):
 
     OPEN_MOUTH = "open_mouth"
 
+    ASTONISHED = "astonished"
+
     SNACCS = "snaccs"
 
     @staticmethod
