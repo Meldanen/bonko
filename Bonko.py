@@ -277,8 +277,5 @@ class Bonko(commands.Cog):
     def is_megus(self, id: int) -> bool:
         return self.permission_service.is_megus(id)
 
-    def is_melon(self, id: int) -> bool:
-        return self.permission_service.is_melon(id)
-
     def is_good_person(self, id: int) -> bool:
         return self.permission_service.is_good_person(id)
