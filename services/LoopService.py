@@ -37,6 +37,7 @@ class LoopService:
                 for guild in self.bot.guilds:
                     await self.send_random_message_to_server(guild)
                 self.times_randomly_messaged += 1
+            asyncio.sleep(2)
 
     async def send_random_message_to_server(self, guild):
         messages = await self.get_possible_messages(guild)
