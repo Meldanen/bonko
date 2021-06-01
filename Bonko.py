@@ -45,6 +45,7 @@ class Bonko(commands.Cog):
                     await command(commands[1], commands[2], message)
             except Exception as e:
                 self.logging_service.exception(e)
+            asyncio(10)
 
     @commands.command(name=CommandsEnum.SAY.value.command)
     async def console_say(self, server_name, channel_name, message):
