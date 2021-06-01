@@ -3,6 +3,7 @@ import asyncio
 from typing import List
 
 import emojis
+from discord import File
 
 from discord.ext import commands
 
@@ -10,6 +11,7 @@ from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
+from enums.RandomQuoteEnum import RandomQuoteEnum
 from enums.RoleEnum import RoleEnum
 from enums.ServerEnum import ServerEnum
 from enums.UserEnum import UserEnum
@@ -45,7 +47,6 @@ class Bonko(commands.Cog):
         #             await command(commands[1], commands[2], message)
         #     except Exception as e:
         #         self.logging_service.exception(e)
-        #     asyncio.sleep(2)
 
     @commands.command(name=CommandsEnum.SAY.value.command)
     async def console_say(self, server_name, channel_name, message):
@@ -56,9 +57,9 @@ class Bonko(commands.Cog):
         for channel in guild.text_channels:
             if channel.name == channel_name:
                 message = message.replace("\"", "")
-                print(message)
-                print(channel.name)
-                # await channel.send(message)
+                # print(message)
+                # print(channel.name)
+                await channel.send(message)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -251,6 +252,30 @@ class Bonko(commands.Cog):
             return
         message = await self.art_service.get_lemonaris_art(ctx, fart_on_emoji)
         await self.send_message(ctx, message)
+
+    @commands.command(name=CommandsEnum.QUOTE.value.command)
+    async def quote(self, ctx: commands.context, quote_id=None):
+        self.logging_service.log_starting_progress(CommandsEnum.QUOTE.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.QUOTE):
+            return
+        if quote_id:
+            quote = RandomQuoteEnum.get_quote(int(quote_id))
+        else:
+            quote = RandomQuoteEnum.get_random_quote()
+        if not quote:
+            return
+        if isinstance(quote, File):
+            await ctx.send(file=quote)
+        else:
+            message = quote.quote
+            reaction = await self.get_emoji(ctx, quote.reaction.value)
+            await self.send_message_with_reaction(ctx, message, reaction)
+
+        # if isinstance(quote, File):
+        #     await ctx.send(file=message)
+        # else:
+        #     await self.send_message_with_reaction(ctx, message, reaction)
+        # await self.send_message_with_reaction(ctx, message, reaction)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):

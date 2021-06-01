@@ -11,7 +11,7 @@ class User:
 
 
 class UserEnum(Enum):
-    GIANNAKIS = User(294577564603645952, RoleEnum.PUBLIC)
+    GIANNAKIS = User(294577564603645952, RoleEnum.PLEB)
 
     MELDANEN = User(164447968332611584, RoleEnum.MEGUS)
 

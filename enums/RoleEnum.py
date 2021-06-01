@@ -11,7 +11,7 @@ class RoleEnum(Enum):
 
     RESTRICTED = "restricted"
 
-    PUBLIC = "public"
+    PLEB = "pleb"
 
     @staticmethod
     def get_available_levels(role):
@@ -23,8 +23,8 @@ class RoleEnum(Enum):
             return RoleEnum.get_admin_role_available_levels()
         if RoleEnum.is_restricted_role(role):
             return RoleEnum.get_restricted_role_available_levels()
-        if RoleEnum.is_public_role(role):
-            return RoleEnum.get_public_role_available_levels()
+        if RoleEnum.is_pleb_role(role):
+            return RoleEnum.get_pleb_role_available_levels()
 
     @staticmethod
     def get_megus_role_available_levels():
@@ -40,11 +40,11 @@ class RoleEnum(Enum):
 
     @staticmethod
     def get_restricted_role_available_levels():
-        return [RoleEnum.RESTRICTED] + RoleEnum.get_public_role_available_levels()
+        return [RoleEnum.RESTRICTED] + RoleEnum.get_pleb_role_available_levels()
 
     @staticmethod
-    def get_public_role_available_levels():
-        return [RoleEnum.PUBLIC]
+    def get_pleb_role_available_levels():
+        return [RoleEnum.PLEB]
 
     @staticmethod
     def is_allowed_to_use(role):
@@ -67,8 +67,8 @@ class RoleEnum(Enum):
         return role == RoleEnum.RESTRICTED
 
     @staticmethod
-    def is_public_role(role):
-        return role == RoleEnum.PUBLIC
+    def is_pleb_role(role):
+        return role == RoleEnum.PLEB
 
     @staticmethod
     def get_from_string(role):

@@ -14,7 +14,7 @@ class PermissionService:
             return
         user = UserEnum.get_from_id(user_id)
         if user is None:
-            user_permission = RoleEnum.PUBLIC
+            user_permission = RoleEnum.PLEB
         else:
             user_permission = user.permission_level
         if user_id in special_permissions:

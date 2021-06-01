@@ -13,9 +13,9 @@ class Command:
 
 
 class CommandsEnum(Enum):
-    BONK = Command(0, "bonk", RoleEnum.PUBLIC, ";;bonk")
+    BONK = Command(0, "bonk", RoleEnum.PLEB, ";;bonk")
 
-    OMEGA_BONK = Command(1, "omegabonk", RoleEnum.PUBLIC, ";;omegabonk")
+    OMEGA_BONK = Command(1, "omegabonk", RoleEnum.PLEB, ";;omegabonk")
 
     SPAM_SOFT = Command(2, "spam", RoleEnum.RESTRICTED, ";;spam <emoji> <times_to_spam> <user>")
 
@@ -23,7 +23,7 @@ class CommandsEnum(Enum):
 
     BAD_GIANNAKIS = Command(4, "badgiannakis", RoleEnum.DEVELOPER, ";;badgiannakis")
 
-    WORD_OF_THE_DAY = Command(5, "wordoftheday", RoleEnum.PUBLIC, ";;wordoftheday")
+    WORD_OF_THE_DAY = Command(5, "wordoftheday", RoleEnum.PLEB, ";;wordoftheday")
 
     PERMISSIONS = Command(6, "permissions", RoleEnum.DEVELOPER, ";;permissions <permission_type> <user>")
 
@@ -31,23 +31,25 @@ class CommandsEnum(Enum):
 
     DISALLOW_SPAM = Command(8, "disallowspam", RoleEnum.DEVELOPER, ";;permissions disallowspam <user>")
 
-    ASTONISHED = Command(9, "astonished", RoleEnum.PUBLIC, ";;astonished <optional:naked")
+    ASTONISHED = Command(9, "astonished", RoleEnum.PLEB, ";;astonished <optional:naked")
 
-    SHRUG = Command(10, "shrug", RoleEnum.PUBLIC, ";;shrug")
+    SHRUG = Command(10, "shrug", RoleEnum.PLEB, ";;shrug")
 
-    YE = Command(11, "ye", RoleEnum.PUBLIC, ";;ye")
+    YE = Command(11, "ye", RoleEnum.PLEB, ";;ye")
 
-    ART = Command(12, "art", RoleEnum.PUBLIC, ";;art <optional:emoji>")
+    ART = Command(12, "art", RoleEnum.PLEB, ";;art <optional:emoji>")
 
-    LEMONARIS = Command(13, "lemonaris", RoleEnum.PUBLIC, ";;lemonaris <optional:emoji>")
+    LEMONARIS = Command(13, "lemonaris", RoleEnum.PLEB, ";;lemonaris <optional:emoji>")
 
-    RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.PUBLIC, "N/A")
+    RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.PLEB, "N/A")
 
     HAXOR = Command(15, "haxor", RoleEnum.MEGUS, ";;haxor <code> <optional:post_to_server>")
 
-    HELP = Command(16, "help", RoleEnum.PUBLIC, ";;help")
+    HELP = Command(16, "help", RoleEnum.PLEB, ";;help")
 
     SAY = Command(17, "say", RoleEnum.MEGUS, "N/A")
+
+    QUOTE = Command(18, "quote", RoleEnum.PLEB, ";;quote")
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
