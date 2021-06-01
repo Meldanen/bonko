@@ -49,7 +49,7 @@ class CommandsEnum(Enum):
 
     SAY = Command(17, "say", RoleEnum.MEGUS, "N/A")
 
-    QUOTE = Command(18, "quote", RoleEnum.PLEB, ";;quote")
+    QUOTE = Command(18, "quote", RoleEnum.PLEB, ";;quote <optional:number>")
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:

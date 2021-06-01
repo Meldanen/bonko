@@ -230,9 +230,9 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SHRUG):
             return
-        await ctx.message.delete()
         message = "¯\_(ツ)_/¯"
         await self.send_message(ctx, message)
+        await ctx.message.delete()
 
     @commands.command(name=CommandsEnum.ART.value.command)
     async def art(self, ctx: commands.context, fart_on_emoji=None):
@@ -259,9 +259,9 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.QUOTE):
             return
         if quote_id:
-            quote = RandomQuoteEnum.get_quote(int(quote_id))
+            quote = await RandomQuoteEnum.get_quote(ctx, int(quote_id))
         else:
-            quote = RandomQuoteEnum.get_random_quote()
+            quote = await RandomQuoteEnum.get_random_quote(ctx)
         if not quote:
             return
         if isinstance(quote, File):
@@ -269,13 +269,7 @@ class Bonko(commands.Cog):
         else:
             message = quote.quote
             reaction = await self.get_emoji(ctx, quote.reaction.value)
-            await self.send_message_with_reaction(ctx, message, reaction)
-
-        # if isinstance(quote, File):
-        #     await ctx.send(file=message)
-        # else:
-        #     await self.send_message_with_reaction(ctx, message, reaction)
-        # await self.send_message_with_reaction(ctx, message, reaction)
+            await self.send_message_with_reaction(ctx, f'> {message}', reaction)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
