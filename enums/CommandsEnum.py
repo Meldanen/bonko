@@ -47,6 +47,8 @@ class CommandsEnum(Enum):
 
     HELP = Command(16, "help", RoleEnum.PUBLIC, ";;help")
 
+    SAY = Command(17, "say", RoleEnum.MEGUS, "N/A")
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value.command

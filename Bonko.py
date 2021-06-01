@@ -1,4 +1,5 @@
 # main.py
+import asyncio
 from typing import List
 
 import emojis
@@ -10,6 +11,7 @@ from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
 from enums.RoleEnum import RoleEnum
+from enums.ServerEnum import ServerEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
 from services.LoggingService import LoggingService
@@ -25,13 +27,35 @@ class Bonko(commands.Cog):
         self.logging_service = LoggingService()
         self.art_service = ArtService()
         self.response_service = ResponseService()
-        self.loop_service = LoopService(self.bot, self.logging_service)
-        self.loop_service.init_loops()
 
     @commands.Cog.listener()
     async def on_ready(self):
         self.permission_service = PermissionService(self.bot.user.id, self.logging_service)
+        self.loop_service = LoopService(self.bot, self.logging_service)
+        self.loop_service.init_loops()
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
+        # while not self.bot.is_closed():
+        #     try:
+        #         console_input = input("text/command")  # asking for "flip" command
+        #         split_command = console_input.split("\"")
+        #         commands = split_command[0].split(" ")
+        #         message = split_command[1]
+        #         if CommandsEnum.SAY.value.command in commands[0]:
+        #             command = self.bot.get_command(CommandsEnum.SAY.value.command)
+        #             await command(commands[1], commands[2], message)
+        #     except Exception as e:
+        #         self.logging_service.exception(e)
+
+    @commands.command(name=CommandsEnum.SAY.value.command)
+    async def console_say(self, server_name, channel_name, message):
+        guild = self.bot.get_guild(ServerEnum.get_from_name(server_name).value.id)
+        if not guild:
+            self.logging_service.log(f"Server '{server_name}' not found for {CommandsEnum.SAY.value}")
+            return
+        for channel in guild.text_channels:
+            if channel.name == channel_name:
+                message = message.replace("\"", "")
+                await channel.send(message)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -200,7 +224,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.SHRUG.value.command)
     async def shrug(self, ctx: commands.context):
         self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
-        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SHRUG):
             return
         await ctx.message.delete()
         message = "¯\_(ツ)_/¯"
@@ -209,7 +233,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.ART.value.command)
     async def art(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.ART.value)
-        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ART):
             return
         head, neck, ass, leg = await self.art_service.get_sibling_art(ctx, fart_on_emoji)
         await self.send_message(ctx, head)
@@ -220,7 +244,7 @@ class Bonko(commands.Cog):
     @commands.command(name=CommandsEnum.LEMONARIS.value.command)
     async def lemonaris(self, ctx: commands.context, fart_on_emoji=None):
         self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
-        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.PERMISSIONS):
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.LEMONARIS):
             return
         message = await self.art_service.get_lemonaris_art(ctx, fart_on_emoji)
         await self.send_message(ctx, message)

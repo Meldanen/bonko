@@ -11,3 +11,7 @@ class LoggingService:
     @staticmethod
     def log(message):
         print(message)
+
+    @staticmethod
+    def exception(message):
+        print(message)
