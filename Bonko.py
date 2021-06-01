@@ -43,9 +43,9 @@ class Bonko(commands.Cog):
                 if CommandsEnum.SAY.value.command in commands[0]:
                     command = self.bot.get_command(CommandsEnum.SAY.value.command)
                     await command(commands[1], commands[2], message)
+                    await asyncio.sleep(2)
             except Exception as e:
                 self.logging_service.exception(e)
-            asyncio(10)
 
     @commands.command(name=CommandsEnum.SAY.value.command)
     async def console_say(self, server_name, channel_name, message):
