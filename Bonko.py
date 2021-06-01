@@ -34,17 +34,17 @@ class Bonko(commands.Cog):
         self.loop_service = LoopService(self.bot, self.logging_service)
         self.loop_service.init_loops()
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
-        # while not self.bot.is_closed():
-        #     try:
-        #         console_input = input("text/command")  # asking for "flip" command
-        #         split_command = console_input.split("\"")
-        #         commands = split_command[0].split(" ")
-        #         message = split_command[1]
-        #         if CommandsEnum.SAY.value.command in commands[0]:
-        #             command = self.bot.get_command(CommandsEnum.SAY.value.command)
-        #             await command(commands[1], commands[2], message)
-        #     except Exception as e:
-        #         self.logging_service.exception(e)
+        while not self.bot.is_closed():
+            try:
+                console_input = input("text/command")  # asking for "flip" command
+                split_command = console_input.split("\"")
+                commands = split_command[0].split(" ")
+                message = split_command[1]
+                if CommandsEnum.SAY.value.command in commands[0]:
+                    command = self.bot.get_command(CommandsEnum.SAY.value.command)
+                    await command(commands[1], commands[2], message)
+            except Exception as e:
+                self.logging_service.exception(e)
 
     @commands.command(name=CommandsEnum.SAY.value.command)
     async def console_say(self, server_name, channel_name, message):
@@ -55,7 +55,9 @@ class Bonko(commands.Cog):
         for channel in guild.text_channels:
             if channel.name == channel_name:
                 message = message.replace("\"", "")
-                await channel.send(message)
+                print(message)
+                print(channel.name)
+                # await channel.send(message)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
