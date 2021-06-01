@@ -259,9 +259,9 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.QUOTE):
             return
         if quote_id:
-            quote = await RandomQuoteEnum.get_quote(ctx, int(quote_id))
+            quote = await RandomQuoteEnum.get_quote(ctx, int(quote_id), UserEnum.GIANNAKIS.value.id)
         else:
-            quote = await RandomQuoteEnum.get_random_quote(ctx)
+            quote = await RandomQuoteEnum.get_random_quote(ctx, UserEnum.GIANNAKIS.value.id)
         if not quote:
             return
         if isinstance(quote, File):

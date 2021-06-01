@@ -19,7 +19,7 @@ class PermissionService:
             user_permission = user.permission_level
         if user_id in special_permissions:
             user_permission = RoleEnum.RESTRICTED
-        role_access = RoleEnum.get_available_levels(user.permission_level)
+        role_access = RoleEnum.get_available_levels(user_permission)
         if RoleEnum.ADMIN in role_access or RoleEnum.DEVELOPER in role_access or RoleEnum.MEGUS in role_access:
             user_permission = user.permission_level
         available_commands_for_role = CommandsEnum.get_commands_of_specific_role(user_permission)
