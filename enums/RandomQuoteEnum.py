@@ -67,6 +67,8 @@ class RandomQuoteEnum(Enum):
     PLANTS = RandomQuote(14, "ah! i see, its sinep in reverse. makes sense why plants are green then",
                          EmojiEnum.WISENAKIS, False)
 
+    BOOTY = RandomQuote(15, "my eyes will lead me to your booty, like the nose lead a cartoon character to a pie", EmojiEnum.WISENAKIS, False)
+
     @staticmethod
     async def get_random_quote(ctx, user_id):
         index = randrange(len(RandomQuoteEnum))

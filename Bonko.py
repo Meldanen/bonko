@@ -20,6 +20,7 @@ from services.LoggingService import LoggingService
 from services.LoopService import LoopService
 from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
+from services.TextExtractingService import TextExtractingService
 
 
 class Bonko(commands.Cog):
@@ -35,31 +36,13 @@ class Bonko(commands.Cog):
         self.permission_service = PermissionService(self.bot.user.id, self.logging_service)
         self.loop_service = LoopService(self.bot, self.logging_service)
         self.loop_service.init_loops()
+        self.text_extracting_service = TextExtractingService(self.bot)
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
-        # while not self.bot.is_closed():
-        #     try:
-        #         console_input = input("text/command")  # asking for "flip" command
-        #         split_command = console_input.split("\"")
-        #         commands = split_command[0].split(" ")
-        #         message = split_command[1]
-        #         if CommandsEnum.SAY.value.command in commands[0]:
-        #             command = self.bot.get_command(CommandsEnum.SAY.value.command)
-        #             await command(commands[1], commands[2], message)
-        #     except Exception as e:
-        #         self.logging_service.exception(e)
 
-    @commands.command(name=CommandsEnum.SAY.value.command)
-    async def console_say(self, server_name, channel_name, message):
-        guild = self.bot.get_guild(ServerEnum.get_from_name(server_name).value.id)
-        if not guild:
-            self.logging_service.log(f"Server '{server_name}' not found for {CommandsEnum.SAY.value}")
-            return
-        for channel in guild.text_channels:
-            if channel.name == channel_name:
-                message = message.replace("\"", "")
-                # print(message)
-                # print(channel.name)
-                await channel.send(message)
+    @commands.command(name="extract")
+    async def extract(self, ctx):
+        if self.is_megus(ctx.author.id):
+            await self.text_extracting_service.extract(ctx, UserEnum.GIANNAKIS.value.id)
 
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -94,6 +77,27 @@ class Bonko(commands.Cog):
                     await self.send_message(ctx, message)
         except Exception as e:
             await self.send_message(ctx, e)
+
+    @commands.command(name=CommandsEnum.SAY.value.command)
+    async def say(self, ctx: commands.context, server_name, channel_name, message):
+        self.logging_service.log_starting_progress(CommandsEnum.SAY.value)
+        author_id = ctx.author.id
+        if not self.is_allowed_to_use_command(author_id, CommandsEnum.SAY):
+            return
+        await self.console_say(server_name, channel_name, message)
+
+    async def console_say(self, server_name, channel_name, message):
+        guild = self.bot.get_guild(ServerEnum.get_from_name(server_name).value.id)
+        if not guild:
+            self.logging_service.log(f"Server '{server_name}' not found for {CommandsEnum.SAY.value}")
+            return
+        for channel in guild.text_channels:
+            if channel.name == channel_name:
+                message = message.replace("\"", "")
+                # print(message)
+                # print(channel.name)
+                await channel.send(message)
+
 
     @commands.command(name=CommandsEnum.BONK.value.command)
     async def bonk(self, ctx: commands.context):
@@ -167,13 +171,13 @@ class Bonko(commands.Cog):
             return
         channel = ctx.channel
         async for message in channel.history(limit=200):
-            if self.is_megus(message.author.id):
-                id = self.format_user_id_for_mention(str(UserEnum.MELDANEN.value))
-                contentsNoSpaces = message.content.replace(" ", "")
-                contentsSplit = contentsNoSpaces.split(id)
-                contents = "".join(contentsSplit)
-                if not contents:
-                    await message.delete()
+            if self.is_megus(message.author.id) and message.content == ';;extract':
+                # id = self.format_user_id_for_mention(str(UserEnum.MELDANEN.value))
+                # contentsNoSpaces = message.content.replace(" ", "")
+                # contentsSplit = contentsNoSpaces.split(id)
+                # contents = "".join(contentsSplit)
+                # if not contents:
+                await message.delete()
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value.command)
     async def word_of_the_day(self, ctx: commands.context):
