@@ -4,6 +4,7 @@ from random import randrange
 
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
+from enums.UserEnum import UserEnum
 
 
 class LoopService:
@@ -130,8 +131,9 @@ class LoopService:
                 for channel in guild.text_channels:
                     if channel.name == "glens-weenie":
                         self.logging_service.log_starting_progress("Sibling's sibling penor of the day")
-                        emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
-                        message = await channel.send("Word of the day: bonk")
+                        emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
+                        user = UserEnum.format_user_id_for_mention(str(UserEnum.SIBLINGS_SIBLING.value.id))
+                        message = await channel.send(user)
                         await message.add_reaction(emoji)
             self.siblings_sibling_daily_penor_occured = True
             self.logging_service.log(
