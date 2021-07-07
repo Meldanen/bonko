@@ -13,6 +13,8 @@ class LoopService:
         self.logging_service = logging_service
         self.word_of_the_day_occurred = False
         self.WORD_OF_THE_DAY_TIME = 9
+        self.siblings_sibling_daily_penor_occured = False
+        self.SIBLINGS_SIBLING_PENOR_TIME = 10
         self.times_randomly_messaged = 0
         self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 4
         self.ONE_HOUR_IN_SECONDS = 3600

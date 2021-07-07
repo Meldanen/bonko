@@ -1,7 +1,7 @@
 from discord import File
 
 from enums.EmojiEnum import EmojiEnum
-from enums.GoodBonkoResponseEnum import GoodBonkoResponseEnum
+from enums.JudgeBonkoResponseEnum import JudgeBonkoResponseEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
 
 
@@ -9,13 +9,25 @@ class ResponseService:
 
     async def send_response(self, ctx, response_type_enum):
         if OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
-            await self.send_random_good_bonk_response(ctx.channel)
+            await self.send_random_good_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_ye(response_type_enum.value.id):
             await self.send_ye_response(ctx.channel, ctx.guild)
+        elif OnMessageResponseTypeEnum.is_bad_bonko(response_type_enum.value.id):
+            await self.send_random_bad_bonko_response(ctx.channel)
 
-    @staticmethod
-    async def send_random_good_bonk_response(channel):
-        response = GoodBonkoResponseEnum.get_random_response()
+    async def send_random_good_bonko_response(self, channel):
+        response = JudgeBonkoResponseEnum.get_random_happy_response()
+        await self.send(channel, response)
+
+    async def send_random_bad_bonko_response(self, channel):
+        response = JudgeBonkoResponseEnum.get_random_sad_response()
+        await self.send(channel, response)
+
+    async def send_random_response(self, channel):
+        response = JudgeBonkoResponseEnum.get_random_response()
+        await self.send(channel, response)
+
+    async def send(self, channel, response):
         if isinstance(response, File):
             await channel.send(file=response)
         else:
