@@ -22,7 +22,6 @@ from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
 
-
 class Bonko(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -97,7 +96,6 @@ class Bonko(commands.Cog):
                 # print(message)
                 # print(channel.name)
                 await channel.send(message)
-
 
     @commands.command(name=CommandsEnum.BONK.value.command)
     async def bonk(self, ctx: commands.context):
@@ -199,9 +197,11 @@ class Bonko(commands.Cog):
             return
         if CommandsEnum.is_spam_related(permission):
             if self.is_good_person(author_id):
-                if CommandsEnum.is_allow_spam(permission) and self.is_allowed_to_use_command(author_id, CommandsEnum.ALLOW_SPAM):
+                if CommandsEnum.is_allow_spam(permission) and self.is_allowed_to_use_command(author_id,
+                                                                                             CommandsEnum.ALLOW_SPAM):
                     await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.add)
-                elif CommandsEnum.is_disallow_spam(permission) and self.is_allowed_to_use_command(author_id, CommandsEnum.DISALLOW_SPAM):
+                elif CommandsEnum.is_disallow_spam(permission) and self.is_allowed_to_use_command(author_id,
+                                                                                                  CommandsEnum.DISALLOW_SPAM):
                     await self.handle_spam_allowance(ctx, usernames, self.allowed_to_spam.remove)
                 print("Can spam:")
                 print(self.allowed_to_spam)
@@ -285,23 +285,16 @@ class Bonko(commands.Cog):
         await message.add_reaction(emoji)
 
     @staticmethod
+    async def get_user(members: List, username: str, mention: bool) -> str:
+        return await UserEnum.get_user(members, username, mention)
+
+    @staticmethod
     async def get_user_id(members: List, username: str) -> int:
-        for member in members:
-            if username.lower() in member.name.lower():
-                return member.id
+        return await UserEnum.get_user_id(members, username)
 
-    async def get_user(self, members: List, username: str, mention: bool) -> str:
-        if mention:
-            user_id = await self.get_user_id(members, username)
-            return self.format_user_id_for_mention(str(user_id))
-        else:
-            return username
-
-    async def get_giannakis(self, mention: bool) -> str:
-        if mention:
-            return self.format_user_id_for_mention(str(UserEnum.GIANNAKIS.value))
-        else:
-            return "giannaki"
+    @staticmethod
+    async def get_giannakis(mention: bool) -> str:
+        return await UserEnum.get_giannakis(mention)
 
     async def is_allowed_to_mention(self, author_id, fuck_off):
         return self.permission_service.is_allowed_to_mention(author_id, fuck_off)
@@ -316,7 +309,7 @@ class Bonko(commands.Cog):
 
     @staticmethod
     def format_user_id_for_mention(user_id: str) -> str:
-        return "<@!" + user_id + ">"
+        return UserEnum.format_user_id_for_mention(user_id)
 
     def is_allowed_to_use_command(self, user_id, command):
         return self.permission_service.is_allowed_to_use_command(user_id, command, self.allowed_to_spam)

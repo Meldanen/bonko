@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import List
 
 from enums.RoleEnum import RoleEnum
 
@@ -23,6 +24,8 @@ class UserEnum(Enum):
 
     CON = User(318437163169611776, RoleEnum.RESTRICTED)
 
+    SIBLINGS_SIBLING = User(181353937662771200, RoleEnum.PLEB)
+
     @staticmethod
     def is_good_person(id: int) -> bool:
         return id in [UserEnum.MELDANEN.value.id, UserEnum.JOSEPH.value.id, UserEnum.MELON.value.id]
@@ -45,3 +48,28 @@ class UserEnum(Enum):
             if user.value.id == id:
                 return user.value
         return None
+
+    @staticmethod
+    async def get_user_id(members: List, username: str) -> int:
+        for member in members:
+            if username.lower() in member.name.lower():
+                return member.id
+
+    @staticmethod
+    async def get_user(members: List, username: str, mention: bool) -> str:
+        if mention:
+            user_id = await UserEnum.get_user_id(members, username)
+            return UserEnum.format_user_id_for_mention(str(user_id))
+        else:
+            return username
+
+    @staticmethod
+    async def get_giannakis(mention: bool) -> str:
+        if mention:
+            return UserEnum.format_user_id_for_mention(str(UserEnum.GIANNAKIS.value))
+        else:
+            return "giannaki"
+
+    @staticmethod
+    def format_user_id_for_mention(user_id: str) -> str:
+        return "<@!" + user_id + ">"

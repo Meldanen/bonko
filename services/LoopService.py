@@ -21,7 +21,7 @@ class LoopService:
         self.HELEN_MODIFIER = 8
 
     def init_loops(self):
-        # self.bot.loop.create_task(self.daily_word_of_the_day())
+        self.bot.loop.create_task(self.daily_commands())
         self.bot.loop.create_task(self.random_messages())
 
     async def random_messages(self):
@@ -93,24 +93,46 @@ class LoopService:
             messages.append(random_emoji)
         return messages
 
-    async def daily_word_of_the_day(self):
+    async def daily_commands(self):
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
             self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
-            now = datetime.now().utcnow()
-            if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
-                self.word_of_the_day_occurred = False
-                self.logging_service.log(f'Setting word_of_the_day_occurred to false, {self.word_of_the_day_occurred}')
-            if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
-                guilds = self.bot.guilds
-                for guild in guilds:
-                    for channel in guild.text_channels:
-                        if channel.name == "general":
-                            self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
-                            emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
-                            message = await channel.send("Word of the day: bonk")
-                            await message.add_reaction(emoji)
-                self.word_of_the_day_occurred = True
-                self.logging_service.log(f'Setting word_of_the_day_occurred to true, {self.word_of_the_day_occurred}')
-
+            await self.handle_daily_word_of_the_day()
+            await self.handle_daily_siblings_sibling_penor()
             await asyncio.sleep(60 * 55)  # wait 55 minutes
+
+    async def handle_daily_word_of_the_day(self):
+        now = datetime.now().utcnow()
+        if now.hour == self.WORD_OF_THE_DAY_TIME - 1:
+            self.word_of_the_day_occurred = False
+            self.logging_service.log(f'Setting word_of_the_day_occurred to false, {self.word_of_the_day_occurred}')
+        if now.hour == self.WORD_OF_THE_DAY_TIME and not self.word_of_the_day_occurred:
+            guilds = self.bot.guilds
+            for guild in guilds:
+                for channel in guild.text_channels:
+                    if channel.name == "general":
+                        self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
+                        emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
+                        message = await channel.send("Word of the day: bonk")
+                        await message.add_reaction(emoji)
+            self.word_of_the_day_occurred = True
+            self.logging_service.log(f'Setting word_of_the_day_occurred to true, {self.word_of_the_day_occurred}')
+
+    async def handle_daily_siblings_sibling_penor(self):
+        now = datetime.now().utcnow()
+        if now.hour == self.SIBLINGS_SIBLING_PENOR_TIME - 1:
+            self.siblings_sibling_daily_penor_occured = False
+            self.logging_service.log(
+                f'Setting siblings_sibling_daily_penor_occured to false, {self.siblings_sibling_daily_penor_occured}')
+        if now.hour == self.SIBLINGS_SIBLING_PENOR_TIME and not self.siblings_sibling_daily_penor_occured:
+            guilds = self.bot.guilds
+            for guild in guilds:
+                for channel in guild.text_channels:
+                    if channel.name == "glens-weenie":
+                        self.logging_service.log_starting_progress("Sibling's sibling penor of the day")
+                        emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
+                        message = await channel.send("Word of the day: bonk")
+                        await message.add_reaction(emoji)
+            self.siblings_sibling_daily_penor_occured = True
+            self.logging_service.log(
+                f'Setting siblings_sibling_daily_penor_occured to true, {self.word_of_the_day_occurred}')
