@@ -69,6 +69,8 @@ class RandomQuoteEnum(Enum):
 
     BOOTY = RandomQuote(15, "my eyes will lead me to your booty, like the nose lead a cartoon character to a pie", EmojiEnum.WISENAKIS, False)
 
+    KARPA = RandomQuote(16, "Men axonese kosta mou!! En na ime standby mode,etimos na sou doko KARPA", EmojiEnum.WISENAKIS, False)
+
     @staticmethod
     async def get_random_quote(ctx, user_id):
         index = randrange(len(RandomQuoteEnum))
@@ -78,7 +80,7 @@ class RandomQuoteEnum(Enum):
     async def get_quote(ctx, id, user_id):
         quote = RandomQuoteEnum.get_by_id(id)
         if quote == RandomQuoteEnum.RANDOM_RANDOM:
-            return await RandomQuoteEnum.get_random_quote_from_history(ctx, user_id)
+            return await RandomQuoteEnum.get_random_quote_from_history(ctx.guild.text_channels, user_id)
         elif quote.value.file:
             return FileUtils.get_file(quote.value.quote)
         else:
@@ -91,15 +93,17 @@ class RandomQuoteEnum(Enum):
                 return enum
 
     @staticmethod
-    async def get_random_quote_from_history(ctx, user_id):
+    async def get_random_quote_from_history(guild_text_channels, user_id):
         messages = list()
-        for channel in ctx.guild.text_channels:
+        for channel in guild_text_channels:
             channel_creation = int(channel.created_at.timestamp())
             now = int(datetime.now().utcnow().timestamp())
             random_start = datetime.fromtimestamp(randrange(channel_creation, now))
             async for message in channel.history(limit=101, around=random_start):
                 if message.author.id == user_id:
                     messages.append(message)
+        if not messages or len(messages) == 0:
+            return RandomQuoteEnum.SIMPLE.value
         random_index = randrange(len(messages))
         message = messages[random_index]
         if message and message.content:

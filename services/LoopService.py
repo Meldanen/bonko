@@ -4,6 +4,7 @@ from random import randrange
 
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
+from enums.RandomQuoteEnum import RandomQuoteEnum
 from enums.UserEnum import UserEnum
 
 
@@ -34,7 +35,7 @@ class LoopService:
             time_to_wait = self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER
             # time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER) + self.times_randomly_messaged * 100
             self.logging_service.log(f'Time until next random message: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
-            await asyncio.sleep(time_to_wait)
+            # await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
                 self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
@@ -42,9 +43,11 @@ class LoopService:
                 self.times_randomly_messaged += 1
 
     async def send_random_message_to_server(self, guild):
-        messages = await self.get_possible_messages(guild)
-        random_message_index = randrange(len(messages))
-        random_message = messages[random_message_index]
+        # messages = await self.get_possible_messages(guild)
+        # random_message_index = randrange(len(messages))
+        # random_message = messages[random_message_index]
+        random_quote = await RandomQuoteEnum.get_random_quote_from_history(guild.text_channels, UserEnum.GIANNAKIS.value.id)
+        random_message = random_quote.quote
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]
         self.logging_service.log(f'Sending: {random_message} to: {guild.name}:{random_channel}')
