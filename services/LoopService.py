@@ -35,7 +35,7 @@ class LoopService:
             time_to_wait = self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER
             # time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER) + self.times_randomly_messaged * 100
             self.logging_service.log(f'Time until next random message: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
-            # await asyncio.sleep(time_to_wait)
+            await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
                 self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
