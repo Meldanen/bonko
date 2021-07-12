@@ -71,6 +71,8 @@ class RandomQuoteEnum(Enum):
 
     KARPA = RandomQuote(16, "Men axonese kosta mou!! En na ime standby mode,etimos na sou doko KARPA", EmojiEnum.WISENAKIS, False)
 
+    KFC = RandomQuote(17, "sure, but i know i can get an other bucket, with more meet, and when i come back from work and I AM DOWNSTAIRS, next to the kiosk, personally i will get the other bucket that they offer more value for money, and just get the bbq sauce omw  home on a personal lvl ( at least ) its not a promo :stuck_out_tongue: i just cant see it as one xD", EmojiEnum.WISENAKIS, False)
+
     @staticmethod
     async def get_random_quote(ctx, user_id):
         index = randrange(len(RandomQuoteEnum))
