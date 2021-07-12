@@ -16,7 +16,7 @@ class EmojiEnum(Enum):
 
     SNACCS = "snaccs"
 
-    WISENAKIS = "wisenakis"
+    WISENYRAKIS = "wisenyrakis"
 
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
