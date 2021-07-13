@@ -18,6 +18,12 @@ class EmojiEnum(Enum):
 
     WISENYRAKIS = "wisenyrakis"
 
+    FIRE = "fire"
+
+    KNIFE = "knife"
+
+    SHIELD = "shield"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):
