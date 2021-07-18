@@ -287,7 +287,8 @@ class Bonko(commands.Cog):
         if not quote:
             return
         if isinstance(quote, File):
-            await ctx.send(file=quote)
+            message = await ctx.send(file=quote)
+            await message.add_reaction(RandomQuoteEnum.WAR_CRIMES.value.reaction)
 
 
     @staticmethod

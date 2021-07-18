@@ -73,7 +73,7 @@ class RandomQuoteEnum(Enum):
 
     KFC = RandomQuote(17, "sure, but i know i can get an other bucket, with more meet, and when i come back from work and I AM DOWNSTAIRS, next to the kiosk, personally i will get the other bucket that they offer more value for money, and just get the bbq sauce omw  home on a personal lvl ( at least ) its not a promo :stuck_out_tongue: i just cant see it as one xD", EmojiEnum.WISENYRAKIS, False)
 
-    WAR_CRIMES = RandomQuote(18, "assets/images/war_crimes.png", EmojiEnum.SADNESS, True)
+    WAR_CRIMES = RandomQuote(18, "assets/images/war_crimes.png", EmojiEnum.KNIFE, True)
 
     WAR_CRIMES_CHEESE = RandomQuote(19, "assets/images/war_crimes_cheese.png", EmojiEnum.SADNESS, True)
 
