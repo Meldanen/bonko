@@ -275,6 +275,21 @@ class Bonko(commands.Cog):
             reaction = await self.get_emoji(ctx, quote.reaction.value)
             await self.send_message_with_reaction(ctx, f'> {message}', reaction)
 
+    @commands.command(name=CommandsEnum.WAR_CRIMES.value.command)
+    async def war_crimes(self, ctx: commands.context, cheese=None):
+        self.logging_service.log_starting_progress(CommandsEnum.WAR_CRIMES.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.WAR_CRIMES):
+            return
+        if cheese and cheese.lower() == "cheese":
+            quote = await RandomQuoteEnum.get_quote(ctx, int(RandomQuoteEnum.WAR_CRIMES_CHEESE.value.id), None)
+        else:
+            quote = await RandomQuoteEnum.get_quote(ctx, int(RandomQuoteEnum.WAR_CRIMES.value.id), None)
+        if not quote:
+            return
+        if isinstance(quote, File):
+            await ctx.send(file=quote)
+
+
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
