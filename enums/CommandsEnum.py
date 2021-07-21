@@ -31,7 +31,7 @@ class CommandsEnum(Enum):
 
     DISALLOW_SPAM = Command(8, "disallowspam", RoleEnum.DEVELOPER, ";;permissions disallowspam <user>")
 
-    ASTONISHED = Command(9, "astonished", RoleEnum.PLEB, ";;astonished <optional:naked")
+    ASTONISHED = Command(9, "astonished", RoleEnum.PLEB, ";;astonished <optional:naked>")
 
     SHRUG = Command(10, "shrug", RoleEnum.PLEB, ";;shrug")
 
