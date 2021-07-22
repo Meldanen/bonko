@@ -6,7 +6,6 @@ import emojis
 from discord import File
 
 from discord.ext import commands
-from discord_slash import cog_ext, SlashContext, SlashCommand
 from dotenv import load_dotenv
 
 from enums.AsciiArtEnum import AsciiArtEnum
