@@ -103,7 +103,7 @@ class LoopService:
             self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
             await self.handle_daily_word_of_the_day()
             await self.handle_daily_siblings_sibling_penor()
-            await asyncio.sleep(60 * 55)  # wait 55 minutes
+            # await asyncio.sleep(60 * 55)  # wait 55 minutes
 
     async def handle_daily_word_of_the_day(self):
         now = datetime.now().utcnow()
@@ -121,6 +121,7 @@ class LoopService:
                         await message.add_reaction(emoji)
             self.word_of_the_day_occurred = True
             self.logging_service.log(f'Setting word_of_the_day_occurred to true, {self.word_of_the_day_occurred}')
+        await asyncio.sleep(60 * 55)  # wait 55 minutes
 
     async def handle_daily_siblings_sibling_penor(self):
         now = datetime.now().utcnow()
@@ -141,3 +142,4 @@ class LoopService:
             self.siblings_sibling_daily_penor_occured = True
             self.logging_service.log(
                 f'Setting siblings_sibling_daily_penor_occured to true, {self.word_of_the_day_occurred}')
+        await asyncio.sleep(60 * 55)  # wait 55 minutes
