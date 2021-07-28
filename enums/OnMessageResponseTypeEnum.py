@@ -31,6 +31,8 @@ class OnMessageResponseTypeEnum(Enum):
 
     ASPIS = OnMessageResponseType(8, "🛡️", SentimentEnum.NEUTRAL)
 
+    YEA = OnMessageResponseType(9, "yea", SentimentEnum.NEUTRAL)
+
     @staticmethod
     def is_good_bonko(id):
         return OnMessageResponseTypeEnum.get_from_id(id).value.sentiment == SentimentEnum.HAPPY
@@ -47,6 +49,10 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def is_yeah(id):
         return id == OnMessageResponseTypeEnum.YEAH.value.id
+
+    @staticmethod
+    def is_yea(id):
+        return id == OnMessageResponseTypeEnum.YEA.value.id
 
     @staticmethod
     def is_fotia_maxeri_aspis(id):

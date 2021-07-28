@@ -15,7 +15,7 @@ class ResponseService:
             await self.send_ye_response(ctx.channel, ctx.guild)
         elif OnMessageResponseTypeEnum.is_bad_bonko(response_type_enum.value.id):
             await self.send_random_bad_bonko_response(ctx.channel)
-        elif OnMessageResponseTypeEnum.is_yeah(response_type_enum.value.id):
+        elif OnMessageResponseTypeEnum.is_yeah(response_type_enum.value.id) or OnMessageResponseTypeEnum.is_yea(response_type_enum.value.id):
             await self.send_yeah_response(ctx.channel, ctx.guild)
         elif OnMessageResponseTypeEnum.is_fotia_maxeri_aspis(response_type_enum.value.id):
             await self.send_reaction(ctx, response_type_enum)
