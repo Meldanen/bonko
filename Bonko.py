@@ -339,12 +339,3 @@ class Bonko(commands.Cog):
 
     def is_good_person(self, id: int) -> bool:
         return self.permission_service.is_good_person(id)
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    TOKEN = os.getenv('DISCORD_TOKEN')
-    intents = discord.Intents.all()
-    bot = commands.Bot(command_prefix=';;', intents=intents, help_command=None)
-    bot.add_cog(Bonko(bot))
-    bot.run(TOKEN)
