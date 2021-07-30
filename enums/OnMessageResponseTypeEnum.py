@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from enums.FotiaMaxeriAspisEnum import FotiaMaxeriAspisEnum
 from enums.SentimentEnum import SentimentEnum
 
 
@@ -65,10 +64,16 @@ class OnMessageResponseTypeEnum(Enum):
         return id == OnMessageResponseTypeEnum.FOTIA.value.id or id == OnMessageResponseTypeEnum.MAXERI.value.id or id == OnMessageResponseTypeEnum.ASPIS.value.id
 
     @staticmethod
+    def is_startswith_ye(message):
+        return message.startswith(OnMessageResponseTypeEnum.YE.value.value)
+
+    @staticmethod
     def get_from_message(message):
         for enum in OnMessageResponseTypeEnum:
             if enum.value.value == message:
                 return enum
+        if OnMessageResponseTypeEnum.is_startswith_ye(message):
+            return OnMessageResponseTypeEnum.YE
 
     @staticmethod
     def get_from_id(id):

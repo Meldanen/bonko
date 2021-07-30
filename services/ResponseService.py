@@ -4,23 +4,28 @@ from enums.EmojiEnum import EmojiEnum
 from enums.FotiaMaxeriAspisEnum import FotiaMaxeriAspisEnum
 from enums.JudgeBonkoResponseEnum import JudgeBonkoResponseEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
+from enums.UserEnum import UserEnum
 
 
 class ResponseService:
 
     async def send_response(self, ctx, response_type_enum):
-        if OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
+        if OnMessageResponseTypeEnum.is_startswith_ye(ctx.content.lower()) and not OnMessageResponseTypeEnum.is_yeah(
+                response_type_enum.value.id) and not OnMessageResponseTypeEnum.is_yea(response_type_enum.value.id):
+            await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, False)
+        elif OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
             await self.send_random_good_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_ye(response_type_enum.value.id):
             await self.send_ye_response(ctx.channel, ctx.guild)
         elif OnMessageResponseTypeEnum.is_bad_bonko(response_type_enum.value.id):
             await self.send_random_bad_bonko_response(ctx.channel)
-        elif OnMessageResponseTypeEnum.is_yeah(response_type_enum.value.id) or OnMessageResponseTypeEnum.is_yea(response_type_enum.value.id):
-            await self.send_yeah_response(ctx.channel, ctx.guild)
+        elif OnMessageResponseTypeEnum.is_yeah(response_type_enum.value.id) or OnMessageResponseTypeEnum.is_yea(
+                response_type_enum.value.id):
+            await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild)
         elif OnMessageResponseTypeEnum.is_fotia_maxeri_aspis(response_type_enum.value.id):
             await self.send_reaction(ctx, response_type_enum)
         elif OnMessageResponseTypeEnum.is_ey(response_type_enum.value.id):
-            await self.send_yeah_response(ctx.channel, ctx.guild, True)
+            await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, True)
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
@@ -47,7 +52,9 @@ class ResponseService:
         await message.add_reaction(emoji)
 
     @staticmethod
-    async def send_yeah_response(channel, guild, reverse=False):
+    async def send_yeah_response(user_id, channel, guild, reverse=False):
+        if not UserEnum.is_nyroid(user_id):
+            return
         text = "Did you mean: ye"
         if reverse:
             text = text[::-1]
