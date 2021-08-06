@@ -72,8 +72,8 @@ class OnMessageResponseTypeEnum(Enum):
         for enum in OnMessageResponseTypeEnum:
             if enum.value.value == message:
                 return enum
-        if OnMessageResponseTypeEnum.is_startswith_ye(message):
-            return OnMessageResponseTypeEnum.YE
+        # if OnMessageResponseTypeEnum.is_startswith_ye(message):
+        #     return OnMessageResponseTypeEnum.YEAH
 
     @staticmethod
     def get_from_id(id):

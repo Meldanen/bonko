@@ -10,10 +10,10 @@ from enums.UserEnum import UserEnum
 class ResponseService:
 
     async def send_response(self, ctx, response_type_enum):
-        if OnMessageResponseTypeEnum.is_startswith_ye(ctx.content.lower()) and not OnMessageResponseTypeEnum.is_yeah(
-                response_type_enum.value.id) and not OnMessageResponseTypeEnum.is_yea(response_type_enum.value.id):
-            await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, False)
-        elif OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
+        # if OnMessageResponseTypeEnum.is_startswith_ye(ctx.content.lower()) and not OnMessageResponseTypeEnum.is_yeah(
+        #         response_type_enum.value.id) and not OnMessageResponseTypeEnum.is_yea(response_type_enum.value.id) and not OnMessageResponseTypeEnum.is_ye(response_type_enum.value.id):
+        #     await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, False)
+        if OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
             await self.send_random_good_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_ye(response_type_enum.value.id):
             await self.send_ye_response(ctx.channel, ctx.guild)
