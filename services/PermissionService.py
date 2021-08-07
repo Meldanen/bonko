@@ -29,6 +29,10 @@ class PermissionService:
         return (self.is_megus(user_id) or self.is_melon(user_id)) and fuck_off
 
     @staticmethod
+    def is_channel_allowed(channel_name):
+        return channel_name != "board-games"
+
+    @staticmethod
     def is_giannakis(id: int) -> bool:
         return UserEnum.is_giannakis(id)
 
@@ -43,4 +47,3 @@ class PermissionService:
     @staticmethod
     def is_good_person(id: int) -> bool:
         return UserEnum.is_good_person(id)
-

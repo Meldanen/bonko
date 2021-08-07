@@ -10,9 +10,10 @@ from enums.UserEnum import UserEnum
 
 class LoopService:
 
-    def __init__(self, bot, logging_service):
+    def __init__(self, bot, logging_service, permission_service):
         self.bot = bot
         self.logging_service = logging_service
+        self.permission_service = permission_service
         self.word_of_the_day_occurred = False
         self.WORD_OF_THE_DAY_TIME = 9
         self.siblings_sibling_daily_penor_occured = False
@@ -35,7 +36,7 @@ class LoopService:
             time_to_wait = self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER
             # time_to_wait = randrange(self.ONE_HOUR_IN_SECONDS * self.HELEN_MODIFIER) + self.times_randomly_messaged * 100
             self.logging_service.log(f'Time until next random message: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
-            await asyncio.sleep(time_to_wait)
+            # await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
                 self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
@@ -50,6 +51,9 @@ class LoopService:
         random_message = f'> {random_quote.quote}'
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]
+        while not self.permission_service.is_channel_allowed(random_channel.name):
+            random_channel_index = randrange(len(guild.text_channels))
+            random_channel = guild.text_channels[random_channel_index]
         self.logging_service.log(f'Sending: {random_message} to: {guild.name}:{random_channel}')
         # print(random_message)
         await random_channel.send(random_message)
