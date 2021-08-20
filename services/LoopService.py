@@ -19,7 +19,7 @@ class LoopService:
         self.siblings_sibling_daily_penor_occured = False
         self.SIBLINGS_SIBLING_PENOR_TIME = 10
         self.times_randomly_messaged = 0
-        self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 2
+        self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 1
         self.ONE_HOUR_IN_SECONDS = 3600
         self.HELEN_MODIFIER = 12
 
