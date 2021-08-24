@@ -19,7 +19,7 @@ class LoopService:
         self.siblings_sibling_daily_penor_occured = False
         self.SIBLINGS_SIBLING_PENOR_TIME = 10
         self.times_randomly_messaged = 0
-        self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 2
+        self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 1
         self.ONE_HOUR_IN_SECONDS = 3600
         self.HELEN_MODIFIER = 12
 
@@ -105,7 +105,7 @@ class LoopService:
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
             self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
-            # await self.handle_daily_word_of_the_day()
+            await self.handle_daily_word_of_the_day()
             await self.handle_daily_siblings_sibling_penor()
             await asyncio.sleep(60 * 55)  # wait 55 minutes
 
@@ -118,7 +118,7 @@ class LoopService:
             guilds = self.bot.guilds
             for guild in guilds:
                 for channel in guild.text_channels:
-                    if channel.name == "general":
+                    if channel.name == "discord-games":
                         self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
                         emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
                         message = await channel.send("Word of the day: bonk")
