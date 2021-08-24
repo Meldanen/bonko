@@ -30,7 +30,7 @@ class PermissionService:
 
     @staticmethod
     def is_channel_allowed(channel_name):
-        return channel_name != "board-games"
+        return channel_name == "stoopids"
 
     @staticmethod
     def is_giannakis(id: int) -> bool:
