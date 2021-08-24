@@ -47,7 +47,7 @@ class LoopService:
         # messages = await self.get_possible_messages(guild)
         # random_message_index = randrange(len(messages))
         # random_message = messages[random_message_index]
-        random_quote = await RandomQuoteEnum.get_random_quote_from_history(guild.text_channels, UserEnum.GIANNAKIS.value.id)
+        random_quote = await RandomQuoteEnum.get_random_quote_from_history(guild.text_channels, None)
         random_message = f'> {random_quote.quote}'
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]

@@ -4,7 +4,6 @@ from enum import Enum
 from random import randrange
 
 from enums.EmojiEnum import EmojiEnum
-from enums.UserEnum import UserEnum
 from utils import FileUtils
 
 
@@ -109,7 +108,9 @@ class RandomQuoteEnum(Enum):
             now = int(datetime.now().utcnow().timestamp())
             random_start = datetime.fromtimestamp(randrange(channel_creation, now))
             async for message in channel.history(limit=101, around=random_start):
-                if message.author.id == user_id:
+                if user_id and message.author.id == user_id:
+                    messages.append(message)
+                else:
                     messages.append(message)
         if not messages or len(messages) == 0:
             return RandomQuoteEnum.SIMPLE.value

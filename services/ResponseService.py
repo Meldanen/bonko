@@ -47,7 +47,8 @@ class ResponseService:
 
     @staticmethod
     async def send_ye_response(channel, guild):
-        message = await channel.send("tuc crackers + cottage cheese")
+        # message = await channel.send("tuc crackers + cottage cheese")
+        message = await channel.send("anaraes + digestives")
         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.SNACCS.value)
         await message.add_reaction(emoji)
 
