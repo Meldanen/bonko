@@ -1,12 +1,10 @@
 # main.py
-import asyncio
 from typing import List
 
+import discord
 import emojis
 from discord import File
-
 from discord.ext import commands
-from dotenv import load_dotenv
 
 from enums.AsciiArtEnum import AsciiArtEnum
 from enums.CommandsEnum import CommandsEnum
@@ -22,6 +20,7 @@ from services.LoopService import LoopService
 from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
+
 
 class Bonko(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -51,6 +50,18 @@ class Bonko(commands.Cog):
         response_enum = OnMessageResponseTypeEnum.get_from_message(ctx.content.lower())
         if response_enum:
             await self.response_service.send_response(ctx, response_enum)
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        guild = message.guild
+        async for entry in guild.audit_logs(limit=1, action=discord.AuditLogAction.message_delete):
+            entry_target = entry.target
+        channel = message.channel
+        if self.permission_service.is_bonko(entry_target.id):
+            banned_stuff = ["anaraes + digestives", "did you mean: ye"]
+            if message.content and (message.content.lower() in banned_stuff):
+                await channel.send("This is turning me on Step-Bonko!")
+                # print(" " + message.content)
 
     @commands.command(name=CommandsEnum.HELP.value.command)
     async def help(self, ctx: commands.context, role=None):

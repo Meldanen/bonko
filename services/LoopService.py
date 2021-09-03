@@ -24,7 +24,7 @@ class LoopService:
         self.HELEN_MODIFIER = 12
 
     def init_loops(self):
-        self.bot.loop.create_task(self.daily_commands())
+        # self.bot.loop.create_task(self.daily_commands())
         self.bot.loop.create_task(self.random_messages())
 
     async def random_messages(self):
@@ -44,9 +44,6 @@ class LoopService:
                 self.times_randomly_messaged += 1
 
     async def send_random_message_to_server(self, guild):
-        # messages = await self.get_possible_messages(guild)
-        # random_message_index = randrange(len(messages))
-        # random_message = messages[random_message_index]
         random_quote = await RandomQuoteEnum.get_random_quote_from_history(guild.text_channels, None)
         random_message = f'> {random_quote.quote}'
         random_channel_index = randrange(len(guild.text_channels))
@@ -68,38 +65,6 @@ class LoopService:
 
     def is_too_many_messages(self):
         return self.times_randomly_messaged > self.MAX_TIMES_TO_RANDOMLY_MESSAGE
-
-    @staticmethod
-    async def get_possible_messages(guild):
-        messages = list()
-        messages.append("Did you find it?")
-        messages.append("I'm not sure")
-        messages.append("How does that make you feel?")
-        messages.append("Bonk Giannaki")
-        messages.append("No")
-        messages.append("ye")
-        messages.append("Follow the white rabbit")
-        messages.append("Maybe")
-        messages.append("Look left")
-        messages.append("Bad idea")
-        messages.append("As you wish")
-        messages.append("Sometimes the question itself is the answer")
-        messages.append("Better ask yourself")
-        messages.append("What do you think?")
-        messages.append("Just relax")
-        messages.append("Who knows with these crazy kids")
-        messages.append("That's hard to answer")
-        messages.append("It depends")
-        messages.append("I am the Alpha and the Omega, the First and the Last, the Beginning and the End.")
-        messages.append("I don't think that's how it works")
-        bonk = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
-        messages.append(bonk)
-        total_random_emojis = int(len(messages) / 4)
-        for i in range(total_random_emojis):
-            random_emoji_index = randrange(len(guild.emojis))
-            random_emoji = guild.emojis[random_emoji_index]
-            messages.append(random_emoji)
-        return messages
 
     async def daily_commands(self):
         await self.bot.wait_until_ready()

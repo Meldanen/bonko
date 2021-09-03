@@ -10,7 +10,7 @@ class PermissionService:
         self.logging_service = logging_service
 
     def is_allowed_to_use_command(self, user_id, command, special_permissions):
-        if user_id == self.bot_id:
+        if PermissionService.is_bonko(user_id):
             return
         user = UserEnum.get_from_id(user_id)
         if user is None:
@@ -43,6 +43,10 @@ class PermissionService:
     @staticmethod
     def is_melon(id: int) -> bool:
         return UserEnum.is_melon(id)
+
+    @staticmethod
+    def is_bonko(id: int) -> bool:
+        return UserEnum.is_bonko(id)
 
     @staticmethod
     def is_good_person(id: int) -> bool:

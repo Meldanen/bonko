@@ -14,6 +14,8 @@ class User:
 class UserEnum(Enum):
     GIANNAKIS = User(294577564603645952, RoleEnum.PLEB)
 
+    BONKO = User(842351473408344064, RoleEnum.ADMIN)
+
     MELDANEN = User(164447968332611584, RoleEnum.MEGUS)
 
     MELON = User(186521813285601280, RoleEnum.ADMIN)
@@ -39,6 +41,10 @@ class UserEnum(Enum):
     @staticmethod
     def is_megus(id: int) -> bool:
         return id == UserEnum.MELDANEN.value.id
+
+    @staticmethod
+    def is_bonko(id: int) -> bool:
+        return id == UserEnum.BONKO.value.id
 
     @staticmethod
     def is_melon(id: int) -> bool:
