@@ -16,6 +16,8 @@ class UserEnum(Enum):
 
     BONKO = User(842351473408344064, RoleEnum.ADMIN)
 
+    ANTI_BONKO = User(879640212697931786, RoleEnum.ADMIN)
+
     MELDANEN = User(164447968332611584, RoleEnum.MEGUS)
 
     MELON = User(186521813285601280, RoleEnum.ADMIN)
@@ -53,6 +55,10 @@ class UserEnum(Enum):
     @staticmethod
     def is_nyroid(id: int) -> bool:
         return id == UserEnum.NYROID.value.id
+
+    @staticmethod
+    def is_anti_bonko(id: int) -> bool:
+        return id == UserEnum.ANTI_BONKO.value.id
 
     @staticmethod
     def get_from_id(id):

@@ -41,7 +41,7 @@ class CommandsEnum(Enum):
 
     LEMONARIS = Command(13, "lemonaris", RoleEnum.PLEB, ";;lemonaris <optional:emoji>")
 
-    RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.PLEB, "N/A")
+    RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.MEGUS, "N/A")
 
     HAXOR = Command(15, "haxor", RoleEnum.MEGUS, ";;haxor <code> <optional:post_to_server>")
 

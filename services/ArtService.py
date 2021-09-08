@@ -16,7 +16,7 @@ class ArtService:
         leg = await self.get_emoji(ctx, "leg_tone3")
         return head, neck, ass, leg
 
-    async def get_lemonaris_art(self, ctx, fart_on_emoji):
+    async def get_lemonaris_art(self, ctx, fart_on_emojis):
         head = self.add_spaces("", 7)
         head += str(await self.get_emoji(ctx, "hue"))
 
@@ -27,10 +27,11 @@ class ArtService:
         ass = self.add_spaces("", 7)
         ass += await self.get_emoji(ctx, "peach")
         ass += await self.get_emoji(ctx, "dash")
-        if fart_on_emoji:
-            emoji = await self.get_emoji(ctx, fart_on_emoji)
-            if emoji:
-                ass += str(emoji)
+        if fart_on_emojis:
+            for fart_on_emoji in fart_on_emojis:
+                emoji = await self.get_emoji(ctx, fart_on_emoji)
+                if emoji:
+                    ass += str(emoji)
         leg = self.add_spaces("", 4)
         leg += await self.get_emoji(ctx, "leg_tone1")
         leg += await self.get_emoji(ctx, "leg_tone1")

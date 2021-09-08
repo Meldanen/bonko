@@ -262,7 +262,7 @@ class Bonko(commands.Cog):
         await self.send_message(ctx, leg)
 
     @commands.command(name=CommandsEnum.LEMONARIS.value.command)
-    async def lemonaris(self, ctx: commands.context, fart_on_emoji=None):
+    async def lemonaris(self, ctx: commands.context, *fart_on_emoji):
         self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.LEMONARIS):
             return
