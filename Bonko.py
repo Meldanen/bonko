@@ -251,7 +251,7 @@ class Bonko(commands.Cog):
         await ctx.message.delete()
 
     @commands.command(name=CommandsEnum.ART.value.command)
-    async def art(self, ctx: commands.context, fart_on_emoji=None):
+    async def art(self, ctx: commands.context, *fart_on_emoji):
         self.logging_service.log_starting_progress(CommandsEnum.ART.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ART):
             return

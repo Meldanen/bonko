@@ -4,15 +4,16 @@ from enums.EmojiEnum import EmojiEnum
 
 class ArtService:
 
-    async def get_sibling_art(self, ctx, fart_on_emoji):
+    async def get_sibling_art(self, ctx, fart_on_emojis):
         head = await self.get_emoji(ctx, "sibling")
         neck = await self.get_emoji(ctx, "giraffe")
         ass = await self.get_emoji(ctx, "peach")
         ass += await self.get_emoji(ctx, "dash")
-        if fart_on_emoji:
-            emoji = await self.get_emoji(ctx, fart_on_emoji)
-            if emoji:
-                ass += str(emoji)
+        if fart_on_emojis:
+            for fart_on_emoji in fart_on_emojis:
+                emoji = await self.get_emoji(ctx, fart_on_emoji)
+                if emoji:
+                    ass += str(emoji)
         leg = await self.get_emoji(ctx, "leg_tone3")
         return head, neck, ass, leg
 
