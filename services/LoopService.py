@@ -38,7 +38,7 @@ class LoopService:
             self.logging_service.log(f'Time until next random message: {time_to_wait}, Times messaged today: {self.times_randomly_messaged}')
             await asyncio.sleep(time_to_wait)
             if not self.is_too_many_messages():
-                self.logging_service.log_starting_progress(CommandsEnum.RANDOM_MESSAGE.value)
+                self.logging_service.log_starting_process(CommandsEnum.RANDOM_MESSAGE.value)
                 for guild in self.bot.guilds:
                     await self.send_random_message_to_server(guild)
                 self.times_randomly_messaged += 1
@@ -84,7 +84,7 @@ class LoopService:
             for guild in guilds:
                 for channel in guild.text_channels:
                     if channel.name == "discord-games":
-                        self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
+                        self.logging_service.log_starting_process(CommandsEnum.WORD_OF_THE_DAY.value)
                         emoji = await EmojiEnum.get_custom_emoji(channel.guild.emojis, EmojiEnum.BONK.value)
                         message = await channel.send("Word of the day: bonk")
                         await message.add_reaction(emoji)
@@ -102,7 +102,7 @@ class LoopService:
             for guild in guilds:
                 for channel in guild.text_channels:
                     if channel.name == "glens-weenie":
-                        self.logging_service.log_starting_progress("Sibling's sibling penor of the day")
+                        self.logging_service.log_starting_process("Sibling's sibling penor of the day")
                         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
                         user = UserEnum.format_user_id_for_mention(str(UserEnum.SIBLINGS_SIBLING.value.id))
                         message = await channel.send(user)

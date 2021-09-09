@@ -65,7 +65,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.HELP.value.command)
     async def help(self, ctx: commands.context, role=None):
-        self.logging_service.log_starting_progress(CommandsEnum.HELP.value)
+        self.logging_service.log_starting_process(CommandsEnum.HELP.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.HELP):
             return
         if role is None or role.lower() == 'all':
@@ -76,7 +76,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.HAXOR.value.command)
     async def haxor(self, ctx: commands.context, code, send_message=False):
-        self.logging_service.log_starting_progress(CommandsEnum.HAXOR.value)
+        self.logging_service.log_starting_process(CommandsEnum.HAXOR.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.HAXOR):
             return
         execution_result = {}
@@ -91,7 +91,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.SAY.value.command)
     async def say(self, ctx: commands.context, server_name, channel_name, message):
-        self.logging_service.log_starting_progress(CommandsEnum.SAY.value)
+        self.logging_service.log_starting_process(CommandsEnum.SAY.value)
         author_id = ctx.author.id
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.SAY):
             return
@@ -111,7 +111,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.BONK.value.command)
     async def bonk(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.BONK.value)
+        self.logging_service.log_starting_process(CommandsEnum.BONK.value)
         author_id = ctx.author.id
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.BONK):
             return
@@ -130,7 +130,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.OMEGA_BONK.value.command)
     async def omega_bonk(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
+        self.logging_service.log_starting_process(CommandsEnum.OMEGA_BONK.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OMEGA_BONK):
             return
         message = self.art_service.get_omega_bonk()
@@ -139,7 +139,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name="giannakis")
     async def giannakis(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.OMEGA_BONK.value)
+        self.logging_service.log_starting_process(CommandsEnum.OMEGA_BONK.value)
         message = AsciiArtEnum.GIANNAKIS.value
         print(len(message))
         emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
@@ -147,14 +147,14 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.SPAM_SOFT.value.command)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
-        self.logging_service.log_starting_progress(CommandsEnum.SPAM_SOFT.value)
+        self.logging_service.log_starting_process(CommandsEnum.SPAM_SOFT.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SPAM_SOFT):
             return
         await self.handle_spam(ctx, emoji, times, list(usernames), False)
 
     @commands.command(name=CommandsEnum.SPAM_HARD.value.command)
     async def spam_hard(self, ctx: commands.context, emoji: str, times: int, *usernames):
-        self.logging_service.log_starting_progress(CommandsEnum.SPAM_HARD.value)
+        self.logging_service.log_starting_process(CommandsEnum.SPAM_HARD.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SPAM_HARD):
             return
         await self.handle_spam(ctx, emoji, times, list(usernames), True)
@@ -176,7 +176,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.BAD_GIANNAKIS.value.command)
     async def bad_giannakis(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.BAD_GIANNAKIS.value)
+        self.logging_service.log_starting_process(CommandsEnum.BAD_GIANNAKIS.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BAD_GIANNAKIS):
             return
         channel = ctx.channel
@@ -191,7 +191,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value.command)
     async def word_of_the_day(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.WORD_OF_THE_DAY.value)
+        self.logging_service.log_starting_process(CommandsEnum.WORD_OF_THE_DAY.value)
         author_id = ctx.author.id
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.WORD_OF_THE_DAY):
             return
@@ -203,7 +203,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value.command)
     async def permissions(self, ctx: commands.context, permission, *usernames):
-        self.logging_service.log_starting_progress(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
+        self.logging_service.log_starting_process(f'{CommandsEnum.PERMISSIONS.value}:{permission}')
         author_id = ctx.author.id
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.PERMISSIONS):
             return
@@ -228,7 +228,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.ASTONISHED.value.command)
     async def astonished(self, ctx: commands.context, naked=""):
-        self.logging_service.log_starting_progress(CommandsEnum.ASTONISHED.value)
+        self.logging_service.log_starting_process(CommandsEnum.ASTONISHED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ASTONISHED):
             return
         emoji = await self.get_emoji(ctx, EmojiEnum.ASTONISHED.value)
@@ -243,7 +243,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.SHRUG.value.command)
     async def shrug(self, ctx: commands.context):
-        self.logging_service.log_starting_progress(CommandsEnum.SHRUG.value)
+        self.logging_service.log_starting_process(CommandsEnum.SHRUG.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SHRUG):
             return
         message = "¯\_(ツ)_/¯"
@@ -252,7 +252,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.ART.value.command)
     async def art(self, ctx: commands.context, *fart_on_emoji):
-        self.logging_service.log_starting_progress(CommandsEnum.ART.value)
+        self.logging_service.log_starting_process(CommandsEnum.ART.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ART):
             return
         head, neck, ass, leg = await self.art_service.get_sibling_art(ctx, fart_on_emoji)
@@ -263,7 +263,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.LEMONARIS.value.command)
     async def lemonaris(self, ctx: commands.context, *fart_on_emoji):
-        self.logging_service.log_starting_progress(CommandsEnum.LEMONARIS.value)
+        self.logging_service.log_starting_process(CommandsEnum.LEMONARIS.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.LEMONARIS):
             return
         message = await self.art_service.get_lemonaris_art(ctx, fart_on_emoji)
@@ -271,7 +271,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.QUOTE.value.command)
     async def quote(self, ctx: commands.context, quote_id=None):
-        self.logging_service.log_starting_progress(CommandsEnum.QUOTE.value)
+        self.logging_service.log_starting_process(CommandsEnum.QUOTE.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.QUOTE):
             return
         if quote_id:
@@ -289,7 +289,7 @@ class Bonko(commands.Cog):
 
     @commands.command(name=CommandsEnum.WAR_CRIMES.value.command)
     async def war_crimes(self, ctx: commands.context, cheese=None):
-        self.logging_service.log_starting_progress(CommandsEnum.WAR_CRIMES.value)
+        self.logging_service.log_starting_process(CommandsEnum.WAR_CRIMES.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.WAR_CRIMES):
             return
         if cheese and cheese.lower() == "cheese":

@@ -1,6 +1,6 @@
 class LoggingService:
 
-    def log_starting_progress(self, command, *suffix):
+    def log_starting_process(self, command, *suffix):
         if suffix:
             message = f'{command}:{suffix} '
         else:
