@@ -34,6 +34,8 @@ class OnMessageResponseTypeEnum(Enum):
 
     EY = OnMessageResponseType(10, "ey", SentimentEnum.NEUTRAL)
 
+    GOOD_ANTI_BONKO = OnMessageResponseType(10, "good antibonko", SentimentEnum.NEUTRAL)
+
     @staticmethod
     def is_good_bonko(id):
         return OnMessageResponseTypeEnum.get_from_id(id).value.sentiment == SentimentEnum.HAPPY
@@ -58,6 +60,10 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def is_ey(id):
         return id == OnMessageResponseTypeEnum.EY.value.id
+
+    @staticmethod
+    def is_good_anti_bonko(id):
+        return id == OnMessageResponseTypeEnum.GOOD_ANTI_BONKO.value.id
 
     @staticmethod
     def is_fotia_maxeri_aspis(id):

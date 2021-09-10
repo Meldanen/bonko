@@ -55,6 +55,8 @@ class CommandsEnum(Enum):
 
     SALT = Command(20, "salt", RoleEnum.PLEB, ";;salt")
 
+    SALT_MODE = Command(21, "saltmode", RoleEnum.ADMIN, ";;saltmode <on:off>")
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value.command

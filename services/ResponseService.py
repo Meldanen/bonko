@@ -23,6 +23,8 @@ class ResponseService:
             await self.send_reaction(ctx, response_type_enum)
         elif OnMessageResponseTypeEnum.is_ey(response_type_enum.value.id):
             await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, True)
+        elif OnMessageResponseTypeEnum.is_good_anti_bonko(response_type_enum.value.id):
+            await self.send_good_anti_bonko_response(ctx.channel)
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
@@ -34,6 +36,10 @@ class ResponseService:
 
     async def send_random_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_response()
+        await self.send(channel, response)
+
+    async def send_good_anti_bonko_response(self, channel):
+        response = JudgeBonkoResponseEnum.EYES.value.value
         await self.send(channel, response)
 
     async def send(self, channel, response):

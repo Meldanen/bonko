@@ -29,6 +29,8 @@ class EmojiEnum(Enum):
 
     SALT = "salt"
 
+    EYES = "eyes"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):

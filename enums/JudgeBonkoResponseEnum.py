@@ -19,6 +19,10 @@ class JudgeBonkoResponseEnum(Enum):
 
     SAD = JudgeBonkoResponse(2, "（´＿｀）", False)
 
+    EYES = JudgeBonkoResponse(3, "👀", False)
+
+    SALT_BAE = JudgeBonkoResponse(4, "assets/gifs/shy_goofy.gif", True)
+
     @staticmethod
     def get_random_response():
         index = randrange(len(JudgeBonkoResponseEnum))
