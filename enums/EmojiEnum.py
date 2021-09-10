@@ -1,8 +1,9 @@
 from enum import Enum
+
+import emojis
 from discord import Emoji as CustomEmoji
 from discord.utils import get
 from emojis.db import Emoji as DefaultEmoji
-import emojis
 
 
 class EmojiEnum(Enum):
@@ -25,6 +26,8 @@ class EmojiEnum(Enum):
     SHIELD = "shield"
 
     SADNESS = "sadness"
+
+    SALT = "salt"
 
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):

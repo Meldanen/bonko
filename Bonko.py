@@ -143,9 +143,8 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SALT):
             return
         message = self.art_service.get_salt()
-        # emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
-        # await self.send_message_with_reaction(ctx, message, emoji)
-        await self.send_message(ctx, message)
+        emoji = await self.get_emoji(ctx, EmojiEnum.SALT.value)
+        await self.send_message_with_reaction(ctx, message, emoji)
 
     @commands.command(name="giannakis")
     async def giannakis(self, ctx: commands.context):
