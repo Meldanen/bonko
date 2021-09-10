@@ -53,6 +53,8 @@ class CommandsEnum(Enum):
 
     WAR_CRIMES = Command(19, "warcrimes", RoleEnum.PLEB, ";;warcrimes <optional:cheese>")
 
+    SALT = Command(20, "salt", RoleEnum.PLEB, ";;salt")
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value.command

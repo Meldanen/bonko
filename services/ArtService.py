@@ -46,10 +46,13 @@ class ArtService:
             message += "\u200b "
         return message
 
-
     @staticmethod
     def get_omega_bonk():
         return AsciiArtEnum.OMEGA_BONK.value
+
+    @staticmethod
+    def get_salt():
+        return AsciiArtEnum.SALT.value
 
     @staticmethod
     def get_emoji(ctx, emoji):
