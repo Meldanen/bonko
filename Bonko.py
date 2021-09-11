@@ -29,7 +29,7 @@ class Bonko(commands.Cog):
         self.logging_service = LoggingService()
         self.art_service = ArtService()
         self.response_service = ResponseService()
-        self.salt_mode = False
+        self.react_mode_properties = (False, None)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -51,8 +51,8 @@ class Bonko(commands.Cog):
         response_enum = OnMessageResponseTypeEnum.get_from_message(ctx.content.lower())
         if response_enum:
             await self.response_service.send_response(ctx, response_enum)
-        if self.salt_mode:
-            await ctx.add_reaction(await EmojiEnum.get_emoji(ctx.guild.emojis, "salt"))
+        if self.react_mode_properties[0]:
+            await ctx.add_reaction(await EmojiEnum.get_emoji(ctx.guild.emojis, self.react_mode_properties[1]))
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -66,18 +66,27 @@ class Bonko(commands.Cog):
                 await channel.send("This is turning me on Step-Bonko!")
                 # print(" " + message.content)
 
+    @commands.command(name=CommandsEnum.REACT_MODE.value.command)
+    async def react_mode(self, ctx: commands.context, emoji, activation=None):
+        self.logging_service.log_starting_process(CommandsEnum.REACT_MODE.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.REACT_MODE):
+            return
+        if activation:
+            if activation == "on":
+                self.react_mode_properties = (True, emoji)
+            elif activation == "off":
+                self.react_mode_properties = (False, None)
+        else:
+            active = not self.react_mode_properties[0]
+            react_emoji = emoji if self.react_mode_properties[0] else None
+            self.react_mode_properties = (active, react_emoji)
+
     @commands.command(name=CommandsEnum.SALT_MODE.value.command)
     async def salt_mode(self, ctx: commands.context, activation=None):
         self.logging_service.log_starting_process(CommandsEnum.SALT_MODE.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SALT_MODE):
             return
-        if activation:
-            if activation == "on":
-                self.salt_mode = True
-            elif activation == "off":
-                self.salt_mode = False
-        else:
-            self.salt_mode = not self.salt_mode
+        await self.react_mode(ctx, EmojiEnum.SALT.value, activation)
 
     @commands.command(name=CommandsEnum.HELP.value.command)
     async def help(self, ctx: commands.context, role=None):
