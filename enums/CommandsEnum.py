@@ -1,15 +1,7 @@
-from dataclasses import dataclass
 from enum import Enum
 
+from beans.Command import Command
 from enums.RoleEnum import RoleEnum
-
-
-@dataclass
-class Command:
-    id: int
-    command: str
-    permission: RoleEnum
-    example: str
 
 
 class CommandsEnum(Enum):
@@ -94,7 +86,6 @@ class CommandsEnum(Enum):
             if enum.value.permission in available_levels:
                 available_commands.append(enum)
         return available_commands
-
 
     @staticmethod
     def get_display_for_help_command(commands_enum):

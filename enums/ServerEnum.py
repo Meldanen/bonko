@@ -1,11 +1,6 @@
-from dataclasses import dataclass
 from enum import Enum
 
-
-@dataclass
-class Server:
-    id: int
-    name: str
+from beans.Server import Server
 
 
 class ServerEnum(Enum):

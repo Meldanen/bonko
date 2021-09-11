@@ -1,14 +1,7 @@
-from dataclasses import dataclass
 from enum import Enum
 
+from beans.OnMessageResponseType import OnMessageResponseType
 from enums.SentimentEnum import SentimentEnum
-
-
-@dataclass
-class OnMessageResponseType:
-    id: int
-    value: str
-    sentiment: SentimentEnum
 
 
 class OnMessageResponseTypeEnum(Enum):

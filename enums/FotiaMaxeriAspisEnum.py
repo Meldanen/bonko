@@ -1,14 +1,7 @@
-from dataclasses import dataclass
 from enum import Enum
 
+from beans.FotiaMaxeriAspis import FotiaMaxeriAspis
 from enums.EmojiEnum import EmojiEnum
-
-
-@dataclass
-class FotiaMaxeriAspis:
-    id: int
-    display: str
-    emoji: EmojiEnum
 
 
 class FotiaMaxeriAspisEnum(Enum):

@@ -1,15 +1,8 @@
-from dataclasses import dataclass
 from enum import Enum
 from random import randrange, choice
 
+from beans.JudgeBonkoResponse import JudgeBonkoResponse
 from utils import FileUtils
-
-
-@dataclass
-class JudgeBonkoResponse:
-    id: int
-    value: str
-    file: bool
 
 
 class JudgeBonkoResponseEnum(Enum):

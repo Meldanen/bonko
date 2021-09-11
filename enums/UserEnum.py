@@ -1,14 +1,8 @@
-from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
+from beans.User import User
 from enums.RoleEnum import RoleEnum
-
-
-@dataclass
-class User:
-    id: int
-    permission_level: RoleEnum
 
 
 class UserEnum(Enum):
