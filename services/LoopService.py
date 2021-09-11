@@ -24,7 +24,7 @@ class LoopService:
         self.HELEN_MODIFIER = 12
 
     def init_loops(self):
-        # self.bot.loop.create_task(self.daily_commands())
+        self.bot.loop.create_task(self.daily_commands())
         self.bot.loop.create_task(self.random_messages())
 
     async def random_messages(self):
