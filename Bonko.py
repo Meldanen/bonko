@@ -54,7 +54,9 @@ class Bonko(commands.Cog):
         if response_enum:
             await self.response_service.send_response(ctx, response_enum)
         if self.react_mode_properties.is_active():
-            await ctx.add_reaction(await EmojiEnum.get_emoji(ctx.guild.emojis, self.react_mode_properties.get_emoji()))
+            for emoji in self.react_mode_properties.get_emojis():
+                emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
+                await ctx.add_reaction(emoji)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -69,27 +71,29 @@ class Bonko(commands.Cog):
                 # print(" " + message.content)
 
     @commands.command(name=CommandsEnum.REACT_MODE.value.command)
-    async def react_mode(self, ctx: commands.context, emoji, activation=None):
+    async def react_mode(self, ctx: commands.context, activation, *emojis):
         self.logging_service.log_starting_process(CommandsEnum.REACT_MODE.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.REACT_MODE):
             return
         onOffEnum = OnOffEnum.get_from_display(activation)
         if OnOffEnum.is_on(onOffEnum):
-            self.react_mode_properties = ReactMode(True, emoji)
+            self.react_mode_properties.set_active(True)
+            self.react_mode_properties.set_emojis(emojis)
         elif OnOffEnum.is_off(onOffEnum):
-            self.react_mode_properties = ReactMode()
-        elif OnOffEnum.is_none(onOffEnum):
-            active = not self.react_mode_properties.is_active()
-            react_emoji = emoji if active else None
-            self.react_mode_properties.set_active(active)
-            self.react_mode_properties.set_emoji(react_emoji)
+            self.react_mode_properties.set_active(False)
+            self.react_mode_properties.set_emojis(None)
+        # elif OnOffEnum.is_none(onOffEnum):
+        #     active = not self.react_mode_properties.is_active()
+        #     react_emojis = emojis if active else None
+        #     self.react_mode_properties.set_active(active)
+        #     self.react_mode_properties.set_emojis(react_emojis)
         # if (self.react_mode_properties[0]):
         #     emoji = await EmojiEnum.get_custom_emoji(ctx.guild.emojis, self.react_mode_properties[1])
         #     message = f'Time to {emoji}'
         #     await self.send_message_with_reaction(ctx, message, emoji)
 
     @commands.command(name=CommandsEnum.SALT_MODE.value.command)
-    async def salt_mode(self, ctx: commands.context, activation=None):
+    async def salt_mode(self, ctx: commands.context, activation):
         self.logging_service.log_starting_process(CommandsEnum.SALT_MODE.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SALT_MODE):
             return

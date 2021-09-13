@@ -26,7 +26,7 @@ class FotiaMaxeriAspisEnum(Enum):
     @staticmethod
     def get_from_emoji(emoji):
         for enum in FotiaMaxeriAspisEnum:
-            if enum.value.emoji.value == emoji:
+            if enum.value.emojis.value == emoji:
                 return enum
 
     @staticmethod

@@ -36,7 +36,7 @@ class EmojiEnum(Enum):
         if isinstance(emoji, CustomEmoji):
             return emoji
         elif isinstance(emoji, DefaultEmoji):
-            return emoji.emoji
+            return emoji.emojis
         else:
             custom_emoji = await EmojiEnum.get_custom_emoji(guild_emojis, emoji)
         if custom_emoji is not None:

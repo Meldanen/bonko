@@ -1,17 +1,17 @@
 class ReactMode:
 
-    def __init__(self, active=False, emoji=None):
+    def __init__(self, active=False, *emojis):
         self.active = active
-        self.emoji = emoji
+        self.emojis = emojis
 
     def is_active(self):
         return self.active
 
-    def get_emoji(self):
-        return self.emoji
+    def get_emojis(self):
+        return self.emojis
 
     def set_active(self, active):
         self.active = active
 
-    def set_emoji(self, emoji):
-        self.emoji = emoji
+    def set_emojis(self, emojis):
+        self.emojis = emojis
