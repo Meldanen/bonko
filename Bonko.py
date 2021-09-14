@@ -75,8 +75,12 @@ class Bonko(commands.Cog):
     async def on_reaction_add(self, reaction, user):
         if user.id == self.bot.user.id:
             return
-        reaction_emoji = reaction.emoji.name
-        if EmojiEnum.BONK.value == reaction_emoji:
+        emoji = reaction.emoji
+        if isinstance(emoji, str):
+            reaction_emoji_name = emoji
+        else:
+            reaction_emoji_name = reaction.emoji.name
+        if EmojiEnum.BONK.value == reaction_emoji_name:
             message = reaction.message
             guild = reaction.message.guild
             bonk_emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
