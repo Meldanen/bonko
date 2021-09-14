@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from enum import Enum
 
 
@@ -45,10 +44,6 @@ class RoleEnum(Enum):
     @staticmethod
     def get_pleb_role_available_levels():
         return [RoleEnum.PLEB]
-
-    @staticmethod
-    def is_allowed_to_use(role):
-        return True
 
     @staticmethod
     def is_megus_role(role):

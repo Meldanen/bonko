@@ -21,7 +21,7 @@ class LoopService:
         self.times_randomly_messaged = 0
         self.MAX_TIMES_TO_RANDOMLY_MESSAGE = 2
         self.ONE_HOUR_IN_SECONDS = 3600
-        self.HELEN_MODIFIER = 12
+        self.HELEN_MODIFIER = 4
 
     def init_loops(self):
         self.bot.loop.create_task(self.daily_commands())

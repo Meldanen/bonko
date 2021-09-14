@@ -5,6 +5,7 @@ import discord
 import emojis
 from discord import File
 from discord.ext import commands
+from discord.ext.commands import Cog
 
 from beans.ReactMode import ReactMode
 from enums.AsciiArtEnum import AsciiArtEnum
@@ -69,6 +70,17 @@ class Bonko(commands.Cog):
             if message.content and (message.content.lower() in banned_stuff):
                 await channel.send("This is turning me on Step-Bonko!")
                 # print(" " + message.content)
+
+    @Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if user.id == self.bot.user.id:
+            return
+        reaction_emoji = reaction.emoji.name
+        if EmojiEnum.BONK.value == reaction_emoji:
+            message = reaction.message
+            guild = reaction.message.guild
+            bonk_emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
+            await message.add_reaction(bonk_emoji)
 
     @commands.command(name=CommandsEnum.REACT_MODE.value.command)
     async def react_mode(self, ctx: commands.context, activation, *emojis):
