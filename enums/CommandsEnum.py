@@ -27,11 +27,11 @@ class CommandsEnum(Enum):
 
     SHRUG = Command(10, "shrug", RoleEnum.PLEB, ";;shrug")
 
-    YE = Command(11, "ye", RoleEnum.PLEB, ";;ye")
+    YE = Command(11, "ye", RoleEnum.PLEB, "ye")
 
-    ART = Command(12, "art", RoleEnum.PLEB, ";;art <optional:emoji>")
+    ART = Command(12, "art", RoleEnum.PLEB, ";;art <optional:emojis>")
 
-    LEMONARIS = Command(13, "lemonaris", RoleEnum.PLEB, ";;lemonaris <optional:emoji>")
+    LEMONARIS = Command(13, "lemonaris", RoleEnum.PLEB, ";;lemonaris <optional:emojis>")
 
     RANDOM_MESSAGE = Command(14, "randommessage", RoleEnum.MEGUS, "N/A")
 
@@ -47,9 +47,9 @@ class CommandsEnum(Enum):
 
     SALT = Command(20, "salt", RoleEnum.PLEB, ";;salt")
 
-    REACT_MODE = Command(21, "reactmode", RoleEnum.ADMIN, ";;reactmode <emoji> <on:off>")
+    REACT_MODE = Command(21, "reactmode", RoleEnum.PLEB, ";;reactmode <on:off> <emojis>")
 
-    SALT_MODE = Command(22, "saltmode", RoleEnum.ADMIN, ";;saltmode <on:off>")
+    SALT_MODE = Command(22, "saltmode", RoleEnum.PLEB, ";;saltmode <on:off>")
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
@@ -90,4 +90,4 @@ class CommandsEnum(Enum):
     @staticmethod
     def get_display_for_help_command(commands_enum):
         command = commands_enum.value
-        return f'Command: {command.command.capitalize()}, Permission: {command.permission.value.capitalize()}, Example: {command.example}'
+        return f'{command.command.capitalize()}: Permission: {command.permission.value.capitalize()}, Example: {command.example}'

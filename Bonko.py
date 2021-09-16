@@ -73,18 +73,23 @@ class Bonko(commands.Cog):
 
     @Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        if user.id == self.bot.user.id:
-            return
-        emoji = reaction.emoji
-        if isinstance(emoji, str):
-            reaction_emoji_name = emoji
-        else:
-            reaction_emoji_name = reaction.emoji.name
-        if EmojiEnum.BONK.value == reaction_emoji_name:
-            message = reaction.message
-            guild = reaction.message.guild
-            bonk_emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.BONK.value)
-            await message.add_reaction(bonk_emoji)
+        await self.react_to(reaction.emoji, EmojiEnum.BONK.value)
+        # if self.react_mode_properties.is_active():
+        await self.react_to(reaction.emoji, EmojiEnum.SALT.value)
+
+    async def react_to(self, reaction, emoji_to_react_to):
+        try:
+            if isinstance(reaction, str):
+                reaction_emoji_name = reaction
+            else:
+                reaction_emoji_name = reaction.emoji.name
+            if emoji_to_react_to == reaction_emoji_name:
+                message = reaction.message
+                guild = reaction.message.guild
+                bonk_emoji = await EmojiEnum.get_emoji(guild.emojis, reaction_emoji_name)
+                await message.add_reaction(bonk_emoji)
+        except:
+            pass
 
     @commands.command(name=CommandsEnum.REACT_MODE.value.command)
     async def react_mode(self, ctx: commands.context, activation, *emojis):
@@ -113,7 +118,7 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.SALT_MODE.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SALT_MODE):
             return
-        await self.react_mode(ctx, EmojiEnum.SALT.value, activation)
+        await self.react_mode(ctx, activation, EmojiEnum.SALT.value)
 
     @commands.command(name=CommandsEnum.HELP.value.command)
     async def help(self, ctx: commands.context, role=None):

@@ -25,6 +25,8 @@ class ResponseService:
             await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, True)
         elif OnMessageResponseTypeEnum.is_good_anti_bonko(response_type_enum.value.id):
             await self.send_good_anti_bonko_response(ctx.channel)
+        elif OnMessageResponseTypeEnum.is_hyperfeminine_villoui(response_type_enum.value.id):
+            await self.send_hyperfeminine_villoui_response(ctx)
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
@@ -47,6 +49,15 @@ class ResponseService:
             await channel.send(file=response)
         else:
             await channel.send(response)
+
+    @staticmethod
+    async def send_hyperfeminine_villoui_response(ctx):
+        channel = ctx.channel
+        guild = ctx.guild
+        message = await channel.send(";)")
+        emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.YENS.value)
+        # await message.add_reaction(emoji)
+        await ctx.message.add_reaction(emoji)
 
     @staticmethod
     async def send_ye_response(channel, guild):

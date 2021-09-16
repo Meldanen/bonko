@@ -27,7 +27,9 @@ class OnMessageResponseTypeEnum(Enum):
 
     EY = OnMessageResponseType(10, "ey", SentimentEnum.NEUTRAL)
 
-    GOOD_ANTI_BONKO = OnMessageResponseType(10, "good antibonko", SentimentEnum.NEUTRAL)
+    GOOD_ANTI_BONKO = OnMessageResponseType(11, "good antibonko", SentimentEnum.NEUTRAL)
+
+    HYPERFEMININE_VILLOUI = OnMessageResponseType(12, "hyperfeminine villoui", SentimentEnum.NEUTRAL)
 
     @staticmethod
     def is_good_bonko(id):
@@ -63,6 +65,10 @@ class OnMessageResponseTypeEnum(Enum):
         return id == OnMessageResponseTypeEnum.FOTIA.value.id or id == OnMessageResponseTypeEnum.MAXERI.value.id or id == OnMessageResponseTypeEnum.ASPIS.value.id
 
     @staticmethod
+    def is_hyperfeminine_villoui(id):
+        return id == OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.id
+
+    @staticmethod
     def is_startswith_ye(message):
         return message.startswith(OnMessageResponseTypeEnum.YE.value.value)
 
@@ -71,6 +77,8 @@ class OnMessageResponseTypeEnum(Enum):
         for enum in OnMessageResponseTypeEnum:
             if enum.value.value == message:
                 return enum
+            if OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.value in message:
+                return OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI
         # if OnMessageResponseTypeEnum.is_startswith_ye(message):
         #     return OnMessageResponseTypeEnum.YEAH
 
