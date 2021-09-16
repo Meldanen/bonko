@@ -54,7 +54,7 @@ class ResponseService:
     async def send_hyperfeminine_villoui_response(ctx):
         channel = ctx.channel
         guild = ctx.guild
-        message = await channel.send(";)")
+        # message = await channel.send(";)")
         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.YENS.value)
         # await message.add_reaction(emoji)
         await ctx.message.add_reaction(emoji)
