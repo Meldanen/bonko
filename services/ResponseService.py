@@ -50,14 +50,13 @@ class ResponseService:
         else:
             await channel.send(response)
 
-    @staticmethod
-    async def send_hyperfeminine_villoui_response(ctx):
+    async def send_hyperfeminine_villoui_response(self, ctx):
         channel = ctx.channel
         guild = ctx.guild
         # message = await channel.send(";)")
         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.YENS.value)
         # await message.add_reaction(emoji)
-        await ctx.message.add_reaction(emoji)
+        await ctx.add_reaction(emoji)
 
     @staticmethod
     async def send_ye_response(channel, guild):
