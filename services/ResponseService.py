@@ -22,7 +22,7 @@ class ResponseService:
         elif OnMessageResponseTypeEnum.is_fotia_maxeri_aspis(response_type_enum.value.id):
             await self.send_reaction(ctx, response_type_enum)
         elif OnMessageResponseTypeEnum.is_ey(response_type_enum.value.id):
-            await self.send_yeah_response(ctx.author.id, ctx.channel, ctx.guild, True)
+            await self.send_ye_response(ctx.author.id, ctx.channel, ctx.guild, True)
         elif OnMessageResponseTypeEnum.is_good_anti_bonko(response_type_enum.value.id):
             await self.send_good_anti_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_hyperfeminine_villoui(response_type_enum.value.id):
@@ -59,9 +59,12 @@ class ResponseService:
         await ctx.add_reaction(emoji)
 
     @staticmethod
-    async def send_ye_response(channel, guild):
-        # message = await channel.send("tuc crackers + cottage cheese")
-        message = await channel.send("anaraes + digestives")
+    async def send_ye_response(channel, guild, reverse=False):
+        text = "tuc crackers + cottage cheese"
+        if reverse:
+            text = text[::-1]
+        message = await channel.send(text)
+        # message = await channel.send("anaraes + digestives")
         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.SNACCS.value)
         await message.add_reaction(emoji)
 

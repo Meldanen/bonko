@@ -75,7 +75,9 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def get_from_message(message):
         for enum in OnMessageResponseTypeEnum:
-            if enum.value.value in message:
+            if enum.value.value in message and not enum == OnMessageResponseTypeEnum.YE:
+                return enum
+            if enum.value.value == message:
                 return enum
             # if OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.value in message:
             #     return OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI
