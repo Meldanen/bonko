@@ -75,10 +75,10 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def get_from_message(message):
         for enum in OnMessageResponseTypeEnum:
-            if enum.value.value == message:
+            if enum.value.value in message:
                 return enum
-            if OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.value in message:
-                return OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI
+            # if OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.value in message:
+            #     return OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI
         # if OnMessageResponseTypeEnum.is_startswith_ye(message):
         #     return OnMessageResponseTypeEnum.YEAH
 
