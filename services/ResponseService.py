@@ -13,7 +13,7 @@ class ResponseService:
         if OnMessageResponseTypeEnum.is_good_bonko(response_type_enum.value.id):
             await self.send_random_good_bonko_response(ctx.channel)
         # elif OnMessageResponseTypeEnum.is_ye(response_type_enum.value.id):
-        #     await self.send_ye_response(ctx.channel, ctx.guild)
+        #     await self.send_ye_response(ctx.author.id, ctx.channel, ctx.guild)
         elif OnMessageResponseTypeEnum.is_bad_bonko(response_type_enum.value.id):
             await self.send_random_bad_bonko_response(ctx.channel)
         # elif OnMessageResponseTypeEnum.is_yeah(response_type_enum.value.id) or OnMessageResponseTypeEnum.is_yea(
@@ -59,7 +59,9 @@ class ResponseService:
         await ctx.add_reaction(emoji)
 
     @staticmethod
-    async def send_ye_response(channel, guild, reverse=False):
+    async def send_ye_response(user_id, channel, guild, reverse=False):
+        if not UserEnum.is_nyroid(user_id):
+            return
         text = "tuc crackers + cottage cheese"
         if reverse:
             text = text[::-1]
