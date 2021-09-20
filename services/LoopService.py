@@ -26,6 +26,8 @@ class LoopService:
     def init_loops(self):
         self.bot.loop.create_task(self.daily_commands())
         self.bot.loop.create_task(self.random_messages())
+        # await self.bot.wait_until_ready()
+        # while not self.bot.is_closed():
 
     async def random_messages(self):
         await self.bot.wait_until_ready()
@@ -72,7 +74,7 @@ class LoopService:
             self.logging_service.log(f'Attempting daily {CommandsEnum.WORD_OF_THE_DAY.value}')
             await self.handle_daily_word_of_the_day()
             await self.handle_daily_siblings_sibling_penor()
-            await asyncio.sleep(60 * 55)  # wait 55 minutes
+            await asyncio.sleep(60 * 25)  # wait 55 minutes
 
     async def handle_daily_word_of_the_day(self):
         now = datetime.now().utcnow()

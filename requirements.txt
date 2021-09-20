@@ -1,3 +1,4 @@
 discord.py
 python-dotenv
 emojis
+flake8
