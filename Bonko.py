@@ -103,15 +103,6 @@ class Bonko(commands.Cog):
         elif OnOffEnum.is_off(onOffEnum):
             self.react_mode_properties.set_active(False)
             self.react_mode_properties.set_emojis(None)
-        # elif OnOffEnum.is_none(onOffEnum):
-        #     active = not self.react_mode_properties.is_active()
-        #     react_emojis = emojis if active else None
-        #     self.react_mode_properties.set_active(active)
-        #     self.react_mode_properties.set_emojis(react_emojis)
-        # if (self.react_mode_properties[0]):
-        #     emoji = await EmojiEnum.get_custom_emoji(ctx.guild.emojis, self.react_mode_properties[1])
-        #     message = f'Time to {emoji}'
-        #     await self.send_message_with_reaction(ctx, message, emoji)
 
     @commands.command(name=CommandsEnum.SALT_MODE.value.command)
     async def salt_mode(self, ctx: commands.context, activation):
