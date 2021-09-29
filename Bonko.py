@@ -78,18 +78,18 @@ class Bonko(commands.Cog):
         await self.react_to(reaction.emoji, EmojiEnum.SALT.value)
 
     async def react_to(self, reaction, emoji_to_react_to):
-        try:
-            if isinstance(reaction, str):
-                reaction_emoji_name = reaction
-            else:
-                reaction_emoji_name = reaction.emoji.name
-            if emoji_to_react_to == reaction_emoji_name:
-                message = reaction.message
-                guild = reaction.message.guild
-                bonk_emoji = await EmojiEnum.get_emoji(guild.emojis, reaction_emoji_name)
-                await message.add_reaction(bonk_emoji)
-        except:
-            pass
+        # try:
+        if isinstance(reaction, str):
+            reaction_emoji_name = reaction
+        else:
+            reaction_emoji_name = reaction.emoji.name
+        if emoji_to_react_to == reaction_emoji_name:
+            message = reaction.message
+            guild = reaction.message.guild
+            bonk_emoji = await EmojiEnum.get_emoji(guild.emojis, reaction_emoji_name)
+            await message.add_reaction(bonk_emoji)
+        # except:
+        #     pass
 
     @commands.command(name=CommandsEnum.REACT_MODE.value.command)
     async def react_mode(self, ctx: commands.context, activation, *emojis):
@@ -358,7 +358,6 @@ class Bonko(commands.Cog):
         if isinstance(quote, File):
             message = await ctx.send(file=quote)
             await message.add_reaction(RandomQuoteEnum.WAR_CRIMES.value.reaction)
-
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
