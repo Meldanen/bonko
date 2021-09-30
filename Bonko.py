@@ -4,7 +4,7 @@ from typing import List
 
 import discord
 import emojis
-from discord import File, HTTPException
+from discord import HTTPException
 from discord.ext import commands
 from discord.ext.commands import Cog
 
@@ -76,7 +76,6 @@ class Bonko(commands.Cog):
     @Cog.listener()
     async def on_reaction_add(self, reaction, user):
         await self.react_to(reaction, EmojiEnum.BONK.value)
-        # if self.react_mode_properties.is_active():
         await self.react_to(reaction, EmojiEnum.SALT.value)
 
     async def react_to(self, reaction, emoji_to_react_to):
@@ -187,13 +186,12 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OMEGA_BONK):
             return
         index = randint(0, 1)
+        emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
         if index == 0:
             message = self.art_service.get_omega_bonk()
-            emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
             await self.send_message_with_reaction(ctx, message, emoji)
         else:
             file = FileUtils.get_file("assets/gifs/fancy_bonk.gif")
-            emoji = await self.get_emoji(ctx, EmojiEnum.BONK.value)
             await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.SALT.value.command)
@@ -361,14 +359,14 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.WAR_CRIMES):
             return
         if cheese and cheese.lower() == "cheese":
-            quote = await QuoteEnum.get_quote(ctx, int(QuoteEnum.WAR_CRIMES_CHEESE.value.id), None)
+            quote = await QuoteEnum.get_quote(ctx, QuoteEnum.WAR_CRIMES_CHEESE.value.id, None)
         else:
-            quote = await QuoteEnum.get_quote(ctx, int(QuoteEnum.WAR_CRIMES.value.id), None)
+            quote = await QuoteEnum.get_quote(ctx, QuoteEnum.WAR_CRIMES.value.id, None)
         if not quote:
             return
-        if isinstance(quote, File):
-            message = await ctx.send(file=quote)
-            await message.add_reaction(QuoteEnum.WAR_CRIMES.value.reaction)
+        if FileUtils.is_file(quote):
+            emoji = await self.get_emoji(ctx, QuoteEnum.WAR_CRIMES.value.reaction.value)
+            await FileUtils.send_file_with_reaction(ctx, quote, emoji)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
