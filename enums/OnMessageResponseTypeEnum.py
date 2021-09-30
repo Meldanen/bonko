@@ -5,31 +5,33 @@ from enums.SentimentEnum import SentimentEnum
 
 
 class OnMessageResponseTypeEnum(Enum):
-    GOOD_BONKO = OnMessageResponseType(0, "good bonko", SentimentEnum.HAPPY)
+    GOOD_BONKO = OnMessageResponseType(0, ["good bonko"], SentimentEnum.HAPPY)
 
-    YE = OnMessageResponseType(1, "ye", SentimentEnum.NEUTRAL)
+    YE = OnMessageResponseType(1, ["ye"], SentimentEnum.NEUTRAL)
 
-    BAD_BONKO = OnMessageResponseType(2, "bad bonko", SentimentEnum.SAD)
+    BAD_BONKO = OnMessageResponseType(2, ["bad bonko", "naughty bonko", "baughty bonko"], SentimentEnum.SAD)
 
-    NAUGHTY_BONKO = OnMessageResponseType(3, "naughty bonko", SentimentEnum.SAD)
+    # NAUGHTY_BONKO = OnMessageResponseType(3, "naughty bonko", SentimentEnum.SAD)
+    #
+    # BAUGHTY_BONKO = OnMessageResponseType(4, "baughty bonko", SentimentEnum.SAD)
 
-    BAUGHTY_BONKO = OnMessageResponseType(4, "baughty bonko", SentimentEnum.SAD)
+    YEAH = OnMessageResponseType(5, ["yeah"], SentimentEnum.NEUTRAL)
 
-    YEAH = OnMessageResponseType(5, "yeah", SentimentEnum.NEUTRAL)
+    FOTIA = OnMessageResponseType(6, ["🔥"], SentimentEnum.NEUTRAL)
 
-    FOTIA = OnMessageResponseType(6, "🔥", SentimentEnum.NEUTRAL)
+    MAXERI = OnMessageResponseType(7, ["🔪"], SentimentEnum.NEUTRAL)
 
-    MAXERI = OnMessageResponseType(7, "🔪", SentimentEnum.NEUTRAL)
+    ASPIS = OnMessageResponseType(8, ["🛡️"], SentimentEnum.NEUTRAL)
 
-    ASPIS = OnMessageResponseType(8, "🛡️", SentimentEnum.NEUTRAL)
+    YEA = OnMessageResponseType(9, ["yea"], SentimentEnum.NEUTRAL)
 
-    YEA = OnMessageResponseType(9, "yea", SentimentEnum.NEUTRAL)
+    EY = OnMessageResponseType(10, ["ey"], SentimentEnum.NEUTRAL)
 
-    EY = OnMessageResponseType(10, "ey", SentimentEnum.NEUTRAL)
+    GOOD_ANTI_BONKO = OnMessageResponseType(11, ["good antibonko"], SentimentEnum.NEUTRAL)
 
-    GOOD_ANTI_BONKO = OnMessageResponseType(11, "good antibonko", SentimentEnum.NEUTRAL)
+    HYPERFEMININE_VILLOUI = OnMessageResponseType(12, ["hyperfeminine villoui"], SentimentEnum.NEUTRAL)
 
-    HYPERFEMININE_VILLOUI = OnMessageResponseType(12, "hyperfeminine villoui", SentimentEnum.NEUTRAL)
+    PET_EL_BONKO = OnMessageResponseType(13, ["petElBonko"], SentimentEnum.HAPPY)
 
     @staticmethod
     def is_good_bonko(id):
@@ -69,16 +71,21 @@ class OnMessageResponseTypeEnum(Enum):
         return id == OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.id
 
     @staticmethod
+    def is_pet_el_bonko(id):
+        return id == OnMessageResponseTypeEnum.PET_EL_BONKO.value.id
+
+    @staticmethod
     def is_startswith_ye(message):
         return message.startswith(OnMessageResponseTypeEnum.YE.value.value)
 
     @staticmethod
     def get_from_message(message):
         for enum in OnMessageResponseTypeEnum:
-            if enum.value.value in message and not enum == OnMessageResponseTypeEnum.YE and not enum == OnMessageResponseTypeEnum.EY:
-                return enum
-            if enum.value.value == message:
-                return enum
+            for enum_value in enum.value.value:
+                if enum_value.lower() in message.lower() and not enum == OnMessageResponseTypeEnum.YE and not enum == OnMessageResponseTypeEnum.EY:
+                    return enum
+                if enum_value.lower() == message.lower():
+                    return enum
             # if OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.value in message:
             #     return OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI
         # if OnMessageResponseTypeEnum.is_startswith_ye(message):
