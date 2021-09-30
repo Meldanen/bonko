@@ -3,12 +3,13 @@ from enum import Enum
 from random import randrange
 
 from beans.Quote import Quote
+from enums.DateFormatEnum import DateFormatEnum
 from enums.EmojiEnum import EmojiEnum
 from utils import FileUtils
 
 
-class RandomQuoteEnum(Enum):
-    RANDOM_RANDOM = Quote(0, None, EmojiEnum.WISENYRAKIS, False)
+class QuoteEnum(Enum):
+    RANDOM = Quote(0, None, EmojiEnum.WISENYRAKIS, False)
 
     INTELIGENE = Quote(1, "\"I didn't borned with inteligene\" ~ glennakios 2020", EmojiEnum.WISENYRAKIS, False)
 
@@ -78,14 +79,14 @@ class RandomQuoteEnum(Enum):
 
     @staticmethod
     async def get_random_quote(ctx, user_id):
-        index = randrange(len(RandomQuoteEnum))
-        return await RandomQuoteEnum.get_quote(ctx, index, user_id)
+        index = randrange(len(QuoteEnum))
+        return await QuoteEnum.get_quote(ctx, index, user_id)
 
     @staticmethod
     async def get_quote(ctx, id, user_id):
-        quote = RandomQuoteEnum.get_by_id(id)
-        if quote == RandomQuoteEnum.RANDOM_RANDOM:
-            return await RandomQuoteEnum.get_random_quote_from_history(ctx.guild.text_channels, user_id)
+        quote = QuoteEnum.get_by_id(id)
+        if quote == QuoteEnum.RANDOM:
+            return await QuoteEnum.get_random_quote_from_history(ctx.guild.text_channels, user_id)
         elif quote.value.file:
             return FileUtils.get_file(quote.value.quote)
         else:
@@ -93,12 +94,12 @@ class RandomQuoteEnum(Enum):
 
     @staticmethod
     def get_by_id(id):
-        for enum in RandomQuoteEnum:
+        for enum in QuoteEnum:
             if enum.value.id == id:
                 return enum
 
     @staticmethod
-    async def get_random_quote_from_history(guild_text_channels, user_id):
+    async def get_random_quote_from_history(guild_text_channels, user_id=None):
         messages = list()
         for channel in guild_text_channels:
             channel_creation = int(channel.created_at.timestamp())
@@ -110,9 +111,12 @@ class RandomQuoteEnum(Enum):
                 else:
                     messages.append(message)
         if not messages or len(messages) == 0:
-            return RandomQuoteEnum.SIMPLE.value
+            return QuoteEnum.SIMPLE.value
         random_index = randrange(len(messages))
         message = messages[random_index]
         if message and message.content:
-            return Quote(0, message.content, EmojiEnum.WISENYRAKIS, False)
-        return RandomQuoteEnum.SIMPLE.value
+            author = message.author.nick if message.author.nick else message.author.name
+            time = DateFormatEnum.format_date_with_enum(message.created_at, DateFormatEnum.DATE_TIME)
+            message = f'{message.content} ~ {author} {time}'
+            return Quote(0, message, EmojiEnum.WISENYRAKIS, False)
+        return QuoteEnum.SIMPLE.value

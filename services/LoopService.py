@@ -4,7 +4,7 @@ from random import randrange
 
 from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
-from enums.RandomQuoteEnum import RandomQuoteEnum
+from enums.QuoteEnum import QuoteEnum
 from enums.UserEnum import UserEnum
 
 
@@ -24,7 +24,7 @@ class LoopService:
         self.HELEN_MODIFIER = 4
 
     def init_loops(self):
-        self.bot.loop.create_task(self.daily_commands())
+        # self.bot.loop.create_task(self.daily_commands())
         self.bot.loop.create_task(self.random_messages())
         # await self.bot.wait_until_ready()
         # while not self.bot.is_closed():
@@ -46,7 +46,7 @@ class LoopService:
                 self.times_randomly_messaged += 1
 
     async def send_random_message_to_server(self, guild):
-        random_quote = await RandomQuoteEnum.get_random_quote_from_history(guild.text_channels, None)
+        random_quote = await QuoteEnum.get_random_quote_from_history(guild.text_channels, None)
         random_message = f'> {random_quote.quote}'
         random_channel_index = randrange(len(guild.text_channels))
         random_channel = guild.text_channels[random_channel_index]

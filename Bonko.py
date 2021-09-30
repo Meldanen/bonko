@@ -1,9 +1,10 @@
 # main.py
+from random import randint
 from typing import List
 
 import discord
 import emojis
-from discord import File
+from discord import File, HTTPException
 from discord.ext import commands
 from discord.ext.commands import Cog
 
@@ -13,7 +14,7 @@ from enums.CommandsEnum import CommandsEnum
 from enums.EmojiEnum import EmojiEnum
 from enums.OnMessageResponseTypeEnum import OnMessageResponseTypeEnum
 from enums.OnOffEnum import OnOffEnum
-from enums.RandomQuoteEnum import RandomQuoteEnum
+from enums.QuoteEnum import QuoteEnum
 from enums.RoleEnum import RoleEnum
 from enums.ServerEnum import ServerEnum
 from enums.UserEnum import UserEnum
@@ -23,6 +24,7 @@ from services.LoopService import LoopService
 from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
+from utils import FileUtils
 
 
 class Bonko(commands.Cog):
@@ -73,16 +75,19 @@ class Bonko(commands.Cog):
 
     @Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        await self.react_to(reaction.emoji, EmojiEnum.BONK.value)
+        await self.react_to(reaction, EmojiEnum.BONK.value)
         # if self.react_mode_properties.is_active():
-        await self.react_to(reaction.emoji, EmojiEnum.SALT.value)
+        await self.react_to(reaction, EmojiEnum.SALT.value)
 
     async def react_to(self, reaction, emoji_to_react_to):
         # try:
         if isinstance(reaction, str):
             reaction_emoji_name = reaction
         else:
-            reaction_emoji_name = reaction.emoji.name
+            if isinstance(reaction.emoji, str):
+                reaction_emoji_name = reaction.emoji
+            else:
+                reaction_emoji_name = reaction.emoji.name
         if emoji_to_react_to == reaction_emoji_name:
             message = reaction.message
             guild = reaction.message.guild
@@ -181,9 +186,15 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.OMEGA_BONK.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OMEGA_BONK):
             return
-        message = self.art_service.get_omega_bonk()
-        emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
-        await self.send_message_with_reaction(ctx, message, emoji)
+        index = randint(0, 1)
+        if index == 0:
+            message = self.art_service.get_omega_bonk()
+            emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
+            await self.send_message_with_reaction(ctx, message, emoji)
+        else:
+            file = FileUtils.get_file("assets/gifs/fancy_bonk.gif")
+            emoji = await self.get_emoji(ctx, EmojiEnum.BONK.value)
+            await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.SALT.value.command)
     async def salt(self, ctx: commands.context):
@@ -236,15 +247,15 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.BAD_GIANNAKIS.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BAD_GIANNAKIS):
             return
-        channel = ctx.channel
-        async for message in channel.history(limit=200):
-            if self.is_megus(message.author.id) and message.content == ';;extract':
-                # id = self.format_user_id_for_mention(str(UserEnum.MELDANEN.value))
-                # contentsNoSpaces = message.content.replace(" ", "")
-                # contentsSplit = contentsNoSpaces.split(id)
-                # contents = "".join(contentsSplit)
-                # if not contents:
-                await message.delete()
+        async for message in ctx.channel.history(limit=200):
+            # if self.is_megus(message.author.id) and message.content == ';;extract':
+            if self.is_giannakis(message.author.id):
+                id = self.format_user_id_for_mention(str(UserEnum.MELDANEN.value))
+                contentsNoSpaces = message.content.replace(" ", "")
+                contentsSplit = contentsNoSpaces.split(id)
+                contents = "".join(contentsSplit)
+                if not contents:
+                    await message.delete()
 
     @commands.command(name=CommandsEnum.WORD_OF_THE_DAY.value.command)
     async def word_of_the_day(self, ctx: commands.context):
@@ -332,13 +343,13 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.QUOTE):
             return
         if quote_id:
-            quote = await RandomQuoteEnum.get_quote(ctx, int(quote_id), UserEnum.GIANNAKIS.value.id)
+            quote = await QuoteEnum.get_quote(ctx, int(quote_id), UserEnum.GIANNAKIS.value.id)
         else:
-            quote = await RandomQuoteEnum.get_random_quote(ctx, UserEnum.GIANNAKIS.value.id)
+            quote = await QuoteEnum.get_random_quote_from_history(ctx.guild.text_channels)
         if not quote:
             return
-        if isinstance(quote, File):
-            await ctx.send(file=quote)
+        if FileUtils.is_file(quote):
+            await self.send_file(ctx, quote)
         else:
             message = quote.quote
             reaction = await self.get_emoji(ctx, quote.reaction.value)
@@ -350,23 +361,33 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.WAR_CRIMES):
             return
         if cheese and cheese.lower() == "cheese":
-            quote = await RandomQuoteEnum.get_quote(ctx, int(RandomQuoteEnum.WAR_CRIMES_CHEESE.value.id), None)
+            quote = await QuoteEnum.get_quote(ctx, int(QuoteEnum.WAR_CRIMES_CHEESE.value.id), None)
         else:
-            quote = await RandomQuoteEnum.get_quote(ctx, int(RandomQuoteEnum.WAR_CRIMES.value.id), None)
+            quote = await QuoteEnum.get_quote(ctx, int(QuoteEnum.WAR_CRIMES.value.id), None)
         if not quote:
             return
         if isinstance(quote, File):
             message = await ctx.send(file=quote)
-            await message.add_reaction(RandomQuoteEnum.WAR_CRIMES.value.reaction)
+            await message.add_reaction(QuoteEnum.WAR_CRIMES.value.reaction)
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
 
-    @staticmethod
-    async def send_message_with_reaction(ctx: commands.context, message: str, emoji):
+    async def send_message_with_reaction(self, ctx: commands.context, message: str, emoji):
         message = await ctx.send(message)
-        await message.add_reaction(emoji)
+        try:
+            await message.add_reaction(emoji)
+        except HTTPException as e:
+            self.logging_service.exception(e)
+
+    @staticmethod
+    async def send_file(ctx, file):
+        await FileUtils.send_file(ctx, file)
+
+    @staticmethod
+    async def send_file_with_reaction(ctx, file, emoji):
+        await FileUtils.send_file_with_reaction(ctx, file, emoji)
 
     @staticmethod
     async def get_user(members: List, username: str, mention: bool) -> str:
