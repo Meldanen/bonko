@@ -26,6 +26,8 @@ class UserEnum(Enum):
 
     NYROID = User(318425980073148418, RoleEnum.PLEB)
 
+    QUILLBOT = User(570689271514660881, RoleEnum.PLEB)
+
     @staticmethod
     def is_good_person(id: int) -> bool:
         return id in [UserEnum.MELDANEN.value.id, UserEnum.JOSEPH.value.id, UserEnum.MELON.value.id]
@@ -53,6 +55,10 @@ class UserEnum(Enum):
     @staticmethod
     def is_anti_bonko(id: int) -> bool:
         return id == UserEnum.ANTI_BONKO.value.id
+
+    @staticmethod
+    def is_quillbot(id: int) -> bool:
+        return id == UserEnum.QUILLBOT.value.id
 
     @staticmethod
     def get_from_id(id):

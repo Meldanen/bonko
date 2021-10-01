@@ -51,3 +51,7 @@ class PermissionService:
     @staticmethod
     def is_good_person(id: int) -> bool:
         return UserEnum.is_good_person(id)
+
+    @staticmethod
+    def is_quillbot(id: int) -> bool:
+        return UserEnum.is_quillbot(id)

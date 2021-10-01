@@ -5,7 +5,7 @@ from enums.SentimentEnum import SentimentEnum
 
 
 class OnMessageResponseTypeEnum(Enum):
-    GOOD_BONKO = OnMessageResponseType(0, ["good bonko"], SentimentEnum.HAPPY)
+    GOOD_BONKO = OnMessageResponseType(0, ["good bonko", "petElBonko"], SentimentEnum.HAPPY)
 
     YE = OnMessageResponseType(1, ["ye"], SentimentEnum.NEUTRAL)
 
@@ -31,7 +31,7 @@ class OnMessageResponseTypeEnum(Enum):
 
     HYPERFEMININE_VILLOUI = OnMessageResponseType(12, ["hyperfeminine villoui"], SentimentEnum.NEUTRAL)
 
-    PET_EL_BONKO = OnMessageResponseType(13, ["petElBonko"], SentimentEnum.HAPPY)
+    # PET_EL_BONKO = OnMessageResponseType(13, ["petElBonko"], SentimentEnum.HAPPY)
 
     @staticmethod
     def is_good_bonko(id):
@@ -70,9 +70,9 @@ class OnMessageResponseTypeEnum(Enum):
     def is_hyperfeminine_villoui(id):
         return id == OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.id
 
-    @staticmethod
-    def is_pet_el_bonko(id):
-        return id == OnMessageResponseTypeEnum.PET_EL_BONKO.value.id
+    # @staticmethod
+    # def is_pet_el_bonko(id):
+    #     return id == OnMessageResponseTypeEnum.PET_EL_BONKO.value.id
 
     @staticmethod
     def is_startswith_ye(message):

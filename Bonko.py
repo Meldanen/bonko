@@ -61,6 +61,23 @@ class Bonko(commands.Cog):
                 emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
                 await ctx.add_reaction(emoji)
 
+    #     self.giannakis_grammar(ctx)
+    # #
+    # async def giannakis_grammar(self, ctx):
+    #     if not self.is_quillbot(ctx.author.id):
+    #         return
+    #     quill_message = ctx.message
+    #     for row in title_list:
+    #         sr = row.lower().split("\t")
+    #
+    #         diffl = difflib.SequenceMatcher(None, sr[3], sr[4]).ratio()
+    #         lev = Levenshtein.ratio(sr[3], sr[4])
+    #         sor = 1 - distance.sorensen(sr[3], sr[4])
+    #         jac = 1 - distance.jaccard(sr[3], sr[4])
+    #
+    #         print
+    #         diffl, lev, sor, jac
+
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         guild = message.guild
@@ -425,3 +442,6 @@ class Bonko(commands.Cog):
 
     def is_good_person(self, id: int) -> bool:
         return self.permission_service.is_good_person(id)
+
+    def is_quillbot(self, id: int) -> bool:
+        return self.permission_service.is_quillbot(id)
