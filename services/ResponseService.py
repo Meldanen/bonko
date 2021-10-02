@@ -41,6 +41,7 @@ class ResponseService:
         if GrammarEnum.is_fewer(text):
             return
         matches = self.language_tool.check(text)
+        grammar_replacements = None
         for match in matches:
             if match.category == GrammarEnum.GRAMMAR.value.value:
                 grammar_replacements = match
