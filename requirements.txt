@@ -1,6 +1,6 @@
 discord.py
 python-dotenv
 emojis
-jvm
+flask
 waitress
 language_tool_python

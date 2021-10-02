@@ -37,8 +37,6 @@ class ResponseService:
         await self.giannakis_grammar(ctx)
 
     async def giannakis_grammar(self, ctx):
-        if not UserEnum.is_megus(ctx.author.id):
-            return
         text = ctx.content
         if GrammarEnum.is_fewer(text):
             return
