@@ -19,6 +19,7 @@ from enums.RoleEnum import RoleEnum
 from enums.ServerEnum import ServerEnum
 from enums.UserEnum import UserEnum
 from services.ArtService import ArtService
+from services.KeepAliveService import keep_alive
 from services.LoggingService import LoggingService
 from services.LoopService import LoopService
 from services.PermissionService import PermissionService
@@ -34,6 +35,7 @@ class Bonko(commands.Cog):
         self.logging_service = LoggingService()
         self.art_service = ArtService()
         self.react_mode_properties = ReactMode()
+        keep_alive()
 
     @commands.Cog.listener()
     async def on_ready(self):
