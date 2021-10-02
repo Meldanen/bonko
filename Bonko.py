@@ -33,7 +33,6 @@ class Bonko(commands.Cog):
         self.allowed_to_spam = set()
         self.logging_service = LoggingService()
         self.art_service = ArtService()
-        self.response_service = ResponseService()
         self.react_mode_properties = ReactMode()
 
     @commands.Cog.listener()
@@ -41,6 +40,7 @@ class Bonko(commands.Cog):
         self.permission_service = PermissionService(self.bot.user.id, self.logging_service)
         self.loop_service = LoopService(self.bot, self.logging_service, self.permission_service)
         self.loop_service.init_loops()
+        self.response_service = ResponseService(self.logging_service)
         self.text_extracting_service = TextExtractingService(self.bot)
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 
@@ -60,23 +60,6 @@ class Bonko(commands.Cog):
             for emoji in self.react_mode_properties.get_emojis():
                 emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
                 await ctx.add_reaction(emoji)
-
-    #     self.giannakis_grammar(ctx)
-    # #
-    # async def giannakis_grammar(self, ctx):
-    #     if not self.is_quillbot(ctx.author.id):
-    #         return
-    #     quill_message = ctx.message
-    #     for row in title_list:
-    #         sr = row.lower().split("\t")
-    #
-    #         diffl = difflib.SequenceMatcher(None, sr[3], sr[4]).ratio()
-    #         lev = Levenshtein.ratio(sr[3], sr[4])
-    #         sor = 1 - distance.sorensen(sr[3], sr[4])
-    #         jac = 1 - distance.jaccard(sr[3], sr[4])
-    #
-    #         print
-    #         diffl, lev, sor, jac
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -208,7 +191,7 @@ class Bonko(commands.Cog):
             message = self.art_service.get_omega_bonk()
             await self.send_message_with_reaction(ctx, message, emoji)
         else:
-            file = FileUtils.get_file("assets/gifs/fancy_bonk.gif")
+            file = FileUtils.get_file(FileUtils.FANCY_BONK_GIF)
             await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.SALT.value.command)

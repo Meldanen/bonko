@@ -3,6 +3,9 @@ from discord import File, HTTPException
 
 from services.LoggingService import LoggingService
 
+FEWER_GIF = "assets/gifs/fewer.gif"
+FANCY_BONK_GIF = "assets/gifs/fancy_bonk.gif"
+
 
 async def send_file(ctx, file):
     await ctx.send(file=file)

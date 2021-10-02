@@ -11,9 +11,7 @@ class OnMessageResponseTypeEnum(Enum):
 
     BAD_BONKO = OnMessageResponseType(2, ["bad bonko", "naughty bonko", "baughty bonko"], SentimentEnum.SAD)
 
-    # NAUGHTY_BONKO = OnMessageResponseType(3, "naughty bonko", SentimentEnum.SAD)
-    #
-    # BAUGHTY_BONKO = OnMessageResponseType(4, "baughty bonko", SentimentEnum.SAD)
+    FEWER_OR_LESS = OnMessageResponseType(3, ["fewer", "less"], SentimentEnum.NEUTRAL)
 
     YEAH = OnMessageResponseType(5, ["yeah"], SentimentEnum.NEUTRAL)
 
@@ -30,8 +28,6 @@ class OnMessageResponseTypeEnum(Enum):
     GOOD_ANTI_BONKO = OnMessageResponseType(11, ["good antibonko"], SentimentEnum.NEUTRAL)
 
     HYPERFEMININE_VILLOUI = OnMessageResponseType(12, ["hyperfeminine villoui"], SentimentEnum.NEUTRAL)
-
-    # PET_EL_BONKO = OnMessageResponseType(13, ["petElBonko"], SentimentEnum.HAPPY)
 
     @staticmethod
     def is_good_bonko(id):
@@ -70,9 +66,9 @@ class OnMessageResponseTypeEnum(Enum):
     def is_hyperfeminine_villoui(id):
         return id == OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.id
 
-    # @staticmethod
-    # def is_pet_el_bonko(id):
-    #     return id == OnMessageResponseTypeEnum.PET_EL_BONKO.value.id
+    @staticmethod
+    def is_fewer_or_less(id):
+        return id == OnMessageResponseTypeEnum.FEWER_OR_LESS.value.id
 
     @staticmethod
     def is_startswith_ye(message):
