@@ -38,7 +38,7 @@ class ResponseService:
 
     async def giannakis_grammar(self, ctx):
         text = ctx.content
-        if GrammarEnum.is_fewer(text):
+        if not GrammarEnum.is_less(text):
             return
         matches = self.language_tool.check(text)
         grammar_replacements = None
