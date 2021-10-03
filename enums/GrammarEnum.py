@@ -11,6 +11,8 @@ class GrammarEnum(Enum):
 
     GRAMMAR = GrammarCategory(1, "GRAMMAR")
 
+    FEWER_LESS = GrammarCategory(1, "FEWER_LESS")
+
     @staticmethod
     def is_casing(id: int) -> bool:
         return id == GrammarEnum.CASING.value.id
