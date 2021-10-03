@@ -50,7 +50,7 @@ class ResponseService:
         if GrammarEnum.is_fewer_in_replacements(grammar_replacements.replacements):
             self.logging_service.log("Sending 'fewer' gif")
             file = FileUtils.get_file(FileUtils.FEWER_GIF)
-            await ctx.reply(file=file)
+            await ctx.reply(f'"{grammar_replacements.sentence}"', file=file)
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
