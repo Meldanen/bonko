@@ -49,7 +49,7 @@ class ResponseService:
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
-        await self.send(channel.channel, response)
+        await self.send(channel, response)
 
     async def send_random_bad_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_sad_response()
