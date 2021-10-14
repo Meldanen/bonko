@@ -102,5 +102,5 @@ class ResponseService:
 
     @staticmethod
     async def send_reaction(ctx, response_type_enum):
-        reaction = FotiaMaxeriAspisEnum.get_winning_emoji(response_type_enum.value.value[0]).value
+        reaction = FotiaMaxeriAspisEnum.get_winning_emoji(response_type_enum.value.value[0]).value.value
         await ctx.add_reaction(reaction)
