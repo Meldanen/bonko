@@ -105,5 +105,5 @@ class ResponseService:
         print("AAAAAAAAAAAAAAAAAAAAAAAA")
         print(response_type_enum.value.value[0])
         print(response_type_enum.value)
-        reaction = FotiaMaxeriAspisEnum.get_winning_emoji(response_type_enum.value.value[0]).value.value
+        reaction = FotiaMaxeriAspisEnum.get_winning_emoji(response_type_enum.value.value[0]).value.display
         await ctx.add_reaction(reaction)
