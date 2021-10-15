@@ -19,7 +19,7 @@ class OnOffEnum(Enum):
     @staticmethod
     def get_from_display(display):
         for enum in OnOffEnum:
-            enum_display = enum.value.value
+            enum_display = enum.value.display
             if enum_display and enum_display.lower() == display.lower():
                 return enum
         return None
