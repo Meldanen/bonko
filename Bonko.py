@@ -27,7 +27,7 @@ from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
 from utils import FileUtils
 
-
+# comment to trigger build LOLEOLOLDLOEL
 class Bonko(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
