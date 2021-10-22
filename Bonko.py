@@ -39,9 +39,9 @@ class Bonko(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.permission_service = PermissionService(self.bot.user.id, self.logging_service)
-        self.loop_service = LoopService(self.bot, self.logging_service, self.permission_service)
-        self.loop_service.init_loops()
-        self.response_service = ResponseService(self.logging_service)
+        # self.loop_service = LoopService(self.bot, self.logging_service, self.permission_service)
+        # self.loop_service.init_loops()
+        self.response_service = ResponseService(self.logging_service, self.permission_service)
         self.text_extracting_service = TextExtractingService(self.bot)
         print(f'{self.bot.user.name} is here to bonk Giannakides!')
 

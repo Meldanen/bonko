@@ -12,8 +12,9 @@ from utils import FileUtils
 
 class ResponseService:
 
-    def __init__(self, logging_service):
+    def __init__(self, logging_service, permission_service):
         self.logging_service = logging_service
+        self.permission_service = permission_service
         self.language_tool = language_tool_python.LanguageTool('en-US')
 
     async def send_response(self, ctx, response_type_enum):
@@ -34,11 +35,12 @@ class ResponseService:
             await self.send_good_anti_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_hyperfeminine_villoui(response_type_enum.value.id):
             await self.send_hyperfeminine_villoui_response(ctx)
-        await self.giannakis_grammar(ctx)
+        await self.grammar(ctx)
 
-    async def giannakis_grammar(self, ctx):
+    async def grammar(self, ctx):
         text = ctx.content
         if not GrammarEnum.is_less(text):
+            await self.giannakis_grammar(ctx)
             return
         matches = self.language_tool.check(text)
         for match in matches:
@@ -46,6 +48,14 @@ class ResponseService:
                 self.logging_service.log("Sending 'fewer' gif")
                 file = FileUtils.get_file(FileUtils.FEWER_GIF)
                 await ctx.reply(f'"{match.sentence}"', file=file)
+
+    async def giannakis_grammar(self, ctx):
+        text = ctx.content
+        if not self.permission_service.is_megus(ctx.author.id):
+            return
+        matches = self.language_tool.check(text)
+        for match in matches:
+            print("aaaaaaaaaaaaa")
 
     async def send_random_good_bonko_response(self, channel):
         response = JudgeBonkoResponseEnum.get_random_happy_response()
