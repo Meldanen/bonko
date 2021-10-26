@@ -77,6 +77,10 @@ class QuoteEnum(Enum):
                    "there were caramelized onions!!!! cut the onions, and boil them in water... does it really matter if its boild or oiled? :stuck_out_tongue:",
                    EmojiEnum.SADNESS, False)
 
+    GARIDAKI = Quote(21,
+                   "assets/images/garidaki.png",
+                   EmojiEnum.POTATO, True)
+
     @staticmethod
     async def get_random_quote(ctx, user_id):
         index = randrange(len(QuoteEnum))

@@ -369,6 +369,17 @@ class Bonko(commands.Cog):
             emoji = await self.get_emoji(ctx, QuoteEnum.WAR_CRIMES.value.reaction.value)
             await FileUtils.send_file_with_reaction(ctx, quote, emoji)
 
+    @commands.command(name=CommandsEnum.GARIDAKI.value.command)
+    async def garidaki(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.GARIDAKI.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.GARIDAKI):
+            return
+        quote = await QuoteEnum.get_quote(ctx, QuoteEnum.GARIDAKI.value.id, None)
+        if not quote:
+            return
+        emoji = await self.get_emoji(ctx, QuoteEnum.GARIDAKI.value.reaction.value)
+        await FileUtils.send_file_with_reaction(ctx, quote, emoji)
+
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))

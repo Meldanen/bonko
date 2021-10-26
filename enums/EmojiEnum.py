@@ -33,6 +33,8 @@ class EmojiEnum(Enum):
 
     YENS = "yens"
 
+    POTATO = "potato"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):
