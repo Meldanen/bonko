@@ -53,6 +53,8 @@ class CommandsEnum(Enum):
 
     GARIDAKI = Command(23, "garidaki", RoleEnum.PLEB, ";;garidaki")
 
+    COQ = Command(24, "coq", RoleEnum.PLEB, ";;coq")
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value.command
