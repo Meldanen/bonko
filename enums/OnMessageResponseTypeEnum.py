@@ -29,6 +29,8 @@ class OnMessageResponseTypeEnum(Enum):
 
     HYPERFEMININE_VILLOUI = OnMessageResponseType(12, ["hyperfeminine villoui"], SentimentEnum.NEUTRAL)
 
+    YEPGE = OnMessageResponseType(13, ["yepge"], SentimentEnum.NEUTRAL)
+
     @staticmethod
     def is_good_bonko(id):
         return OnMessageResponseTypeEnum.get_from_id(id).value.sentiment == SentimentEnum.HAPPY
@@ -65,6 +67,10 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def is_hyperfeminine_villoui(id):
         return id == OnMessageResponseTypeEnum.HYPERFEMININE_VILLOUI.value.id
+
+    @staticmethod
+    def is_yepge(id):
+        return id == OnMessageResponseTypeEnum.YEPGE.value.id
 
     @staticmethod
     def is_fewer_or_less(id):

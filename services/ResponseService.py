@@ -35,6 +35,8 @@ class ResponseService:
             await self.send_good_anti_bonko_response(ctx.channel)
         elif OnMessageResponseTypeEnum.is_hyperfeminine_villoui(response_type_enum.value.id):
             await self.send_hyperfeminine_villoui_response(ctx)
+        elif OnMessageResponseTypeEnum.is_yepge(response_type_enum.value.id):
+            await self.send_yepge(ctx)
         await self.grammar(ctx)
 
     async def grammar(self, ctx):
@@ -86,6 +88,13 @@ class ResponseService:
         emoji = await EmojiEnum.get_custom_emoji(guild.emojis, EmojiEnum.YENS.value)
         # await message.add_reaction(emoji)
         await ctx.add_reaction(emoji)
+
+    async def send_yepge(self, ctx):
+        channel = ctx.channel
+        guild = ctx.guild
+        emoji = await EmojiEnum.get_emoji(guild.emojis, EmojiEnum.EGGPLANT.value)
+        await self.send(channel, emoji)
+
 
     @staticmethod
     async def send_ye_response(user_id, channel, guild, reverse=False):

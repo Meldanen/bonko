@@ -381,15 +381,13 @@ class Bonko(commands.Cog):
         await FileUtils.send_file_with_reaction(ctx, quote, emoji)
 
     @commands.command(name=CommandsEnum.COQ.value.command)
-    async def garidaki(self, ctx: commands.context):
+    async def coq(self, ctx: commands.context):
         self.logging_service.log_starting_process(CommandsEnum.COQ.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.COQ):
             return
-        message =  "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
-        message += "\n                           "
-        message += "\n                    YEPGE              COQ "
-        message += "\n                           "
-        message += "\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+        message = "\n————————————————————"
+        message += "\n   You won coq. Type Yepge to claim"
+        message += "\n————————————————————"
         await self.send_message(ctx, message)
 
     @staticmethod
