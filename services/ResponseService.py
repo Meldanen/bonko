@@ -90,10 +90,9 @@ class ResponseService:
         await ctx.add_reaction(emoji)
 
     async def send_yepge(self, ctx):
-        channel = ctx.channel
         guild = ctx.guild
         emoji = await EmojiEnum.get_emoji(guild.emojis, EmojiEnum.EGGPLANT.value)
-        await self.send(channel, emoji)
+        await ctx.add_reaction(emoji)
 
 
     @staticmethod
