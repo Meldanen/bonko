@@ -399,10 +399,10 @@ class Bonko(commands.Cog):
         file = self.get_file("assets/images/hivemind.png")
         await self.send_file(ctx, file)
 
-    @commands.command(name=CommandsEnum.ART_2.value.command)
-    async def art2(self, ctx: commands.context):
-        self.logging_service.log_starting_process(CommandsEnum.ART_2.value)
-        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ART_2):
+    @commands.command(name=CommandsEnum.OH_YOU.value.command)
+    async def oh_you(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.OH_YOU.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OH_YOU):
             return
         file = self.get_file("assets/images/kafrilla.png")
         await self.send_file(ctx, file)
