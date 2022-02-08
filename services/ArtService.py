@@ -4,6 +4,19 @@ from enums.EmojiEnum import EmojiEnum
 
 class ArtService:
 
+    async def get_hive_mind(self, ctx):
+        brain = await self.get_emoji(ctx, "brain")
+        loop = await self.get_emoji(ctx, "loop")
+        eye = await self.get_emoji(ctx, "eye")
+        lips = await self.get_emoji(ctx, "lips")
+        point_left = await self.get_emoji(ctx, "point_left_tone2")
+        point_right = await self.get_emoji(ctx, "point_right_tone2")
+        top = brain + loop + brain
+        middle = eye + lips + eye
+        bottom = self.add_spaces("", 3)
+        bottom += point_right + point_left
+        return top, middle, bottom
+
     async def get_sibling_art(self, ctx, fart_on_emojis):
         head = await self.get_emoji(ctx, "siblingyyy")
         neck = await self.get_emoji(ctx, "giraffe")

@@ -27,6 +27,7 @@ from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
 from utils import FileUtils
 
+
 class Bonko(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -390,6 +391,22 @@ class Bonko(commands.Cog):
         message += "\n————————————————————"
         await self.send_message(ctx, message)
 
+    @commands.command(name=CommandsEnum.HIVE_MIND.value.command)
+    async def hive_mind(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.HIVE_MIND.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.HIVE_MIND):
+            return
+        file = self.get_file("assets/images/hivemind.png")
+        await self.send_file(ctx, file)
+
+    @commands.command(name=CommandsEnum.ART_2.value.command)
+    async def art2(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.ART_2.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ART_2):
+            return
+        file = self.get_file("assets/images/kafrilla.png")
+        await self.send_file(ctx, file)
+
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
@@ -450,3 +467,6 @@ class Bonko(commands.Cog):
 
     def is_quillbot(self, id: int) -> bool:
         return self.permission_service.is_quillbot(id)
+
+    def get_file(self, path):
+        return FileUtils.get_file(path)

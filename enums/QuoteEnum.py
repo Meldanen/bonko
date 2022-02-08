@@ -104,6 +104,7 @@ class QuoteEnum(Enum):
                      "assets/images/garidaki.png",
                      EmojiEnum.POTATO, True)
 
+
     @staticmethod
     async def get_random_quote(ctx, user_id):
         index = randrange(len(QuoteEnum))

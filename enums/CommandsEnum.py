@@ -55,6 +55,10 @@ class CommandsEnum(Enum):
 
     COQ = Command(24, "coq", RoleEnum.PLEB, ";;coq")
 
+    HIVE_MIND = Command(25, "hivemind", RoleEnum.PLEB, ";;hivemind")
+
+    ART_2 = Command(26, "art2", RoleEnum.PLEB, ";;art2")
+
     @staticmethod
     def is_allow_spam(permission: str) -> bool:
         return permission == CommandsEnum.ALLOW_SPAM.value.command
