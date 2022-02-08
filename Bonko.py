@@ -386,9 +386,9 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.COQ.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.COQ):
             return
-        message = "\n————————————————————"
+        message = "\n———————————————————"
         message += "\n   You won coq. Type Yepge to claim"
-        message += "\n————————————————————"
+        message += "\n———————————————————"
         await self.send_message(ctx, message)
 
     @commands.command(name=CommandsEnum.HIVE_MIND.value.command)
