@@ -416,7 +416,7 @@ class Bonko(commands.Cog):
         chance_to_get_gnomed = random.uniform(0, 1)
         print(chance_to_get_gnomed)
         if chance_to_get_gnomed <= 0.1:
-            file = self.get_file(FileUtils.BELOVED_GIF)
+            file = self.get_file(FileUtils.GET_GNOMED_GIF)
         else:
             file = self.get_file(FileUtils.BELOVED_GIF)
         await self.send_file(ctx, file)
