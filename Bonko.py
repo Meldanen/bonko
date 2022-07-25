@@ -407,6 +407,14 @@ class Bonko(commands.Cog):
         file = self.get_file("assets/images/kafrilla.png")
         await self.send_file(ctx, file)
 
+    @commands.command(name=CommandsEnum.BELOVED.value.command)
+    async def oh_you(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
+            return
+        file = self.get_file(FileUtils.BELOVED_GIF)
+        await self.send_file(ctx, file)
+
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))

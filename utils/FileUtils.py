@@ -5,6 +5,7 @@ from services.LoggingService import LoggingService
 
 FEWER_GIF = "assets/gifs/fewer.gif"
 FANCY_BONK_GIF = "assets/gifs/fancy_bonk.gif"
+BELOVED_GIF = "assets/images/beloved.gif"
 
 
 async def send_file(ctx, file):
