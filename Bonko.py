@@ -408,7 +408,7 @@ class Bonko(commands.Cog):
         await self.send_file(ctx, file)
 
     @commands.command(name=CommandsEnum.BELOVED.value.command)
-    async def oh_you(self, ctx: commands.context):
+    async def beloved(self, ctx: commands.context):
         self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
