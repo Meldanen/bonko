@@ -26,6 +26,7 @@ from services.PermissionService import PermissionService
 from services.ResponseService import ResponseService
 from services.TextExtractingService import TextExtractingService
 from utils import FileUtils
+import random
 
 
 class Bonko(commands.Cog):
@@ -44,7 +45,7 @@ class Bonko(commands.Cog):
         # self.loop_service.init_loops()
         self.response_service = ResponseService(self.logging_service, self.permission_service)
         self.text_extracting_service = TextExtractingService(self.bot)
-        print(f'{self.bot.user.name} is here to bonk Giannakides!')
+        print(f'{self.bot.user.name} is here to please the Green Cone!')
 
     @commands.command(name="extract")
     async def extract(self, ctx):
@@ -412,7 +413,12 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
-        file = self.get_file(FileUtils.BELOVED_GIF)
+        chance_to_get_gnomed = random.uniform(0, 1)
+        print(chance_to_get_gnomed)
+        if chance_to_get_gnomed <= 0.1:
+            file = self.get_file(FileUtils.BELOVED_GIF)
+        else:
+            file = self.get_file(FileUtils.BELOVED_GIF)
         await self.send_file(ctx, file)
 
     @staticmethod
