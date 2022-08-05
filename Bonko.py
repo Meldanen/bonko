@@ -414,7 +414,8 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
         chance_to_get_gnomed = random.uniform(0, 1)
-        if chance_to_get_gnomed <= 0.1:
+        print(f'Chance to get gnomed: {chance_to_get_gnomed}')
+        if chance_to_get_gnomed <= 0.12:
             file = self.get_file(FileUtils.GET_GNOMED_GIF)
         else:
             file = self.get_file(FileUtils.BELOVED_GIF)
