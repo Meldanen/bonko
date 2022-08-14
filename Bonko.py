@@ -36,6 +36,7 @@ class Bonko(commands.Cog):
         self.logging_service = LoggingService()
         self.art_service = ArtService()
         self.react_mode_properties = ReactMode()
+        self.get_gnomed_bad_luck_protection = 0
         keep_alive()
 
     @commands.Cog.listener()
@@ -414,10 +415,13 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
         chance_to_get_gnomed = random.uniform(0, 1)
-        print(f'Chance to get gnomed: {chance_to_get_gnomed}')
-        if chance_to_get_gnomed <= 0.18:
+        get_gnomed_threshold = 0.18 + self.get_gnomed_bad_luck_protection
+        print(f'Chance to get gnomed: {chance_to_get_gnomed} <= {get_gnomed_threshold}')
+        if chance_to_get_gnomed <= get_gnomed_threshold:
+            self.get_gnomed_bad_luck_protection = 0
             file = self.get_file(FileUtils.GET_GNOMED_GIF)
         else:
+            self.get_gnomed_bad_luck_protection = self.get_gnomed_bad_luck_protection + 0.02
             file = self.get_file(FileUtils.BELOVED_GIF)
         await self.send_file(ctx, file)
 
