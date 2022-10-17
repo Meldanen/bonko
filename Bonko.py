@@ -203,16 +203,14 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.SALT):
             return
         message = self.art_service.get_salt()
-        emoji = await self.get_emoji(ctx, EmojiEnum.SALT.value)
-        await self.send_message_with_reaction(ctx, message, emoji)
+        await self.send_message_with_reaction(ctx, message, EmojiEnum.SALT.value)
 
     @commands.command(name="giannakis")
     async def giannakis(self, ctx: commands.context):
         self.logging_service.log_starting_process(CommandsEnum.OMEGA_BONK.value)
         message = AsciiArtEnum.GIANNAKIS.value
         print(len(message))
-        emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
-        await self.send_message_with_reaction(ctx, message, emoji)
+        await self.send_message_with_reaction(ctx, message, EmojiEnum.BONK.value)
 
     @commands.command(name=CommandsEnum.SPAM_SOFT.value.command)
     async def spam_soft(self, ctx: commands.context, emoji: str, times: int, *usernames):
@@ -267,8 +265,7 @@ class Bonko(commands.Cog):
         if self.is_giannakis(author_id):
             await self.send_message(ctx, "No horny!")
         else:
-            emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BONK.value)
-            await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, emoji)
+            await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value.command)
     async def permissions(self, ctx: commands.context, permission, *usernames):
@@ -353,7 +350,7 @@ class Bonko(commands.Cog):
             await self.send_file(ctx, quote)
         else:
             message = quote.quote
-            reaction = await self.get_emoji(ctx, quote.reaction.value)
+            reaction = quote.reaction.value
             await self.send_message_with_reaction(ctx, f'> {message}', reaction)
 
     @commands.command(name=CommandsEnum.WAR_CRIMES.value.command)
@@ -432,9 +429,9 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
         top, middle, bottom = await self.art_service.beloved(ctx)
-        await self.send_message(ctx, top)
-        await self.send_message(ctx, middle)
-        await self.send_message(ctx, bottom)
+        await self.send_message_with_reaction(ctx, top, EmojiEnum.CONE.value)
+        await self.send_message_with_reaction(ctx, middle, EmojiEnum.AWW_YISS.value)
+        await self.send_message_with_reaction(ctx, bottom, EmojiEnum.BELOVED.value)
 
 
     @staticmethod
@@ -444,6 +441,7 @@ class Bonko(commands.Cog):
     async def send_message_with_reaction(self, ctx: commands.context, message: str, emoji):
         message = await ctx.send(message)
         try:
+            emoji = await self.get_emoji(ctx, emoji)
             await message.add_reaction(emoji)
         except HTTPException as e:
             self.logging_service.exception(e)
