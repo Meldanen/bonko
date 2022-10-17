@@ -431,7 +431,6 @@ class Bonko(commands.Cog):
         await self.send_message_with_reaction(ctx, middle)
         await self.send_message_with_reaction(ctx, bottom, emojis)
 
-
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
@@ -440,7 +439,8 @@ class Bonko(commands.Cog):
         message = await ctx.send(message)
         await self.add_reaction_to_message(ctx, message, emojis)
 
-    async def add_reaction_to_message(self, ctx, message, emojis):
+    async def add_reaction_to_message(self, ctx, message, emojis=[]):
+        if not isinstance(emojis, List): emojis = [emojis]
         try:
             for emoji in emojis:
                 emoji = await self.get_emoji(ctx, emoji)
@@ -500,4 +500,3 @@ class Bonko(commands.Cog):
 
     def get_file(self, path):
         return FileUtils.get_file(path)
-
