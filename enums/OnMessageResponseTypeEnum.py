@@ -31,7 +31,7 @@ class OnMessageResponseTypeEnum(Enum):
 
     YEPGE = OnMessageResponseType(13, ["yepge"], SentimentEnum.NEUTRAL)
 
-    CONE_BE_WITH_YOU = OnMessageResponseType(14, ["cone be with you"], SentimentEnum.NEUTRAL)
+    CONE_BE_WITH_YOU = OnMessageResponseType(14, ["cone be with you", "may the cone be with you"], SentimentEnum.NEUTRAL)
 
     @staticmethod
     def is_good_bonko(id):
