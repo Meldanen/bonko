@@ -1,6 +1,7 @@
 import discord
 from discord import File, HTTPException
 
+from enums.EmojiEnum import EmojiEnum
 from services.LoggingService import LoggingService
 
 FEWER_GIF = "assets/gifs/fewer.gif"
@@ -16,7 +17,8 @@ async def send_file(ctx, file):
 async def send_file_with_reaction(ctx, file, emoji):
     message = await ctx.send(file=file)
     try:
-        await message.add_reaction(emoji)
+        reaction = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
+        await message.add_reaction(reaction)
     except HTTPException as e:
         LoggingService().exception(e)
 

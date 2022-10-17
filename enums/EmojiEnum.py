@@ -41,6 +41,8 @@ class EmojiEnum(Enum):
 
     BELOVED = "beloved"
 
+    GNOME_CRI = "gnome_cri"
+
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):
         if isinstance(emoji, CustomEmoji):

@@ -190,13 +190,12 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.OMEGA_BONK):
             return
         index = randint(0, 1)
-        emoji = await self.get_custom_emoji(ctx, EmojiEnum.BONK.value)
         if index == 0:
             message = self.art_service.get_omega_bonk()
-            await self.send_message_with_reaction(ctx, message, emoji)
+            await self.send_message_with_reaction(ctx, message, EmojiEnum.BONK.value)
         else:
             file = FileUtils.get_file(FileUtils.FANCY_BONK_GIF)
-            await self.send_file_with_reaction(ctx, file, emoji)
+            await self.send_file_with_reaction(ctx, file, EmojiEnum.BONK.value)
 
     @commands.command(name=CommandsEnum.SALT.value.command)
     async def salt(self, ctx: commands.context):
@@ -369,7 +368,7 @@ class Bonko(commands.Cog):
         if not quote:
             return
         if FileUtils.is_file(quote):
-            emoji = await self.get_emoji(ctx, QuoteEnum.WAR_CRIMES.value.reaction.value)
+            emoji = QuoteEnum.WAR_CRIMES.value.reaction.value
             await FileUtils.send_file_with_reaction(ctx, quote, emoji)
 
     @commands.command(name=CommandsEnum.GARIDAKI.value.command)
@@ -380,7 +379,7 @@ class Bonko(commands.Cog):
         quote = await QuoteEnum.get_quote(ctx, QuoteEnum.GARIDAKI.value.id, None)
         if not quote:
             return
-        emoji = await self.get_emoji(ctx, QuoteEnum.GARIDAKI.value.reaction.value)
+        emoji = QuoteEnum.GARIDAKI.value.reaction.value
         await FileUtils.send_file_with_reaction(ctx, quote, emoji)
 
     @commands.command(name=CommandsEnum.COQ.value.command)
@@ -419,11 +418,13 @@ class Bonko(commands.Cog):
         self.logging_service.log(f'Chance to get gnomed: {chance_to_get_gnomed} <= {get_gnomed_threshold}')
         if chance_to_get_gnomed <= get_gnomed_threshold:
             self.get_gnomed_bad_luck_protection = 0
+            emoji = EmojiEnum.GNOME_CRI.value
             file = self.get_file(FileUtils.GET_GNOMED_GIF)
         else:
             self.get_gnomed_bad_luck_protection = self.get_gnomed_bad_luck_protection + 0.02
             file = self.get_file(FileUtils.BELOVED_GIF)
-        await self.send_file(ctx, file)
+            emoji = EmojiEnum.BELOVED.value
+        await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.BELOVED.value.command)
     async def beloved(self, ctx: commands.context):
@@ -499,3 +500,4 @@ class Bonko(commands.Cog):
 
     def get_file(self, path):
         return FileUtils.get_file(path)
+
