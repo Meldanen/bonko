@@ -37,6 +37,8 @@ class ResponseService:
             await self.send_hyperfeminine_villoui_response(ctx)
         elif OnMessageResponseTypeEnum.is_yepge(response_type_enum.value.id):
             await self.send_yepge(ctx)
+        elif OnMessageResponseTypeEnum.is_cone_be_with_you(response_type_enum.value.id):
+            await self.send_and_with_you(ctx)
         await self.grammar(ctx)
 
     async def grammar(self, ctx):
@@ -94,6 +96,13 @@ class ResponseService:
         emoji = await EmojiEnum.get_emoji(guild.emojis, EmojiEnum.EGGPLANT.value)
         await ctx.add_reaction(emoji)
 
+    async def send_and_with_you(self, ctx):
+        guild = ctx.guild
+        channel = ctx.channel
+        cone = await EmojiEnum.get_emoji(guild.emojis, EmojiEnum.CONE.value)
+        beloved = await EmojiEnum.get_emoji(guild.emojis, EmojiEnum.BELOVED.value)
+        message = f'{cone} {beloved} And with you {beloved} {cone}'
+        message = await channel.send(message)
 
     @staticmethod
     async def send_ye_response(user_id, channel, guild, reverse=False):

@@ -31,6 +31,8 @@ class OnMessageResponseTypeEnum(Enum):
 
     YEPGE = OnMessageResponseType(13, ["yepge"], SentimentEnum.NEUTRAL)
 
+    CONE_BE_WITH_YOU = OnMessageResponseType(14, ["cone be with you"], SentimentEnum.NEUTRAL)
+
     @staticmethod
     def is_good_bonko(id):
         return OnMessageResponseTypeEnum.get_from_id(id).value.sentiment == SentimentEnum.HAPPY
@@ -71,6 +73,10 @@ class OnMessageResponseTypeEnum(Enum):
     @staticmethod
     def is_yepge(id):
         return id == OnMessageResponseTypeEnum.YEPGE.value.id
+
+    @staticmethod
+    def is_cone_be_with_you(id):
+        return id == OnMessageResponseTypeEnum.CONE_BE_WITH_YOU.value.id
 
     @staticmethod
     def is_fewer_or_less(id):
