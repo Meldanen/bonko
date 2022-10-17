@@ -64,7 +64,7 @@ class Bonko(commands.Cog):
             for emoji in self.react_mode_properties.get_emojis():
                 emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
                 await ctx.add_reaction(emoji)
-        if ctx.content.lower() in ["praise the cone", "cone be praised"]:
+        if ctx.content.lower() in ["praise the cone!", "cone be praised!"]:
             self.logging_service.log("Praising the cone")
             cone = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.CONE.value)
             beloved = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BELOVED.value)
@@ -424,15 +424,15 @@ class Bonko(commands.Cog):
         else:
             self.get_gnomed_bad_luck_protection = self.get_gnomed_bad_luck_protection + 0.02
             file = self.get_file(FileUtils.BELOVED_GIF)
-            emoji = EmojiEnum.BELOVED.value
+            emoji = [EmojiEnum.CONE.value, EmojiEnum.BELOVED.value]
         await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.BELOVED.value.command)
-    async def beloved(self, ctx: commands.context):
+    async def beloved(self, ctx: commands.context, face):
         self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
-        top, middle, bottom = await self.art_service.beloved(ctx)
+        top, middle, bottom = await self.art_service.beloved(ctx, face)
         emojis = [EmojiEnum.CONE.value, EmojiEnum.AWW_YISS.value, EmojiEnum.BELOVED.value]
         await self.send_message_with_reaction(ctx, top)
         await self.send_message_with_reaction(ctx, middle)

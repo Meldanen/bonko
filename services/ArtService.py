@@ -4,9 +4,12 @@ from enums.EmojiEnum import EmojiEnum
 
 class ArtService:
 
-    async def beloved(self, ctx):
+    async def beloved(self, ctx, face):
         top = await self.get_emoji(ctx, EmojiEnum.CONE.value)
-        middle = await self.get_emoji(ctx, EmojiEnum.AWW_YISS.value)
+        if face:
+            middle = await self.get_emoji(ctx, face)
+        else:
+            middle = await self.get_emoji(ctx, EmojiEnum.AWW_YISS.value)
         bottom = await self.get_emoji(ctx, EmojiEnum.BELOVED.value)
         return top, middle, bottom
 
