@@ -262,10 +262,8 @@ class Bonko(commands.Cog):
         author_id = ctx.author.id
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.WORD_OF_THE_DAY):
             return
-        if self.is_giannakis(author_id):
-            await self.send_message(ctx, "No horny!")
-        else:
-            await self.send_message_with_reaction(ctx, EmojiEnum.BONK.value, EmojiEnum.BONK.value)
+        emojis = [EmojiEnum.CONE.value, EmojiEnum.AWW_YISS.value, EmojiEnum.BELOVED.value]
+        await self.send_message_with_reaction(ctx, EmojiEnum.CONE.value, emojis)
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value.command)
     async def permissions(self, ctx: commands.context, permission, *usernames):
@@ -297,7 +295,6 @@ class Bonko(commands.Cog):
         self.logging_service.log_starting_process(CommandsEnum.ASTONISHED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.ASTONISHED):
             return
-        emoji = await self.get_emoji(ctx, EmojiEnum.ASTONISHED.value)
         message = ""
         if naked.lower() == "naked":
             message += "u r naked on your cauch, having sex with your boyfriend. i came by knocked your door not very loud. u didnt hear it, and i open oyur door and find u naked on the couch with a dick inside u. i am very sure u would be  very okish with that. u wouldnt throw the couch on my head but anw. i personally dont like this at all \n"
@@ -305,7 +302,7 @@ class Bonko(commands.Cog):
         message += "i am just astonished, how i was SO clear that i am leaving the house cause i cant have my privacy there.\n"
         message += " and they came in just like that at the new place. \n"
         message += "i am just astonished on how they cant comprihent that simple thing"
-        await self.send_message_with_reaction(ctx, message, emoji)
+        await self.send_message_with_reaction(ctx, message, EmojiEnum.ASTONISHED.value)
 
     @commands.command(name=CommandsEnum.SHRUG.value.command)
     async def shrug(self, ctx: commands.context):
@@ -429,20 +426,25 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
         top, middle, bottom = await self.art_service.beloved(ctx)
-        await self.send_message_with_reaction(ctx, top, EmojiEnum.CONE.value)
-        await self.send_message_with_reaction(ctx, middle, EmojiEnum.AWW_YISS.value)
-        await self.send_message_with_reaction(ctx, bottom, EmojiEnum.BELOVED.value)
+        emojis = [EmojiEnum.CONE.value, EmojiEnum.AWW_YISS.value, EmojiEnum.BELOVED.value]
+        await self.send_message_with_reaction(ctx, top)
+        await self.send_message_with_reaction(ctx, middle)
+        await self.send_message_with_reaction(ctx, bottom, emojis)
 
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
 
-    async def send_message_with_reaction(self, ctx: commands.context, message: str, emoji):
+    async def send_message_with_reaction(self, ctx: commands.context, message: str, *emojis):
         message = await ctx.send(message)
+        await self.add_reaction_to_message(ctx, message, emojis)
+
+    async def add_reaction_to_message(self, ctx, message, emojis):
         try:
-            emoji = await self.get_emoji(ctx, emoji)
-            await message.add_reaction(emoji)
+            for emoji in emojis:
+                emoji = await self.get_emoji(ctx, emoji)
+                await message.add_reaction(emoji)
         except HTTPException as e:
             self.logging_service.exception(e)
 
