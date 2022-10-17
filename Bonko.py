@@ -263,7 +263,7 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(author_id, CommandsEnum.WORD_OF_THE_DAY):
             return
         emojis = [EmojiEnum.CONE.value, EmojiEnum.AWW_YISS.value, EmojiEnum.BELOVED.value]
-        await self.send_message_with_reaction(ctx, EmojiEnum.CONE.value, emojis)
+        await self.send_message_with_reaction(ctx, "Cone", emojis)
 
     @commands.command(name=CommandsEnum.PERMISSIONS.value.command)
     async def permissions(self, ctx: commands.context, permission, *usernames):
@@ -436,7 +436,7 @@ class Bonko(commands.Cog):
     async def send_message(ctx: commands.context, message: str):
         await ctx.send(str(message))
 
-    async def send_message_with_reaction(self, ctx: commands.context, message: str, *emojis):
+    async def send_message_with_reaction(self, ctx: commands.context, message: str, emojis=[]):
         message = await ctx.send(message)
         await self.add_reaction_to_message(ctx, message, emojis)
 
