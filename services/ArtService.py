@@ -4,6 +4,12 @@ from enums.EmojiEnum import EmojiEnum
 
 class ArtService:
 
+    async def beloved(self, ctx):
+        top = await self.get_emoji(ctx, EmojiEnum.CONE.value)
+        middle = await self.get_emoji(ctx, EmojiEnum.AWW_YISS.value)
+        bottom = await self.get_emoji(ctx, EmojiEnum.BELOVED.value)
+        return top, middle, bottom
+
     async def get_hive_mind(self, ctx):
         brain = await self.get_emoji(ctx, "brain")
         loop = await self.get_emoji(ctx, "loop")

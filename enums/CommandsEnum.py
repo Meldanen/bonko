@@ -59,7 +59,9 @@ class CommandsEnum(Enum):
 
     OH_YOU = Command(26, "ohyou", RoleEnum.PLEB, ";;ohyou")
 
-    BELOVED = Command(27, "beloved", RoleEnum.PLEB, ";;beloved")
+    FAITH = Command(27, "faith", RoleEnum.PLEB, ";;faith")
+
+    BELOVED = Command(28, "beloved", RoleEnum.PLEB, ";;beloved")
 
     @staticmethod
     def is_allow_spam(permission: str) -> bool:

@@ -17,8 +17,6 @@ class EmojiEnum(Enum):
 
     SNACCS = "snaccs"
 
-    WISENYRAKIS = "wisenyrakis"
-
     FIRE = "fire"
 
     KNIFE = "knife"
@@ -36,6 +34,12 @@ class EmojiEnum(Enum):
     POTATO = "potato"
 
     EGGPLANT = "eggplant"
+
+    CONE = "cone"
+
+    AWW_YISS = "awwyiss"
+
+    BELOVED = "beloved"
 
     @staticmethod
     async def get_emoji(guild_emojis: list(), emoji):

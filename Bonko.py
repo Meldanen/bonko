@@ -46,7 +46,7 @@ class Bonko(commands.Cog):
         # self.loop_service.init_loops()
         self.response_service = ResponseService(self.logging_service, self.permission_service)
         self.text_extracting_service = TextExtractingService(self.bot)
-        print(f'{self.bot.user.name} is here to please the Green Cone!')
+        self.logging_service.log(f'{self.bot.user.name} is here to please the Green Cone!')
 
     @commands.command(name="extract")
     async def extract(self, ctx):
@@ -409,14 +409,14 @@ class Bonko(commands.Cog):
         file = self.get_file("assets/images/kafrilla.png")
         await self.send_file(ctx, file)
 
-    @commands.command(name=CommandsEnum.BELOVED.value.command)
-    async def beloved(self, ctx: commands.context):
-        self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
-        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
+    @commands.command(name=CommandsEnum.FAITH.value.command)
+    async def faith(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.FAITH.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.FAITH):
             return
         chance_to_get_gnomed = random.uniform(0, 1)
         get_gnomed_threshold = 0.18 + self.get_gnomed_bad_luck_protection
-        print(f'Chance to get gnomed: {chance_to_get_gnomed} <= {get_gnomed_threshold}')
+        self.logging_service.log(f'Chance to get gnomed: {chance_to_get_gnomed} <= {get_gnomed_threshold}')
         if chance_to_get_gnomed <= get_gnomed_threshold:
             self.get_gnomed_bad_luck_protection = 0
             file = self.get_file(FileUtils.GET_GNOMED_GIF)
@@ -424,6 +424,17 @@ class Bonko(commands.Cog):
             self.get_gnomed_bad_luck_protection = self.get_gnomed_bad_luck_protection + 0.02
             file = self.get_file(FileUtils.BELOVED_GIF)
         await self.send_file(ctx, file)
+
+    @commands.command(name=CommandsEnum.BELOVED.value.command)
+    async def beloved(self, ctx: commands.context):
+        self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
+        if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
+            return
+        top, middle, bottom = await self.art_service.beloved(ctx)
+        await self.send_message(ctx, top)
+        await self.send_message(ctx, middle)
+        await self.send_message(ctx, bottom)
+
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
