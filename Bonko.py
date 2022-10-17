@@ -428,7 +428,7 @@ class Bonko(commands.Cog):
         await self.send_file_with_reaction(ctx, file, emoji)
 
     @commands.command(name=CommandsEnum.BELOVED.value.command)
-    async def beloved(self, ctx: commands.context, face):
+    async def beloved(self, ctx: commands.context, face=None):
         self.logging_service.log_starting_process(CommandsEnum.BELOVED.value)
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
