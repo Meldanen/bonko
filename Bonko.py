@@ -434,10 +434,9 @@ class Bonko(commands.Cog):
         if not self.is_allowed_to_use_command(ctx.author.id, CommandsEnum.BELOVED):
             return
         top, middle, bottom = await self.art_service.beloved(ctx, face)
-        emojis = [EmojiEnum.CONE.value, EmojiEnum.AWW_YISS.value, EmojiEnum.BELOVED.value]
         await self.send_message_with_reaction(ctx, top)
         await self.send_message_with_reaction(ctx, middle)
-        await self.send_message_with_reaction(ctx, bottom, emojis)
+        await self.send_message_with_reaction(ctx, bottom, [top, middle, bottom])
 
     @staticmethod
     async def send_message(ctx: commands.context, message: str):
