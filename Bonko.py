@@ -64,7 +64,7 @@ class Bonko(commands.Cog):
             for emoji in self.react_mode_properties.get_emojis():
                 emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
                 await ctx.add_reaction(emoji)
-        if ctx.content.lower() in ["praise the cone!", "cone be praised!"]:
+        if ctx.content.lower() in ["praise the cone!!!!!!!!!!!!!!!!!", "cone be praised!!!!!!!!!!!!!!!!!"]:
             self.logging_service.log("Praising the cone")
             cone = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.CONE.value)
             beloved = await EmojiEnum.get_emoji(ctx.guild.emojis, EmojiEnum.BELOVED.value)
