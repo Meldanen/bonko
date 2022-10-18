@@ -460,8 +460,8 @@ class Bonko(commands.Cog):
         await FileUtils.send_file(ctx, file)
 
     @staticmethod
-    async def send_file_with_reaction(ctx, file, emoji):
-        await FileUtils.send_file_with_reaction(ctx, file, emoji)
+    async def send_file_with_reaction(ctx, file, emojis=[]):
+        await FileUtils.send_file_with_reaction(ctx, file, emojis)
 
     @staticmethod
     async def get_user(members: List, username: str, mention: bool) -> str:

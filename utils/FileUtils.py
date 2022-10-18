@@ -1,3 +1,5 @@
+from typing import List
+
 import discord
 from discord import File, HTTPException
 
@@ -14,11 +16,17 @@ async def send_file(ctx, file):
     await ctx.send(file=file)
 
 
-async def send_file_with_reaction(ctx, file, emoji):
+async def send_file_with_reaction(ctx, file, emojis=[]):
     message = await ctx.send(file=file)
+    await add_reaction_to_message(ctx, message, emojis)
+
+
+async def add_reaction_to_message(ctx, message, emojis=[]):
+    if not isinstance(emojis, List): emojis = [emojis]
     try:
-        reaction = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
-        await message.add_reaction(reaction)
+        for emoji in emojis:
+            emoji = await EmojiEnum.get_emoji(ctx.guild.emojis, emoji)
+            await message.add_reaction(emoji)
     except HTTPException as e:
         LoggingService().exception(e)
 
