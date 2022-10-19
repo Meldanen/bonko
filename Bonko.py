@@ -420,13 +420,11 @@ class Bonko(commands.Cog):
         self.logging_service.log(f'Chance to get gnomed: {chance_to_get_gnomed} <= {get_gnomed_threshold}')
         if chance_to_get_gnomed <= get_gnomed_threshold:
             self.get_gnomed_bad_luck_protection = 0
-            emoji = EmojiEnum.GNOME_CRI.value
             file = self.get_file(FileUtils.GET_GNOMED_GIF)
         else:
             self.get_gnomed_bad_luck_protection = self.get_gnomed_bad_luck_protection + 0.02
             file = self.get_file(FileUtils.BELOVED_GIF)
-            emoji = [EmojiEnum.CONE.value, EmojiEnum.BELOVED.value]
-        await self.send_file_with_reaction(ctx, file, emoji)
+        await self.send_file(ctx, file)
 
     @commands.command(name=CommandsEnum.BELOVED.value.command)
     async def beloved(self, ctx: commands.context, face=None):
