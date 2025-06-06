@@ -11,6 +11,12 @@ if __name__ == "__main__":
     load_dotenv()
     TOKEN = os.getenv('DISCORD_TOKEN')
     intents = discord.Intents.all()
+
     bot = commands.Bot(command_prefix=';;', intents=intents, help_command=None)
-    bot.add_cog(Bonko(bot))
+
+    # Define the setup hook
+    async def setup_hook():
+        await bot.add_cog(Bonko(bot))
+
+    bot.setup_hook = setup_hook  # Set the hook
     bot.run(TOKEN)
